@@ -1,0 +1,142 @@
+@font-face {
+  font-family: 'mhy-zh';
+  src: url("../meta/fonts/zh-cn.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'tttgbnumber';
+  src: url("../meta/fonts/tttgbnumber.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body {
+  /*transform: scale(0.8);*/
+  transform-origin: 0 0;
+  position: absolute;
+}
+
+.container{
+  width: 410px;
+}
+.head-bak{
+  background: url("../meta/imgs/syw/items/syw-bak.png") no-repeat;
+  background-size: 410px 236px;
+  height: 236px;
+  position: relative;
+}
+.user-name{
+  font-size: 15px;
+  text-align: right;
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  box-sizing: border-box;
+  padding: 3px;
+  color: #fff;
+  background-color: rgba(0,0,0,.5);
+  font-family: 'tttgbnumber';
+}
+.syw-name{
+  color: #fff;
+  font-size: 27px;
+  padding-top: 7px;
+  padding-left: 24px;
+  /*letter-spacing: 2px;*/
+  font-family: 'mhy-zh';
+}
+.syw-type{
+  font-size: 18px;
+  padding: 12px 0 0 25px;
+  color: #fff;
+  letter-spacing: 1px;
+  font-family: "Microsoft YaHei", "微软雅黑", Helvetica, Arial, sans-serif;
+}
+.syw-img{
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  right: 28px;
+  top: 67px;
+}
+.main-number{
+  padding: 44px 0 0 25px;
+}
+.syw-text{
+  color: #c6b5ae;
+  font-size: 18px;
+  font-family: 'mhy-zh';
+}
+.syw-number{
+  font-size: 45px;
+  line-height: 48px;
+  margin-top: 4px;
+  color: #fff;
+  font-family: 'mhy-zh';
+}
+.syw-body{
+  width: 100%;
+  padding-bottom: 15px;
+}
+.un-lock{
+  background: #e5dcd1 url("../meta/imgs/syw/items/unlock.png") no-repeat top 20px right 20px;
+  background-size: 38px 38px;
+}
+.syw-level{
+  font-size: 20px;
+  color: #fff;
+  display: inline-block;
+  width: 45px;
+  height: 24px;
+  line-height: 26px;
+  background-color: #39434e;
+  text-align: center;
+  border-radius: 6px;
+  margin: 20px 0 10px 20px;
+  font-family: 'mhy-zh';
+}
+.syw-num{
+  font-size: 19px;
+  line-height: 30px;
+  padding-left: 25px;
+  color: #666;
+  font-family: 'mhy-zh';
+}
+.detail-block{
+
+}
+.detail-head{
+  margin-bottom: -2px;
+  color: #61b45a;
+  font-size: 19px;
+  line-height: 30px;
+  padding-left: 25px;
+  font-family: 'mhy-zh';
+}
+.detail-tip{
+  background: url(../meta/imgs/syw/items/un-use.png) no-repeat left 25px top 3px;
+  background-size: 18px 17px;
+  font-size: 19px;
+  line-height: 23px;
+  letter-spacing: -0.6px;
+  padding-left: 48px;
+  padding-right: 12px;
+  color: #777;
+  font-family: 'mhy-zh';
+  margin-top: 7px;
+}
+
+.logo{
+  margin-top: -1px;
+  background-color: #e5dcd1;
+  color: #fff;
+  font-family: 'tttgbnumber';
+}

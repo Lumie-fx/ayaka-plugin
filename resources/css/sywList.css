@@ -1,0 +1,137 @@
+@font-face {
+  font-family: 'mhy-zh';
+  src: url("../meta/fonts/zh-cn.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'tttgbnumber';
+  src: url("../meta/fonts/tttgbnumber.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body {
+  transform-origin: 0 0;
+  position: absolute;
+}
+
+.container{
+  width: 440px;
+  padding: 15px;
+  position: relative;
+}
+.name{
+  position: absolute;
+  right: 40px;
+  top: -9px;
+  box-sizing: border-box;
+  padding: 8px;
+  font-size: 12px;
+  background-color: rgba(0,0,0,.4);
+  color: #fff;
+  transform: skewX(-15deg);
+  font-family: "Microsoft YaHei", "微软雅黑", Helvetica, Arial, sans-serif;
+}
+.bag, .today{
+  position: relative;
+  display: flex;
+  /*justify-content: space-around;*/
+  flex-wrap: wrap;
+  align-items: center;
+  width: 400px;
+  margin-bottom: 15px;
+
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  background-color: #f4f4f4;
+  /*transition: box-shadow .2s ease-out;*/
+  position: relative;
+}
+
+.status{
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient(135deg, #d4b98c, rgba(212,185,140,0));
+  color: #fff;
+  font-size: 14px;
+  padding: 3px 10px;
+  border-radius: 15px 0 0 0;
+  z-index: 20;
+}
+
+.syw{
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  width: 80px;
+  height: 80px;
+  margin: 10px;
+  position: relative;
+}
+.index{
+  position: absolute;
+  right: 8px;
+  bottom: 14px;
+  width: 15px;
+  line-height: 15px;
+  text-align: center;
+  background-color: #d4b98c;
+  font-size: 12px;
+  border-radius: 8px;
+  color: #fff;
+  font-family: "Microsoft YaHei", "微软雅黑", Helvetica, Arial, sans-serif;
+}
+
+.now{
+  position: absolute;
+  right: -10px;
+  top: 0;
+  font-size: 10px;
+  color: #fff;
+  background-color: red;
+  opacity: .8;
+  width: 30px;
+  text-align: center;
+  border-radius: 7px;
+  font-family: "Microsoft YaHei", "微软雅黑", Helvetica, Arial, sans-serif;
+}
+
+.level{
+  position: absolute;
+
+}
+.syw-img{
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.syw-name{
+  font-size: 15px;
+  color: #3f3f3f;
+  font-family: mhy-zh;
+}
+
+.logo{
+  margin-top: -1px;
+  background-color: #e5dcd1;
+  color: #fff;
+  font-family: 'tttgbnumber';
+  margin-right: 10px;
+  padding-left: 22px;
+  line-height: 27px;
+  border-radius: 20px;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+}

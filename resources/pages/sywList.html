@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <link rel="shortcut icon" href="#" />
+    <link rel="stylesheet" type="text/css" href="{{_res_path}}/css/sywList.css?v=1.0" />
+  </head>
+  <body>
+    <div class="container" id="container">
+      <div class="name">to: {{name}} </div>
+      {{if bag.length > 0}}
+      <div class="bag">
+        <div class="status">包裹</div>
+        {{each bag}}
+        <div class="syw">
+          <img class="syw-img" src="{{_sys_res_path}}/genshin/logo/reliquaries/{{$value.name}}.png" alt="">
+          <div class="syw-name">{{$value.secondMini}}</div>
+          <div class="index">{{$index+1}}</div>
+          {{if $value.isNow}}
+          <div class="now">当前</div>
+          {{/if}}
+        </div>
+        {{/each}}
+      </div>
+      {{/if}}
+      {{if today.length > 0}}
+      <div class="today">
+        <div class="status">今日</div>
+        {{each today}}
+        <div class="syw">
+          <img class="syw-img" src="{{_sys_res_path}}/genshin/logo/reliquaries/{{$value.name}}.png" alt="">
+          <div class="syw-name">{{$value.secondMini}}</div>
+          <div class="index">{{$index+1+todayIdxAdd}}</div>
+          {{if $value.isNow}}
+          <div class="now">当前</div>
+          {{/if}}
+        </div>
+        {{/each}}
+      </div>
+      {{/if}}
+      <div class="logo">Created By Ayaka's Fan</div>
+    </div>
+  </body>
+</html>
