@@ -170,7 +170,7 @@ export async function syw(e, {render}) {
 
     sywData.today.push(JSON.parse(JSON.stringify(thisSyw)))
     redis.set(key, JSON.stringify(sywData), {
-      EX: 10e6
+      EX: 30e6
     });
 
     // Bot.logger.mark(sywData.today);
@@ -272,7 +272,7 @@ export async function sywLevelUp(e, {render}){
     });
 
     redis.set(key, JSON.stringify(sywData), {
-      EX: 10e6
+      EX: 30e6
     });
     let msg = segment.image(`base64://${base64}`);
     let msgRes = await e.reply(msg);
@@ -312,7 +312,7 @@ export async function sywSave(e){
     });
 
     redis.set(key, JSON.stringify(sywData), {
-      EX: 10e6
+      EX: 30e6
     });
     return await e.reply([segment.at(e.user_id, name), ` 圣遗物保存成功~`]);
   }else{
@@ -339,7 +339,7 @@ export async function sywDeleteAll(e){
 
   sywData.bag = [];
   redis.set(key, JSON.stringify(sywData), {
-    EX: 10e6
+    EX: 30e6
   });
 
   // Bot.logger.mark(sywData.bag);
@@ -373,7 +373,7 @@ export async function sywDeleteOne(e){
   sywData.bag.splice(idx, 1);
 
   redis.set(key, JSON.stringify(sywData), {
-    EX: 10e6
+    EX: 30e6
   });
 
   // Bot.logger.mark(sywData.bag);
@@ -416,7 +416,7 @@ export async function sywOne(e, {render}){
   sywData.bag.map(res=>res.isNow = false);
   bagOne.isNow = true;
   redis.set(key, JSON.stringify(sywData), {
-    EX: 10e6
+    EX: 30e6
   });
 
   const base64 = await render("pages", "syw", {
@@ -466,7 +466,7 @@ async function strengthCalculate(user_id){
     strengthObj.strength = strengthObj.strength - 20;//如果是从抽取圣遗物的入口进入
     strengthObj.lastUpdatedTime = now;
     await global.redis.set(strengthKey, JSON.stringify(strengthObj), {
-      EX: 10e6
+      EX: 30e6
     });
   }
 

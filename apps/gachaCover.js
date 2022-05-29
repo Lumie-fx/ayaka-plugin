@@ -323,13 +323,20 @@ export async function gachaCover(e, {render}) {
       let keyaka = `genshin:gachayaka:${user_id}`;
       let gachayaka = await global.redis.get(keyaka);
       gachayaka = JSON.parse(gachayaka || '{"character":[],"weapon":[]}');
+
+      //todo
+      /**
+        step1.gachayaka.character存在{}中无num =>老数据 =>全部重整
+        step2.填充新数据
+       */
+
       gachayaka.character.push({
         name: tmp_name,
         element: element[tmp_name],
       })
 
       await global.redis.set(keyaka, JSON.stringify(gachayaka), {
-        EX: 10e6,
+        EX: 30e6,
       });
       continue;
     }
@@ -670,7 +677,7 @@ async function gachaWeapon(e, gachaData, upW4, upW5, render) {
 
 
       await global.redis.set(keyaka, JSON.stringify(gachayaka), {
-        EX: 10e6,
+        EX: 30e6,
       });
 
       continue;
