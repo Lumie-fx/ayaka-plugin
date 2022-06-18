@@ -5,6 +5,7 @@ import {sywMenu} from './apps/sywMenu.js'
 import {gachaCover} from './apps/gachaCover.js'
 import {characterAyaka, weaponAyaka} from './apps/gachaList.js'
 import {helpCover} from './apps/helpCover.js'
+import {tencentAI} from './apps/aiCover.js'
 import __config from './config.js';
 
 export {
@@ -19,7 +20,8 @@ export {
   gachaCover,
   characterAyaka,
   weaponAyaka,
-  helpCover
+  helpCover,
+  tencentAI
 };
 
 let rule = {
@@ -82,6 +84,11 @@ let rule = {
     reg: "^#*(命令|帮助|菜单|help|说明|功能|指令|使用说明)$",
     priority: __config.useAyakaMenu ? 10 : 9999,
     describe: "【#帮助】查看指令说明",
+  },
+  tencentAI: {
+    reg: "noCheck",
+    priority: __config.useAyakaAi ? 19990 : 99999,
+    describe: "腾讯智障ai",
   },
 };
 
