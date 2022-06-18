@@ -172,7 +172,7 @@ export async function tencentAI(e) {
     msg = res.ResponseText.replace(/小微/g, BotConfig.tencentAI.BotName);
 
     if(Math.random() > .7){
-      Bot.logger.mark(`==voice==：[${e.group.name}] 答：${msg}`);
+      Bot.logger.mark(`==voice==：答：${msg}`);
       const mp3buffer = await mstts.getTTSData(msg, 'CN-Xiaoyou', '', '', '15', '5');
       const vpath = './voice/'+e.group_id+'.mp3';
       const vpath_end = './voice/'+e.group_id+'.amr';
@@ -185,7 +185,7 @@ export async function tencentAI(e) {
         e.reply(msg);
       })
     }else{
-      Bot.logger.mark(`==word==：[${e.group.name}] 答：${msg}`);
+      Bot.logger.mark(`==word==：答：${msg}`);
       e.reply(msg);
     }
   }
