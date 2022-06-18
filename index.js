@@ -1,4 +1,5 @@
 import lodash from "lodash";
+import schedule from "node-schedule";
 import {syw,sywOne,sywLevelUp,sywSave,sywDeleteAll,sywDeleteOne} from './apps/syw.js'
 import {sywList} from './apps/sywList.js'
 import {sywMenu} from './apps/sywMenu.js'
@@ -6,6 +7,10 @@ import {gachaCover} from './apps/gachaCover.js'
 import {characterAyaka, weaponAyaka} from './apps/gachaList.js'
 import {helpCover} from './apps/helpCover.js'
 import __config from './config.js';
+
+//#test
+import {gachaStatic} from './apps/gachaStatic.js'
+
 
 export {
   syw,
@@ -19,7 +24,9 @@ export {
   gachaCover,
   characterAyaka,
   weaponAyaka,
-  helpCover
+  helpCover,
+
+  gachaStatic
 };
 
 let rule = {
@@ -83,6 +90,14 @@ let rule = {
     priority: __config.useAyakaMenu ? 10 : 9999,
     describe: "【#帮助】查看指令说明",
   },
+
+
+
+  gachaStatic: {
+    reg: "^测试今日抽卡统计$",
+    priority: 100,
+    describe: "【查看】查看群内今日抽卡5x角色列表",
+  }
 };
 
 lodash.forEach(rule, (r) => {

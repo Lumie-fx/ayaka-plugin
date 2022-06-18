@@ -338,6 +338,48 @@ export async function gachaCover(e, {render}) {
       await global.redis.set(keyaka, JSON.stringify(gachayaka), {
         EX: 30e6,
       });
+
+      let gachaKey = `genshin:gacha:key`;
+      let gachaValue = `genshin:gacha:value:${e.group_id}`;
+
+
+      let gachaKeyArr = await global.redis.get(gachaKey);
+          gachaKeyArr = JSON.parse(gachaKeyArr || '[]');
+      if(!gachaKeyArr.includes(e.group_id)){
+        gachaKeyArr.push(e.group_id);
+        await global.redis.set(gachaKey, JSON.stringify(gachaKeyArr));
+      }
+
+
+      let gachaValueArr = await global.redis.get(gachaValue);
+          gachaValueArr = JSON.parse(gachaValueArr || '[]');
+      if(gachaValueArr.length === 0 || gachaValueArr.map(res=>res.groupId).indexOf(e.group_id) === -1){
+        gachaValueArr.push({
+          groupId: e.group_id,
+          data: {}
+        });
+      }
+
+      const thisGroup = gachaValueArr.filter(res => res.groupId === e.group_id)[0];
+      if(thisGroup.data.length === 0 || !thisGroup.data[user_id+'']){
+        thisGroup.data[user_id+''] = {};
+      }
+
+      const thisUser = thisGroup.data[user_id+''];
+      if(!thisUser[tmp_name]){
+        thisUser[tmp_name] = {
+          element: element[tmp_name],
+          num: 0,
+        }
+      }else{
+        thisUser[tmp_name] = {
+          element: element[tmp_name],
+          num: thisUser[tmp_name].num ++,
+        }
+      }
+
+      await global.redis.set(gachaValue, JSON.stringify(gachaValueArr));
+
       continue;
     }
 
