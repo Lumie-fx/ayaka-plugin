@@ -2,7 +2,6 @@ import { segment } from "oicq";
 import lodash from "lodash";
 import fs from "fs";
 import fetch from 'node-fetch'
-import {parseString} from 'xml2js'
 import ffmpeg from 'fluent-ffmpeg'
 
 const _path = process.cwd();
