@@ -23,24 +23,30 @@ export async function gachaStatic(e, {render}){
   const name = e.sender.card; //qq昵称
   const group = e.group_id;
 
-
   let gachaKey = `genshin:gacha:key`;
   let gachaValue = `genshin:gacha:value:`;
 
 
+  let _key = await global.redis.get(gachaKey);
+  _key = JSON.parse(_key || '[]')
 
+  if(_key.length > 0){
+    for(let group_id of _key){
+      let _value = await global.redis.get(gachaValue+group_id);
+      _value = JSON.parse(_value || '[]')
 
+      let base64 = await render("pages", "gachaStatic", {
+        save_id: user_id,
+        name: name,
+        _value: lodash.find(_value, {groupId: group_id})
+      });
 
-  let base64 = await render("pages", "gachaStatic", {
-    save_id: user_id,
-    name: name,
-    dom: '<div>123333</div>', //{name, element, num}
-    type: 'character'
-  });
-
-  if (base64) {
-    let msg = segment.image(`base64://${base64}`);
-    let msgRes = await e.reply(msg);
+      if (base64) {
+        let msg = segment.image(`base64://${base64}`);
+        //todo reply 各个群
+        let msgRes = await e.reply(msg);
+      }
+    }
   }
 
   return true;

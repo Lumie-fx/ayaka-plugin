@@ -5,16 +5,292 @@
   <link rel="shortcut icon" href="#" />
 </head>
 <body>
-<div class="container" id="container" style="height: 500px; width: 900px">
-
-{{dom}}
-
-
-
+<div class="container" id="container">
+  <div id="strings" style="display: none">{{_value}}</div>
+  <div id="main" style="width: 600px;height:400px;"></div>
 </div>
+<script type="text/javascript" src="{{_res_path}}/js/echarts.min.js"></script>
 <script type="text/javascript">
 
+  const str = document.getElementById('strings').innerHTML;
+  const strJson = JSON.parse(str);
 
+  const userData = strJson.data;
+  const userList = Object.keys(userData);
+  const id2Name = strJson.id2Name;
+
+  const date = new Date();
+  const today = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+  const todayStamp = +new Date(today);
+
+  for(let _key in userData){
+    const _value = userData[_key]; //{琴: {element: "风", timestamp: Array(1)}, ...}
+    for(let _role in _value){
+      const timeArr = _value[_role].timestamp;
+      const todayTimeArr = timeArr.filter(res=>{   //[...]
+        return (res>=todayStamp-60*60*1000) && (res<todayStamp+60*60*1000*23)
+      })
+    }
+  }
+
+  console.log(strJson);
+
+  window.userData = userData
+
+
+  const normal5Stars = [{name: '迪卢克', element: '火'},{name: '刻晴', element: '雷'},{name: '琴', element: '风'},{name: '莫娜', element: '水'},{name: '七七', element: '冰'},];
+  const colorSet = {
+    "火": {
+      "bg": "red"
+    },
+    "水": {
+      "bg": "blue"
+    },
+    "风": {
+      "bg": "green"
+    },
+    "雷": {
+      "bg": "purple"
+    },
+    "冰": {
+      "bg": "white"
+    },
+    "岩": {
+      "bg": "yellow"
+    },
+    "草": {
+      "bg": "green"
+    }
+  };
+
+  function getSeries(labelOption){
+
+    normal5Stars.map(res=>{
+      return {
+        name: res.name,
+        stack: 'total',
+        type: 'bar',
+        label: labelOption,
+        data: ['', 1, '', '', ''],
+        itemStyle: {
+          normal: {
+            color: ()=>colorSet[res.element].bg
+          }
+        }
+      }
+    })
+
+    return [
+      {
+        name: '莫娜',
+        stack: 'total',
+        type: 'bar',
+        label: labelOption,
+        data: ['', 1, '', '', ''],
+        itemStyle: {
+          normal: {
+            color: ()=>'#cceeff'
+          }
+        }
+      },
+      {
+        name: '琴',
+        stack: 'total',
+        type: 'bar',
+        label: labelOption,
+        data: [2, 1]
+      },
+      {
+        name: '钟离',
+        stack: 'total',
+        type: 'bar',
+        label: labelOption,
+        data: [2, '', '', 1, '']
+      },
+      {
+        name: '迪卢克',
+        stack: 'total',
+        type: 'bar',
+        label: labelOption,
+        data: [ '', 1, 1, '', '']
+      }
+    ]
+  }
+
+
+  // 基于准备好的dom，初始化echarts实例
+
+  var app = {};
+
+  var chartDom = document.getElementById('main');
+  var myChart = echarts.init(chartDom);
+  var option;
+
+  const posList = [
+    'left',
+    'right',
+    'top',
+    'bottom',
+    'inside',
+    'insideTop',
+    'insideLeft',
+    'insideRight',
+    'insideBottom',
+    'insideTopLeft',
+    'insideTopRight',
+    'insideBottomLeft',
+    'insideBottomRight'
+  ];
+  app.configParameters = {
+    rotate: {
+      min: -90,
+      max: 90
+    },
+    align: {
+      options: {
+        left: 'left',
+        center: 'center',
+        right: 'right'
+      }
+    },
+    verticalAlign: {
+      options: {
+        top: 'top',
+        middle: 'middle',
+        bottom: 'bottom'
+      }
+    },
+    position: {
+      options: posList.reduce(function (map, pos) {
+        map[pos] = pos;
+        return map;
+      }, {})
+    },
+    distance: {
+      min: 0,
+      max: 100
+    }
+  };
+  app.config = {
+    rotate: 0,
+    align: 'center',
+    verticalAlign: 'middle',
+    // position: 'insideBottom',
+    // distance: 15,
+    onChange: function () {
+      const labelOption = {
+        rotate: app.config.rotate,
+        align: app.config.align,
+        verticalAlign: app.config.verticalAlign,
+        position: app.config.position,
+        distance: app.config.distance
+      };
+      myChart.setOption({
+        series: [
+          {
+            label: labelOption
+          },
+          {
+            label: labelOption
+          },
+          {
+            label: labelOption
+          },
+          {
+            label: labelOption
+          }
+        ]
+      });
+    }
+  };
+  const labelOption = {
+    show: true,
+    position: app.config.position,
+    distance: app.config.distance,
+    align: app.config.align,
+    verticalAlign: app.config.verticalAlign,
+    rotate: app.config.rotate,
+    formatter: '{c}{name|{a}}',
+    fontSize: 11,
+    rich: {
+      name: {}
+    }
+  };
+  option = {
+    animation: false,
+    // tooltip: {
+    //   trigger: 'axis',
+    //   axisPointer: {
+    //     type: 'shadow'
+    //   }
+    // },
+    // legend: {
+    //   data: ['Forest', 'Steppe', 'Desert', 'Wetland']
+    // },
+    // toolbox: {
+    //   show: false,
+    //   orient: 'vertical',
+    //   left: 'right',
+    //   top: 'center',
+    //   feature: {
+    //     mark: { show: true },
+    //     dataView: { show: true, readOnly: false },
+    //     magicType: { show: true, type: ['line', 'bar', 'stack'] },
+    //     restore: { show: true },
+    //     saveAsImage: { show: true }
+    //   }
+    // },
+    xAxis: [
+      {
+        type: 'category',
+        axisTick: { show: true },
+        data: userList   //todo ayaka 换为name
+      }
+    ],
+    yAxis: [
+      {
+        type: 'value'
+      }
+    ],
+    series: [
+      {
+        name: '莫娜',
+        stack: 'total',
+        type: 'bar',
+        label: labelOption,
+        data: ['', 1, '', '', ''],
+        itemStyle: {
+          normal: {
+            color: ()=>'#cceeff'
+          }
+        }
+      },
+      {
+        name: '琴',
+        stack: 'total',
+        type: 'bar',
+        label: labelOption,
+        data: [2, 1]
+      },
+      {
+        name: '钟离',
+        stack: 'total',
+        type: 'bar',
+        label: labelOption,
+        data: [2, '', '', 1, '']
+      },
+      {
+        name: '迪卢克',
+        stack: 'total',
+        type: 'bar',
+        label: labelOption,
+        data: [ '', 1, 1, '', '']
+      }
+    ]
+  };
+
+  // 使用刚指定的配置项和数据显示图表。
+  myChart.setOption(option);
 
 </script>
 </body>

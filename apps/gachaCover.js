@@ -4,7 +4,7 @@ import fs from "fs";
 import __config from '../config.js';
 
 //五星基础概率(0-10000)
-const chance5 = 60;
+const chance5 = 8888; //todo ayaka 60
 //四星基础概率
 const chance4 = 510;
 //角色不歪的概率（0-100）
@@ -339,46 +339,62 @@ export async function gachaCover(e, {render}) {
         EX: 30e6,
       });
 
-      let gachaKey = `genshin:gacha:key`;
-      let gachaValue = `genshin:gacha:value:${e.group_id}`;
+      if(e.group_id){
+        // user_id = '1207086066'
+        // name = '问夏'
+        let gachaKey = `genshin:gacha:key`;
+        let gachaValue = `genshin:gacha:value:${e.group_id}`;
 
 
-      let gachaKeyArr = await global.redis.get(gachaKey);
-          gachaKeyArr = JSON.parse(gachaKeyArr || '[]');
-      if(!gachaKeyArr.includes(e.group_id)){
-        gachaKeyArr.push(e.group_id);
-        await global.redis.set(gachaKey, JSON.stringify(gachaKeyArr));
-      }
+        let gachaKeyArr = await global.redis.get(gachaKey);
+        gachaKeyArr = JSON.parse(gachaKeyArr || '[]');
 
+        //群列表增加
+        if(!gachaKeyArr.includes(e.group_id)){
+          gachaKeyArr.push(e.group_id);
+          await global.redis.set(gachaKey, JSON.stringify(gachaKeyArr), {
+            EX: 30e6,
+          });
+        }
 
-      let gachaValueArr = await global.redis.get(gachaValue);
-          gachaValueArr = JSON.parse(gachaValueArr || '[]');
-      if(gachaValueArr.length === 0 || gachaValueArr.map(res=>res.groupId).indexOf(e.group_id) === -1){
-        gachaValueArr.push({
-          groupId: e.group_id,
-          data: {}
+        //群值不存在初始化
+        let gachaValueArr = await global.redis.get(gachaValue);
+
+        gachaValueArr = JSON.parse(gachaValueArr || '[]');
+        if(gachaValueArr.length === 0 || gachaValueArr.map(res=>res.groupId).indexOf(e.group_id) === -1){
+          gachaValueArr.push({
+            groupId: e.group_id,
+            data: {},
+            id2Name: {}
+          });
+        }
+
+        //选中当前群
+        const thisGroup = gachaValueArr.filter(res => res.groupId === e.group_id)[0];
+        if(thisGroup.data.length === 0 || !thisGroup.data[user_id+'']){
+          thisGroup.data[user_id+''] = {};
+        }
+
+        const thisUser = thisGroup.data[user_id+''];
+        if(!thisUser[tmp_name]){
+          thisUser[tmp_name] = {
+            element: element[tmp_name],
+            timestamp: [+new Date] //同时指代抽到时间和数量
+          };
+        }else{
+          thisUser[tmp_name] = {
+            element: element[tmp_name],
+            timestamp: [...thisUser[tmp_name].timestamp,+new Date]
+          };
+        }
+
+        if(!thisGroup.id2Name) thisGroup.id2Name = {};
+        thisGroup.id2Name[user_id] = name;
+
+        await global.redis.set(gachaValue, JSON.stringify(gachaValueArr), {
+          EX: 30e6,
         });
       }
-
-      const thisGroup = gachaValueArr.filter(res => res.groupId === e.group_id)[0];
-      if(thisGroup.data.length === 0 || !thisGroup.data[user_id+'']){
-        thisGroup.data[user_id+''] = {};
-      }
-
-      const thisUser = thisGroup.data[user_id+''];
-      if(!thisUser[tmp_name]){
-        thisUser[tmp_name] = {
-          element: element[tmp_name],
-          num: 0,
-        }
-      }else{
-        thisUser[tmp_name] = {
-          element: element[tmp_name],
-          num: thisUser[tmp_name].num ++,
-        }
-      }
-
-      await global.redis.set(gachaValue, JSON.stringify(gachaValueArr));
 
       continue;
     }
