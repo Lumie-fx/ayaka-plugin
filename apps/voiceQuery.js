@@ -49,8 +49,12 @@ export async function ayakaVoice(e, {render}) {
   if(matches.length === 0) return;
 
   const one = lodash.sample(matches);
-  const url = urlReset(one);
+  let url = urlReset(one);
 
+  if(!url) return ;
+  url = 'https://' + url;
+
+  // Bot.logger.mark(url)
   const response2 = await fetch(url);
   //res.test()，res.json()，res.blob()，res,arrayBuffer，res.buffer()
   const arrayBuffer = await response2.arrayBuffer();
@@ -67,8 +71,14 @@ export async function ayakaVoice(e, {render}) {
 }
 
 function urlReset(str){
-  const u = str.replace(/(.*)(patchwiki.*mp3)(.*)/, '$2');
-  return 'https://' + u
+  let u = '';
+  if(str.indexOf('mp3')>-1){
+    u = str.replace(/(.*)(patchwiki.*mp3)(.*)/, '$2');
+  }
+  if(str.indexOf('ogg')>-1){
+    u = str.replace(/(.*)(patchwiki.*ogg)(.*)/, '$2');
+  }
+  return u
 }
 
 function voiceChange(vpath, vpath_end){
