@@ -6,6 +6,7 @@ import {gachaCover} from './apps/gachaCover.js'
 import {characterAyaka, weaponAyaka} from './apps/gachaList.js'
 import {helpCover} from './apps/helpCover.js'
 import {tencentAI} from './apps/aiCover.js'
+import {ayakaVoice} from './apps/voiceQuery.js'
 import __config from './config.js';
 
 export {
@@ -21,7 +22,8 @@ export {
   characterAyaka,
   weaponAyaka,
   helpCover,
-  tencentAI
+  tencentAI,
+  ayakaVoice,
 };
 
 let rule = {
@@ -89,6 +91,11 @@ let rule = {
     reg: "noCheck",
     priority: __config.useAyakaAi ? 19990 : 99999,
     describe: "腾讯智障ai",
+  },
+  ayakaVoice: {
+    reg: "^#*(.*)语音$",
+    priority: 200,
+    describe: "【#帮助】查看指令说明",
   },
 };
 
