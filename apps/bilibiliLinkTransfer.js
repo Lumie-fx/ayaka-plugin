@@ -24,7 +24,8 @@ export async function bilibiliLinkTransfer(e, {render}){
   }
 
   const msg = e.msg.replace('https://www.bilibili.com/video/BV', '');
-  const url = `https://api.magecorn.com/bilicover/get-cover.php?type=bv&id=${msg.split('?')[0]}&client=2.5.1`;
+  const bv = msg.split('?')[0].replace(/[^a-zA-Z0-9]/g,'');
+  const url = `https://api.magecorn.com/bilicover/get-cover.php?type=bv&id=${bv}&client=2.5.1`;
 
   Bot.logger.mark(url);
 
