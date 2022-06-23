@@ -7,6 +7,7 @@ import {characterAyaka, weaponAyaka} from './apps/gachaList.js'
 import {helpCover} from './apps/helpCover.js'
 import {tencentAI} from './apps/aiCover.js'
 import {ayakaVoice} from './apps/voiceQuery.js'
+import {bilibiliLinkTransfer} from './apps/bilibiliLinkTransfer.js'
 import __config from './config.js';
 
 export {
@@ -24,6 +25,7 @@ export {
   helpCover,
   tencentAI,
   ayakaVoice,
+  bilibiliLinkTransfer,
 };
 
 let rule = {
@@ -97,6 +99,11 @@ let rule = {
     priority: 200,
     describe: "【#帮助】查看指令说明",
   },
+  bilibiliLinkTransfer: {
+    reg: "^https://www.bilibili.com/video/BV",
+    priority: 100,
+    describe: "bilibili链接转图片方便查看详情",
+  }
 };
 
 lodash.forEach(rule, (r) => {
