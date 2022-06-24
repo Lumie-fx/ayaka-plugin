@@ -171,19 +171,25 @@ export async function tencentAI(e) {
   } else {
     msg = res.ResponseText.replace(/小微/g, BotConfig.tencentAI.BotName);
 
-    if(Math.random() > .7){
-      Bot.logger.mark(`==voice==：答：${msg}`);
-      const mp3buffer = await mstts.getTTSData(msg, 'CN-Xiaoyou', '', '', '15', '5');
-      const vpath = './voice/'+e.group_id+'.mp3';
-      const vpath_end = './voice/'+e.group_id+'.amr';
+    if(Math.random() > .8){
+      try{
+        Bot.logger.mark(`==voice==：答：${msg}`);
+        const mp3buffer = await mstts.getTTSData(msg, 'CN-Xiaoyou', '', '', '15', '5');
+        const vpath = './voice/'+e.group_id+'.mp3';
+        const vpath_end = './voice/'+e.group_id+'.amr';
 
-      fs.writeFileSync(vpath, mp3buffer);
+        fs.writeFileSync(vpath, mp3buffer);
 
-      voiceChange(vpath, vpath_end).then(()=>{
-        e.reply(segment.record(vpath_end));
-      }).catch(()=>{
+        voiceChange(vpath, vpath_end).then(()=>{
+          e.reply(segment.record(vpath_end));
+        }).catch(()=>{
+          e.reply(msg);
+        })
+      }catch (err){
+        Bot.logger.mark(`==word==：答：${msg}`);
+        Bot.logger.mark(err);
         e.reply(msg);
-      })
+      }
     }else{
       Bot.logger.mark(`==word==：答：${msg}`);
       e.reply(msg);
