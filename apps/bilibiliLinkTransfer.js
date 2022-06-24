@@ -27,13 +27,15 @@ export async function bilibiliLinkTransfer(e, {render}){
   const bv = msg.split('?')[0].replace(/[^a-zA-Z0-9]/g,'');
   const url = `https://api.magecorn.com/bilicover/get-cover.php?type=bv&id=${bv}&client=2.5.1`;
 
-  Bot.logger.mark(url);
 
 
   const req = await fetch(url);
   const json = await req.json();
 
-  if(!json) return;
+
+  Bot.logger.mark(json);
+
+  if(json?.code !==0) return;
 
   const reqImg = await fetch(json.url);
   const img = await reqImg.buffer();

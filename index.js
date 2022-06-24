@@ -31,37 +31,37 @@ export {
 let rule = {
   syw: {
     reg: "^抽[取]*",
-    priority: 100, //优先级，越小优先度越高
+    priority: 1000, //优先级，越小优先度越高
     describe: "【抽取】获取随机圣遗物",
   },
   sywOne: {
     reg: "^查看[0-9]+$",
-    priority: 101,
+    priority: 1000,
     describe: "【查看】查看的某个圣遗物",
   },
   sywLevelUp: {
     reg: "^强化$",
-    priority: 101,
+    priority: 1000,
     describe: "【强化】圣遗物强化",
   },
   sywSave: {
     reg: "^保存$",
-    priority: 101,
+    priority: 1000,
     describe: "【保存】保存圣遗物",
   },
   sywDeleteAll: {
     reg: "^删除全部圣遗物$",
-    priority: 101,
+    priority: 1000,
     describe: "【删除】删除已存的所有圣遗物",
   },
   sywDeleteOne: {
     reg: "^删除[0-9]+$",
-    priority: 100,
+    priority: 1000,
     describe: "【删除】删除选定序号的圣遗物",
   },
   sywList: {
     reg: "^查看(圣遗物)?$",
-    priority: 100,
+    priority: 1000,
     describe: "【查看】查看保存的圣遗物",
   },
   sywMenu: {

@@ -5,32 +5,32 @@ import fs from "fs";
 export const rule = {
   syw: {
     reg: "^抽[取]*",
-    priority: 100,
+    priority: 1000,
     describe: "【抽取】获取随机圣遗物",
   },
   sywOne: {
     reg: "^查看[0-9]+$",
-    priority: 101,
+    priority: 1000,
     describe: "【查看】查看的某个圣遗物",
   },
   sywLevelUp: {
     reg: "^强化$", //匹配的正则
-    priority: 101, //优先级，越小优先度越高
+    priority: 1000, //优先级，越小优先度越高
     describe: "【强化】圣遗物强化", //描述说明
   },
   sywSave: {
     reg: "^保存$", //匹配的正则
-    priority: 101, //优先级，越小优先度越高
+    priority: 1000, //优先级，越小优先度越高
     describe: "【保存】保存圣遗物", //描述说明
   },
   sywDeleteAll: {
     reg: "^删除全部圣遗物$",
-    priority: 101,
+    priority: 1000,
     describe: "【删除】删除已存的所有圣遗物",
   },
   sywDeleteOne: {
     reg: "^删除[0-9]+$",
-    priority: 100,
+    priority: 1000,
     describe: "【删除】删除选定序号的圣遗物",
   }
 };
@@ -76,6 +76,8 @@ export async function syw(e, {render}) {
   let user_id = e.user_id; //qq
   let name = e.sender.card; //?
   let group_id = e.group_id; //?群号
+
+  if(e.msg.length > 5) return;
   //e.msg 发的关键指令
   // Bot.logger.mark(e.msg);
   const _syw = e.msg.replace('抽取','').replace('抽','').replace('套',''); //少女
