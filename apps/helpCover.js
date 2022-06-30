@@ -58,9 +58,9 @@ async function getHelp(render) {
     helpMd5 = JsonMd5;
     helpImg = await render("pages", "helpCover", {
       helpData,
-      hd_bg: "夜兰",
+      hd_bg: "久岐忍",
       version: packageJson.version,
-      bgVer: 'ver2'
+      bgVer: 'ver3'
     });
   }
 
