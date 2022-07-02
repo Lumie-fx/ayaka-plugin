@@ -3,6 +3,7 @@ import lodash from "lodash";
 import fs from "fs";
 import fetch from 'node-fetch'
 import ffmpeg from 'fluent-ffmpeg'
+import __config from '../config.js'
 
 const _path = process.cwd();
 const {roleId} = await import(`file://${_path}/config/genshin/roleId.js`);
@@ -25,6 +26,8 @@ export async function ayakaVoice(e, {render}) {
   if (e.at && !e.atBot) {
     return;
   }
+
+  if(!__config.useAyakaCharacterVoice) return;
 
   const msg = e.msg.replace('语音', '');
 
@@ -63,9 +66,8 @@ export async function ayakaVoice(e, {render}) {
 
   fs.writeFileSync(vpath, Buffer.from(arrayBuffer));
 
-  voiceChange(vpath, vpath_end).then(()=>{
-    e.reply(segment.record(vpath_end));
-  })
+  await voiceChange(vpath, vpath_end);
+  e.reply(segment.record(vpath_end));
 
   return true;
 }
@@ -81,7 +83,7 @@ function urlReset(str){
   return u
 }
 
-function voiceChange(vpath, vpath_end){
+async function voiceChange(vpath, vpath_end){
   return new Promise((resolve ,reject) => {
     ffmpeg(vpath).format("avi").on('error', (err) => {
       // console.log('An error occurred: ' + err.message);
