@@ -60,7 +60,7 @@ async function getHelp(render) {
       helpData,
       hd_bg: "久岐忍",
       version: packageJson.version,
-      bgVer: 'ver3'
+      bgVer: 'ver4'
     });
   }
 
