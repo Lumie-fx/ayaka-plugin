@@ -8,9 +8,11 @@ import {characterAyaka, weaponAyaka} from './apps/gachaList.js'
 import {helpCover} from './apps/helpCover.js'
 import __config from './config.js';
 
-//#test
 import {gachaStatic} from './apps/gachaStatic.js'
 
+if(__config.useAyakaGacha && __config.useAyakaGachaSchedule){
+  schedule.scheduleJob('0 0 23 * * *', gachaStatic);
+}
 
 export {
   syw,
@@ -26,7 +28,7 @@ export {
   weaponAyaka,
   helpCover,
 
-  gachaStatic
+  // gachaStatic
 };
 
 let rule = {
@@ -91,13 +93,11 @@ let rule = {
     describe: "【#帮助】查看指令说明",
   },
 
-
-
-  gachaStatic: {
-    reg: "^测试今日抽卡统计$",
-    priority: 100,
-    describe: "【查看】查看群内今日抽卡5x角色列表",
-  }
+  // gachaStatic: {
+  //   reg: "^今日抽卡统计$",
+  //   priority: 100,
+  //   describe: "【查看】查看群内今日抽卡5x角色列表",
+  // }
 };
 
 lodash.forEach(rule, (r) => {

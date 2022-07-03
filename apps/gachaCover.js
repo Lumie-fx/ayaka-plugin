@@ -4,7 +4,7 @@ import fs from "fs";
 import __config from '../config.js';
 
 //五星基础概率(0-10000)
-const chance5 = 8888; //todo ayaka 60
+const chance5 = 60;
 //四星基础概率
 const chance4 = 510;
 //角色不歪的概率（0-100）
@@ -340,8 +340,8 @@ export async function gachaCover(e, {render}) {
       });
 
       if(e.group_id){
-        // user_id = '1207086066'
-        // name = '问夏'
+        // user_id = '1387771'
+        // name = '测试'
         let gachaKey = `genshin:gacha:key`;
         let gachaValue = `genshin:gacha:value:${e.group_id}`;
 
