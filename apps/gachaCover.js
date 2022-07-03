@@ -338,6 +338,64 @@ export async function gachaCover(e, {render}) {
       await global.redis.set(keyaka, JSON.stringify(gachayaka), {
         EX: 30e6,
       });
+
+      if(e.group_id){
+        // user_id = '1387771'
+        // name = '测试'
+        let gachaKey = `genshin:gacha:key`;
+        let gachaValue = `genshin:gacha:value:${e.group_id}`;
+
+
+        let gachaKeyArr = await global.redis.get(gachaKey);
+        gachaKeyArr = JSON.parse(gachaKeyArr || '[]');
+
+        //群列表增加
+        if(!gachaKeyArr.includes(e.group_id)){
+          gachaKeyArr.push(e.group_id);
+          await global.redis.set(gachaKey, JSON.stringify(gachaKeyArr), {
+            EX: 30e6,
+          });
+        }
+
+        //群值不存在初始化
+        let gachaValueArr = await global.redis.get(gachaValue);
+
+        gachaValueArr = JSON.parse(gachaValueArr || '[]');
+        if(gachaValueArr.length === 0 || gachaValueArr.map(res=>res.groupId).indexOf(e.group_id) === -1){
+          gachaValueArr.push({
+            groupId: e.group_id,
+            data: {},
+            id2Name: {}
+          });
+        }
+
+        //选中当前群
+        const thisGroup = gachaValueArr.filter(res => res.groupId === e.group_id)[0];
+        if(thisGroup.data.length === 0 || !thisGroup.data[user_id+'']){
+          thisGroup.data[user_id+''] = {};
+        }
+
+        const thisUser = thisGroup.data[user_id+''];
+        if(!thisUser[tmp_name]){
+          thisUser[tmp_name] = {
+            element: element[tmp_name],
+            timestamp: [+new Date] //同时指代抽到时间和数量
+          };
+        }else{
+          thisUser[tmp_name] = {
+            element: element[tmp_name],
+            timestamp: [...thisUser[tmp_name].timestamp,+new Date]
+          };
+        }
+
+        if(!thisGroup.id2Name) thisGroup.id2Name = {};
+        thisGroup.id2Name[user_id] = name;
+
+        await global.redis.set(gachaValue, JSON.stringify(gachaValueArr), {
+          EX: 30e6,
+        });
+      }
+
       continue;
     }
 

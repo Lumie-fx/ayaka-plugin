@@ -1,4 +1,5 @@
 import lodash from "lodash";
+import schedule from "node-schedule";
 import {syw,sywOne,sywLevelUp,sywSave,sywDeleteAll,sywDeleteOne} from './apps/syw.js'
 import {sywList} from './apps/sywList.js'
 import {sywMenu} from './apps/sywMenu.js'
@@ -9,6 +10,12 @@ import {tencentAI} from './apps/aiCover.js'
 import {ayakaVoice} from './apps/voiceQuery.js'
 import {bilibiliLinkTransfer} from './apps/bilibiliLinkTransfer.js'
 import __config from './config.js';
+
+import {gachaStatic} from './apps/gachaStatic.js'
+
+if(__config.useAyakaGacha && __config.useAyakaGachaSchedule){
+  schedule.scheduleJob('0 0 23 * * *', gachaStatic);
+}
 
 export {
   syw,

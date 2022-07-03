@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <link rel="shortcut icon" href="#" />
+</head>
+<body>
+<div class="container" id="container">
+  <div id="strings" style="display: none">{{_value}}</div>
+  <div id="paths" style="display: none">{{_sys_res_path}}/genshin/logo/side/</div><!--xxx.png-->
+  <div id="bg" style="display: none">{{_sys_res_path}}/genshin/logo/bg/</div><!--xxx2.png-->
+  <div id="main" style="height:400px;"></div>
+</div>
+<script type="text/javascript" src="{{_res_path}}/js/echarts.min.js"></script>
+<script type="text/javascript">
+
+  const str = document.getElementById('strings').innerHTML;
+  const imgPath = document.getElementById('paths').innerHTML;
+  const bg = document.getElementById('bg').innerHTML;
+  const strJson = JSON.parse(str);
+
+  const userData = strJson.data;
+  const id2Name = strJson.id2Name;
+
+  const date = new Date();
+  const today = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+  const todayStamp = +new Date(today);
+
+  const _newObj = {};
+  const allCharacter = [{name: '琴', element: '风'},{name: '迪卢克', element: '火'},
+    {name: '刻晴', element: '雷'},{name: '莫娜', element: '水'},{name: '七七', element: '冰'},];
+  const winner = [];
+  let bgUrl = '';
+
+  for(let _key in userData){
+    const _value = userData[_key]; //{琴: {element: "风", timestamp: Array(1)}, ...}
+
+    const _newUser = {};
+
+    for(let _role in _value){
+
+      let flag = false;
+      allCharacter.forEach(res=>{
+        if(res.name === _role) flag = true;
+      })
+
+      if(!flag){
+        bgUrl = bg+ _role+ '2.png';
+        allCharacter.unshift({
+          name: _role,
+          element: _value[_role].element,
+        });
+      }
+
+      const timeArr = _value[_role].timestamp;
+      const todayTimeArr = timeArr.filter(res=>{   //[...]
+        return (res>=todayStamp-60*60*1000) && (res<todayStamp+60*60*1000*23)
+      })
+      _newUser[_role] = {..._value[_role], timestamp: todayTimeArr}
+    }
+
+    let oneLen = 0;
+    for(let u in _newUser){
+      oneLen += _newUser[u].timestamp.length;
+    }
+    if(oneLen === 0) continue;
+
+    winner.push({
+      name: _key,
+      amount: oneLen,
+    })
+    _newObj[_key] = _newUser;
+  }
+
+
+  const _winner = winner.sort((a,b)=>b.amount-a.amount).slice(0,5)
+  const userList = _winner.map(res=>res.name);
+  const width = userList.length * 180 + 'px';
+
+  const _bgH = 270;
+  const _bgW = userList.length * 180 - 100;
+  const bgw = 768;
+  const bgh = 480;
+  let newW = 0,newH = 0;
+  if(_winner.length>2){
+    newW = _bgH * bgw / bgh
+    newH = _bgH;
+  }
+
+  const winnerPoint = [];
+  const stepWinner = _winner.map(res=>{
+    const oneObj = _newObj[res.name];
+    const seriesed = [];
+    const step = [];
+    const stepRole = [];
+    let len = 0;
+    allCharacter.map(series=>{
+      if(oneObj?.[series.name]?.timestamp.length>0){
+        seriesed.push(oneObj[series.name]);
+        len += oneObj[series.name].timestamp.length
+        step.push(len);
+        stepRole.push(series.name);
+      }
+    })
+    winnerPoint.push(seriesed)
+    return {
+      step,
+      stepRole
+    }
+  })
+
+  document.getElementById('container').style.width = width;
+  document.getElementById('main').style.width = width;
+
+  // console.log(stepWinner); //
+  // console.log(_newObj); //过滤完的
+  // console.log(_winner); //前五
+  // console.log(userData);//过滤前的
+  // console.log(allCharacter);//用户列表
+  // console.log(id2Name);//所有角色
+  //
+  // window.userData = userData
+
+  const colorSet = {
+    "火": {
+      "bg": ["#cc0000","#ff8888"]
+    },
+    "水": {
+      "bg": ["#005BEA","#00C6FB"]
+    },
+    "风": {
+      "bg": ["#00ff99","#aaffee"]
+    },
+    "雷": {
+      "bg": ["#9932cc","#d28eff"]
+    },
+    "冰": {
+      "bg": ["#b0e0e6","#e0ffff"]
+    },
+    "岩": {
+      "bg": ["#ffbb00","#ffdd55"]
+    },
+    "草": {
+      "bg": ["#00dd00","#adff2f"]
+    }
+  };
+
+  //柱状图颜色渐变
+  // new echarts.graphic.LinearGradient(
+  //   //前四个参数用于配置渐变色的起止位置，这四个参数依次对应 右下左上 四个方位。也就是从右边开始顺时针方向。
+  //   //通过修改前4个参数，可以实现不同的渐变方向
+  //   /*第五个参数则是一个数组，用于配置颜色的渐变过程。
+  //     每项为一个对象，包含offset和color两个参数
+  //   */
+  //   0, 0, 0, 1, [{//代表渐变色从正上方开始
+  //     offset: 0, //offset范围是0~1，用于表示位置，0是指0%处的颜色
+  //     color: '#005BEA'
+  //   }, //柱图渐变色
+  //     {
+  //       offset: 1, //指100%处的颜色
+  //       color: '#00C6FB'
+  //     }
+  //   ]
+  // ),
+
+  function getSeries(labelOption){
+
+    const stepData = [];
+    stepWinner.forEach((res,idx)=>{
+      res.step.forEach((_step, _stepIdx)=>{
+        stepData.push({
+          coord: [idx, _step],//需要展示图片的柱型索引，y轴的value
+          symbol: 'image://'+imgPath+ res.stepRole[_stepIdx] +'.png',  // 自定义图片作为标注展示
+        })
+      })
+    })
+
+    return allCharacter.map(res=>{
+
+      const name = res.name;
+      const data = [];
+
+      userList.forEach(_user=>{
+        data.push(_newObj?.[_user]?.[name]?.timestamp.length || '');
+      });
+
+      return {
+        name,
+        stack: 'total',
+        type: 'bar',
+        barWidth: 80,
+        label: labelOption,
+        data,
+        itemStyle: {
+          normal: {
+            color: ()=>{
+              const colorList = colorSet[res.element].bg;
+              return new echarts.graphic.LinearGradient(
+                0, 0, 1, 0, [{
+                  offset: 0,
+                  color: colorList[0]
+                },{
+                  offset: 1,
+                  color: colorList[1]
+                }]
+              )
+            },
+            barBorderRadius: 3,
+          }
+        },
+        markPoint: {
+          label: {
+            // color: '#FFF',  // 文字颜色
+            // padding: [0, 0, 5, 0], // 可用padding调整图片内文字距离
+            show: false,
+            // formatter: '10:30'  // 自定义文字内容
+          },
+
+          data: stepData,
+          symbolSize: [24, 24],  // 调整图片的长宽
+          symbolOffset: [28, 8]  // 调整标注图片的位移方向 大小
+        },
+      }
+    })
+  }
+
+  //初始化echarts实例
+
+  var app = {};
+
+  var chartDom = document.getElementById('main');
+  var myChart = echarts.init(chartDom);
+  var option;
+
+  const posList = [
+    'left',
+    'right',
+    'top',
+    'bottom',
+    'inside',
+    'insideTop',
+    'insideLeft',
+    'insideRight',
+    'insideBottom',
+    'insideTopLeft',
+    'insideTopRight',
+    'insideBottomLeft',
+    'insideBottomRight'
+  ];
+  app.configParameters = {
+    rotate: {
+      min: -90,
+      max: 90
+    },
+    align: {
+      options: {
+        left: 'left',
+        center: 'center',
+        right: 'right'
+      }
+    },
+    verticalAlign: {
+      options: {
+        top: 'top',
+        middle: 'middle',
+        bottom: 'bottom'
+      }
+    },
+    position: {
+      options: posList.reduce(function (map, pos) {
+        map[pos] = pos;
+        return map;
+      }, {})
+    },
+    distance: {
+      min: 0,
+      max: 100
+    }
+  };
+  app.config = {
+    rotate: 0,
+    align: 'center',
+    verticalAlign: 'middle',
+    // position: 'insideBottom',
+    // distance: 15,
+    onChange: function () {
+      const labelOption = {
+        rotate: app.config.rotate,
+        align: app.config.align,
+        verticalAlign: app.config.verticalAlign,
+        position: app.config.position,
+        distance: app.config.distance
+      };
+      myChart.setOption({
+        series: [
+          {label: labelOption},
+          {label: labelOption},
+          {label: labelOption},
+          {label: labelOption}
+        ]
+      });
+    }
+  };
+  const labelOption = {
+    show: true,
+    position: app.config.position,
+    distance: app.config.distance,
+    align: app.config.align,
+    verticalAlign: app.config.verticalAlign,
+    rotate: app.config.rotate,
+    formatter: '{num|({c})}{name|{a}}',
+    fontSize: 12,
+    rich: {
+      num: {
+        color: '#555'
+      },
+      name: {
+        color: '#555'
+      },
+      img: {
+        color: '#555'
+      }
+    }
+  };
+  option = {
+    title: {
+      text: today+' 群内抽卡小记',
+      x: 'center',
+      y: 20,
+      textStyle: {
+        color: '#777'
+      }
+
+    },
+    animation: false,
+    graphic: [
+      {
+        type: 'image', // 图形元素类型
+        id: 'logo', // 更新或删除图形元素时指定更新哪个图形元素，如果不需要用可以忽略。
+        right: 54, // 根据父元素进行定位 （居中）
+        bottom: 70, // 根据父元素进行定位   （0%）, 如果bottom的值是 0，也可以删除该bottom属性值。
+        z: 0,  // 层叠
+        bounding: 'all', // 决定此图形元素在定位时，对自身的包围盒计算方式
+        style: {
+          image: bgUrl, // 这里一定要注意、注意，必须是https开头的图片路径地址
+          width: newW,
+          height: newH,
+          opacity: .3,
+        }
+      }
+    ],
+    // tooltip: {
+    //   trigger: 'axis',
+    //   axisPointer: {
+    //     type: 'shadow'
+    //   }
+    // },
+    // legend: {
+    //   data: ['Forest', 'Steppe', 'Desert', 'Wetland']
+    // },
+    // toolbox: {
+    //   show: false,
+    //   orient: 'vertical',
+    //   left: 'right',
+    //   top: 'center',
+    //   feature: {
+    //     mark: { show: true },
+    //     dataView: { show: true, readOnly: false },
+    //     magicType: { show: true, type: ['line', 'bar', 'stack'] },
+    //     restore: { show: true },
+    //     saveAsImage: { show: true }
+    //   }
+    // },
+    xAxis: [
+      {
+        type: 'category',
+        axisTick: { show: true },
+        data: userList.map(res=>id2Name[res])
+      }
+    ],
+    yAxis: [
+      {
+        type: 'value'
+      }
+    ],
+    series: getSeries(labelOption)
+  };
+  // 使用刚指定的配置项和数据显示图表。
+  myChart.setOption(option);
+
+</script>
+</body>
+</html>
+
