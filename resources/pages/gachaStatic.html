@@ -75,7 +75,7 @@
 
   const _winner = winner.sort((a,b)=>b.amount-a.amount).slice(0,5)
   const userList = _winner.map(res=>res.name);
-  const width = userList.length * 180 + 'px';
+  const width = (userList.length <2 ? 300 : userList.length * 180) + 'px';
 
   const _bgH = 270;
   const _bgW = userList.length * 180 - 100;
@@ -380,6 +380,8 @@
     ],
     yAxis: [
       {
+        // minInterval: 1,
+        // min: 2,
         type: 'value'
       }
     ],
