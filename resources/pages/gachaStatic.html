@@ -375,7 +375,28 @@
       {
         type: 'category',
         axisTick: { show: true },
-        data: userList.map(res=>id2Name[res])
+        data: userList.map(res=>id2Name[res]),
+        axisLabel: {
+          interval: 0,
+          formatter:function(value){
+            const _value = value;
+            const nv = value.replace(/[\u4e00-\u9fa5]/g,'');
+            let showValue = '';
+            if((_value.length - nv.length)*2 - nv.length > 19){
+              let len = 0, _name = '';
+              _value.split('').forEach(res=>{
+                if(len < 19){
+                  _name += res;
+                  len += /[\u4e00-\u9fa5]/.test(res) ? 2 : 1;
+                }
+              })
+              showValue = _name + '...';
+            }else{
+              showValue = _value;
+            }
+            return showValue;
+          }
+        },
       }
     ],
     yAxis: [
