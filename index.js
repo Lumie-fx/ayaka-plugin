@@ -9,6 +9,7 @@ import {helpCover} from './apps/helpCover.js'
 import {tencentAI} from './apps/aiCover.js'
 import {ayakaVoice} from './apps/voiceQuery.js'
 import {bilibiliLinkTransfer} from './apps/bilibiliLinkTransfer.js'
+import {pretendAdd,pretendSearch,pretendSet,pretend} from './apps/pretend.js'
 import __config from './config.js';
 
 import {gachaStatic} from './apps/gachaStatic.js'
@@ -33,6 +34,10 @@ export {
   tencentAI,
   ayakaVoice,
   bilibiliLinkTransfer,
+  pretendAdd,
+  pretendSearch,
+  pretendSet,
+  pretend,
 };
 
 let rule = {
@@ -110,7 +115,33 @@ let rule = {
     reg: "^https://www.bilibili.com/video/BV",
     priority: 100,
     describe: "bilibili链接转图片方便查看详情",
-  }
+  },
+
+  pretendAdd: {
+    reg: "^伪装添加群号[0-9]+$",
+    priority: 200,
+    describe: "伪装添加群号",
+  },
+  pretendSearch: {
+    reg: "^伪装查看群号合集$",
+    priority: 200,
+    describe: "伪装查看群号合集",
+  },
+  pretendDel: {
+    reg: "^伪装删除群号[0-9]+$",
+    priority: 200,
+    describe: "伪装删除群号",
+  },
+  pretendSet: {
+    reg: "^伪装设置群号[0-9]+$",
+    priority: 200,
+    describe: "伪装设置群号",
+  },
+  pretend: {
+    reg: ".*",
+    priority: 10000,
+    describe: "发言",
+  },
 };
 
 lodash.forEach(rule, (r) => {
