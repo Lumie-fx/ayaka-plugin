@@ -108,8 +108,10 @@ export async function pretend(e, {render}) {
     return;
   }
 
-  if(e.msg.indexOf('伪装') > -1){
-    return;
+  if(e.message[0].type === 'text'){
+    if(e.message[0].text.indexOf('伪装') > -1){
+      return;
+    }
   }
 
   let key = `ayaka:pretend:group_id_now`;
