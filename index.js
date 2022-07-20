@@ -9,7 +9,7 @@ import {helpCover} from './apps/helpCover.js'
 import {tencentAI} from './apps/aiCover.js'
 import {ayakaVoice} from './apps/voiceQuery.js'
 import {bilibiliLinkTransfer} from './apps/bilibiliLinkTransfer.js'
-import {pretendAdd,pretendSearch,pretendSet,pretend} from './apps/pretend.js'
+import {pretendSearch,pretendSet,pretend} from './apps/pretend.js'
 import __config from './config.js';
 
 import {gachaStatic} from './apps/gachaStatic.js'
@@ -34,7 +34,6 @@ export {
   tencentAI,
   ayakaVoice,
   bilibiliLinkTransfer,
-  pretendAdd,
   pretendSearch,
   pretendSet,
   pretend,
