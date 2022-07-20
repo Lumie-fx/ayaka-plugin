@@ -11,18 +11,13 @@ if (!fs.existsSync(`.${__path}`)) {
 
 export const rule = {
   //帮助说明
-  pretendAdd: {
-    reg: "^伪装添加群号[0-9]+$",
-    priority: 200,
-    describe: "伪装添加群号",
-  },
   pretendSearch: {
-    reg: "^伪装查看群号合集$",
+    reg: "^伪装查看群号$",
     priority: 200,
-    describe: "伪装查看群号合集",
+    describe: "伪装查看群号",
   },
   pretendDel: {
-    reg: "^伪装删除群号[0-9]+$",
+    reg: "^伪装删除$",
     priority: 200,
     describe: "伪装删除群号",
   },
@@ -39,30 +34,6 @@ export const rule = {
 };
 
 
-export async function pretendAdd(e, {render}) {
-  if (e.at && !e.atBot) {
-    return;
-  }
-  if(!e.isMaster || e.isGroup){
-    return;
-  }
-
-  let key = `ayaka:pretend:group_id`;
-  let groupData = await global.redis.get(key);
-  if(!groupData) groupData = '';
-
-  const newGroupId = e.msg.replace('伪装添加群号', '');
-  groupData += newGroupId + ',';
-
-  await global.redis.set(key, groupData, {
-    EX: 30e6,
-  });
-
-  e.reply(`群号: ${newGroupId} 添加成功`);
-
-  return true;
-}
-
 
 export async function pretendSearch(e, {render}) {
   if (e.at && !e.atBot) {
@@ -72,15 +43,11 @@ export async function pretendSearch(e, {render}) {
     return;
   }
 
-  let key = `ayaka:pretend:group_id`;
-  let groupData = await global.redis.get(key);
-  if(!groupData) groupData = '无';
-
   let key2 = `ayaka:pretend:group_id_now`;
   let groupData2 = await global.redis.get(key2);
   if(!groupData2) groupData2 = '无';
 
-  e.reply(`当前保存的群号: ${groupData}, 当前设置的群号: ${groupData2}`);
+  e.reply(`当前设置的群号: ${groupData2}`);
 
   return true;
 }
@@ -94,7 +61,13 @@ export async function pretendDel(e, {render}) {
     return;
   }
 
-//e.msg
+  let key = `ayaka:pretend:group_id_now`;
+
+  await global.redis.set(key, '', {
+    EX: 30e6,
+  });
+
+  e.reply(`群号删除设置成功`);
 
   return true;
 }
@@ -109,7 +82,7 @@ export async function pretendSet(e, {render}) {
 
   let key = `ayaka:pretend:group_id_now`;
 
-  const newGroupId = e.msg.replace('设置群号', '');
+  const newGroupId = e.msg.replace('伪装设置群号', '');
 
   await global.redis.set(key, newGroupId, {
     EX: 30e6,
@@ -132,6 +105,10 @@ export async function pretend(e, {render}) {
   }
 
   if(!e.isMaster || !e.isPrivate){
+    return;
+  }
+
+  if(e.msg.indexOf('伪装') > -1){
     return;
   }
 

@@ -117,18 +117,13 @@ let rule = {
     describe: "bilibili链接转图片方便查看详情",
   },
 
-  pretendAdd: {
-    reg: "^伪装添加群号[0-9]+$",
-    priority: 200,
-    describe: "伪装添加群号",
-  },
   pretendSearch: {
-    reg: "^伪装查看群号合集$",
+    reg: "^伪装查看群号$",
     priority: 200,
     describe: "伪装查看群号合集",
   },
   pretendDel: {
-    reg: "^伪装删除群号[0-9]+$",
+    reg: "^伪装删除$",
     priority: 200,
     describe: "伪装删除群号",
   },
