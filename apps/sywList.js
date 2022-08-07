@@ -5,16 +5,16 @@ import fs from "fs";
 
 export const rule = {
   sywList: {
-    reg: "^查看(圣遗物)?$",
+    reg: "^圣遗物仓库$",
     priority: 100,
     describe: "【查看】查看保存的圣遗物",
   }
 };
 
 //创建html文件夹
-if (!fs.existsSync(`./data/html/genshin/sywList/`)) {
-  fs.mkdirSync(`./data/html/genshin/sywList/`);
-}
+// if (!fs.existsSync(`./data/html/genshin/sywList/`)) {
+//   fs.mkdirSync(`./data/html/genshin/sywList/`);
+// }
 
 let sywConfig = {};
 
@@ -26,6 +26,7 @@ export async function init() {
 
 //查看
 export async function sywList(e, {render}){
+  console.log("-----------------------")
   if (e.img || e.hasReply) {
     return;
   }
@@ -43,6 +44,7 @@ export async function sywList(e, {render}){
 
   if(!sywData.bag) sywData.bag = [];
   if(!sywData.today) sywData.today = [];
+  let bagIdList = [];
 
   sywData.bag.map(res=>{
     let _list = '';
@@ -51,6 +53,7 @@ export async function sywList(e, {render}){
       if(mini) _list+=mini+'/';
     });
     res.secondMini = _list ? _list.slice(0,-1) : '';
+    bagIdList.push(res.id)
   });
 
   sywData.today.map(res=>{
@@ -61,7 +64,7 @@ export async function sywList(e, {render}){
     });
     res.secondMini = _list ? _list.slice(0,-1) : '';
   });
-
+  sywData.today = sywData.today.filter(_es=> bagIdList.indexOf(_es.id)==-1)
   let base64 = await render("pages", "sywList", {
     save_id: user_id,
     name: name,
@@ -71,7 +74,7 @@ export async function sywList(e, {render}){
   });
 
   if (base64) {
-    let msg = segment.image(`base64://${base64}`);
+    let msg = segment.image(`base64://${base64.file.toString("base64")}`);
     let msgRes = await e.reply(msg);
   }
 

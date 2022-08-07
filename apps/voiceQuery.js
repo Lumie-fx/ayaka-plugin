@@ -6,7 +6,7 @@ import ffmpeg from 'fluent-ffmpeg'
 import __config from '../config.js'
 
 const _path = process.cwd();
-const {roleId} = await import(`file://${_path}/config/genshin/roleId.js`);
+const {roleId} = await import(`file://${_path}/plugins/ayaka-plugin/data/roleId.js`);
 
 if (!fs.existsSync(`./voice/`)) {
   fs.mkdirSync(`./voice/`);

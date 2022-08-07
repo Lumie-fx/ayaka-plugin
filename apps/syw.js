@@ -2,6 +2,7 @@ import { segment } from "oicq";
 import lodash from "lodash";
 import fs from "fs";
 
+
 export const rule = {
   syw: {
     reg: "^抽[取]*",
@@ -37,9 +38,9 @@ export const rule = {
 
 
 //创建html文件夹
-if (!fs.existsSync(`./data/html/genshin/syw/`)) {
-  fs.mkdirSync(`./data/html/genshin/syw/`);
-}
+// if (!fs.existsSync(`./data/html/genshin/syw/`)) {
+//   fs.mkdirSync(`./data/html/genshin/syw/`);
+// }
 
 
 let sywConfig = {};
@@ -177,7 +178,7 @@ export async function syw(e, {render}) {
 
     // Bot.logger.mark(sywData.today);
 
-    let msg = segment.image(`base64://${base64}`);
+    let msg = segment.image(`base64://${base64.file.toString('base64')}`);
     let msgRes = await e.reply(msg);
   }
 
@@ -276,7 +277,7 @@ export async function sywLevelUp(e, {render}){
     redis.set(key, JSON.stringify(sywData), {
       EX: 30e6
     });
-    let msg = segment.image(`base64://${base64}`);
+    let msg = segment.image(`base64://${base64.file.toString("base64")}`);
     let msgRes = await e.reply(msg);
   }
   return true;
@@ -306,7 +307,7 @@ export async function sywSave(e){
     })[0]; //今日最新的/选中的圣遗物   今日now的圣遗物选出, 并把now置为false
     if(!sywData.bag) sywData.bag = [];
     if(sywData.bag.some(res=>res.id===one.id)) return await e.reply([segment.at(e.user_id, name), ` 这个圣遗物你已经保存过啦！`]);
-    if(sywData.bag.length>8) return await e.reply([segment.at(e.user_id, name), ` 当前最多只能保存8个圣遗物哦~`]);
+    if(sywData.bag.length>30) return await e.reply([segment.at(e.user_id, name), ` 当前最多只能保存30个圣遗物哦~`]);
 
     sywData.bag.push({
       ...one,
@@ -348,7 +349,7 @@ export async function sywDeleteAll(e){
   return await e.reply([segment.at(e.user_id, name), ` 已删除全部圣遗物~`]);
 }
 
-//删除全部圣遗物
+//删除一个圣遗物
 export async function sywDeleteOne(e){
   if (e.img || e.hasReply) {
     return;
@@ -429,7 +430,7 @@ export async function sywOne(e, {render}){
   });
 
   if (base64) {
-    let msg = segment.image(`base64://${base64}`);
+    let msg = segment.image(`base64://${base64.file.toString("base64")}`);
     let msgRes = await e.reply(msg);
   }
   return true;

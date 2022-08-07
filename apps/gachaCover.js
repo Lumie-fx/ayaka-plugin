@@ -2,6 +2,8 @@ import { segment } from "oicq";
 import lodash from "lodash";
 import fs from "fs";
 import __config from '../config.js';
+import gsCfg from '../../genshin/model/gsCfg.js'
+import GachaData from '../../genshin/model/gachaData.js'
 
 //五星基础概率(0-10000)
 const chance5 = 60;
@@ -15,7 +17,7 @@ const chanceW5 = 70;
 //四星武器基础概率
 const chanceW4 = 600;
 
-const _pth = process.cwd();
+const _pth = process.cwd().replace(/\\/g,'/');
 
 export const rule = {
   gachaCover: {
@@ -26,9 +28,9 @@ export const rule = {
 };
 
 //创建html文件夹
-if (!fs.existsSync(`./data/html/genshin/gachaCover/`)) {
-  fs.mkdirSync(`./data/html/genshin/gachaCover/`);
-}
+// if (!fs.existsSync(`./data/html/genshin/gachaCover/`)) {
+//   fs.mkdirSync(`./data/html/genshin/gachaCover/`);
+// }
 
 //五星角色
 let role5 = ["刻晴", "莫娜", "七七", "迪卢克", "琴"];
@@ -105,10 +107,10 @@ let genshin = {};
 await init();
 
 export async function init(isUpdate) {
-  gachaConfig = JSON.parse(fs.readFileSync(_pth+"/config/genshin/gacha.json", "utf8"));
-  element = JSON.parse(fs.readFileSync(_pth+"/config/genshin/element.json", "utf8"));
+  gachaConfig = JSON.parse(fs.readFileSync(`${_pth}/plugins/ayaka-plugin/data/gacha.json`, "utf8"));
+  element = JSON.parse(fs.readFileSync(`${_pth}/plugins/ayaka-plugin/data/element.json`, "utf8"));
   let version = isUpdate ? new Date().getTime() : 0;
-  genshin = await import(`../../../config/genshin/roleId.js?version=${version}`);
+  genshin = await import(`../data/roleId.js?version=${version}`);
   count = {};
 }
 
@@ -134,9 +136,10 @@ export async function gachaCover(e, {render}) {
   }
 
   //每日抽卡次数
-  let dayNum = e.groupConfig.gachaDayNum || 1;
+  let gachaDayNum = gsCfg.getGachaSet(e.group_id).count
+  let LimitSeparate = gsCfg.getGachaSet(e.group_id).LimitSeparate
+  let dayNum = gachaDayNum || 1;
   //角色，武器抽卡限制是否分开
-  let LimitSeparate = e.groupConfig.LimitSeparate || 0;
 
   let key = `genshin:gacha:${user_id}`;
 
@@ -504,7 +507,7 @@ export async function gachaCover(e, {render}) {
       EX: end.keyEnd,
     });
 
-    let msg = segment.image(`base64://${base64}`);
+    let msg = segment.image(`base64://${base64.file.toString("base64")}`);
     let msgRes = await e.reply(msg);
 
     if (msgRes && msgRes.message_id && e.isGroup && e.groupConfig.delMsg && res5.length <= 0 && resC4.length <= 2) {
@@ -578,8 +581,10 @@ function getEnd() {
 async function gachaWeapon(e, gachaData, upW4, upW5, render) {
   let user_id = e.user_id;
   //角色，武器抽卡限制是否分开
-  let LimitSeparate = e.groupConfig.LimitSeparate || 0;
-
+  let LimitSeparate = gsCfg.getGachaSet(e.group_id).LimitSeparate || 0;
+  let gachatConfig = await GachaData.init(e);
+  gachaData.weapon.bingWeapon = gachatConfig.getBingWeapon()
+  console.log(  gachaData.weapon.bingWeapon)
   if (!gachaData.weapon) {
     gachaData.weapon = {
       num4: 0, //4星保底数
@@ -588,7 +593,7 @@ async function gachaWeapon(e, gachaData, upW4, upW5, render) {
       isUp5: 0, //是否5星大保底
       lifeNum: 0, //命定值
       type: 1, //0-取消 1-武器1 2-武器2
-      bingWeapon: upW5[0],
+      bingWeapon: upW5[1],
     };
   } else {
     if (gachaData.weapon.bingWeapon) {
@@ -603,13 +608,9 @@ async function gachaWeapon(e, gachaData, upW4, upW5, render) {
     }
   }
 
-  let bingWeapon;
-  if (gachaData.weapon.type > 0) {
-    if (upW5[gachaData.weapon.type - 1]) {
-      bingWeapon = upW5[gachaData.weapon.type - 1];
-    }
-  }
-
+  let bingWeapon = gachaData.weapon.bingWeapon ;
+ 
+  console.log(  gachaData.weapon.bingWeapon)
   //去除当前up的四星
   weapon4 = lodash.difference(weapon4, upW4);
   weapon5 = lodash.difference(weapon5, upW5);
@@ -847,7 +848,7 @@ async function gachaWeapon(e, gachaData, upW4, upW5, render) {
   });
 
   if (base64) {
-    let msg = segment.image(`base64://${base64}`);
+    let msg = segment.image(`base64://${base64.file.toString("base64")}`);
     let msgRes = await e.reply(msg);
 
     if (msgRes && msgRes.message_id && e.isGroup && e.groupConfig.delMsg && res5.length <= 0 && resC4.length <= 2) {

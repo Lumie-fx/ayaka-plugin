@@ -13,9 +13,9 @@ export const rule = {
 };
 
 //创建html文件夹
-if (!fs.existsSync(`./data/html/genshin/sywMenu/`)) {
-  fs.mkdirSync(`./data/html/genshin/sywMenu/`);
-}
+// if (!fs.existsSync(`./data/html/genshin/sywMenu/`)) {
+//   fs.mkdirSync(`./data/html/genshin/sywMenu/`);
+// }
 
 //查看
 export async function bilibiliLinkTransfer(e, {render}){

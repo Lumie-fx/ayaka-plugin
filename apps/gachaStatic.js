@@ -1,7 +1,7 @@
 import { segment } from "oicq";
 import lodash from "lodash";
 import fs from "fs";
-import { getPluginRender, render } from "../../../lib/render.js";
+
 
 export const rule = {
   gachaStatic: {
@@ -12,9 +12,9 @@ export const rule = {
 };
 
 //创建html文件夹
-if (!fs.existsSync(`./data/html/genshin/gachaStatic/`)) {
-  fs.mkdirSync(`./data/html/genshin/gachaStatic/`);
-}
+// if (!fs.existsSync(`./data/html/genshin/gachaStatic/`)) {
+//   fs.mkdirSync(`./data/html/genshin/gachaStatic/`);
+// }
 
 export async function gachaStatic(){
   // if (e.img || e.hasReply) {
@@ -61,7 +61,7 @@ export async function gachaStatic(){
       if(!flag) return;
 
       try{
-        let base64 = await getPluginRender("ayaka-plugin")("pages", "gachaStatic", {
+        let base64 = await render("pages", "gachaStatic", {
           save_id: group_id,
           name: group_id,
           _value: one
