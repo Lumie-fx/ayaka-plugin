@@ -9,7 +9,7 @@ const _path = process.cwd();
 export const rule = {
   //帮助说明
   helpCover: {
-    reg: "^#*(命令|帮助|菜单|help|说明|功能|指令|使用说明)$",
+    reg: "^/*(命令|帮助|菜单|help|说明|功能|指令|使用说明)$",
     priority: __config.useAyakaMenu ? 10 : 9999,
     describe: "【#帮助】查看指令说明",
   },

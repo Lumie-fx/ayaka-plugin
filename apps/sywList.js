@@ -5,7 +5,7 @@ import fs from "fs";
 
 export const rule = {
   sywList: {
-    reg: "^圣遗物仓库$",
+    reg: "^/圣遗物仓库$",
     priority: 100,
     describe: "【查看】查看保存的圣遗物",
   }

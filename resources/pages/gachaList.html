@@ -5,26 +5,30 @@
     <link rel="shortcut icon" href="#" />
     <link rel="stylesheet" type="text/css" href="{{_res_path}}/css/gachaList.css?v=1.0" />
   </head>
-  <body {{ if list.length<=8}}class="list8"{{/if}}>
+  <body {{ if list.length <= 8}}class="list8"{{/if}}>
     <style></style>
     <div class="container" id="container">
       <div class="main_box">
         <div class="base_info">
-          <div class="uid">ID: {{uid}}</div>
+          <div class="uid">ID: {{user_id}}</div>
         </div>
         <div class="item_box">
-          {{each list val}}
+          {{each list as val i}}
           <div class="item">
             <div class="role_box">
+              {{ if val.element && type=="character"}}
+              <img class="element_img" src="{{_res_path}}/image/{{val.element}}.png" onerror="whenError(this)" />
+              {{else}}
+              <span class="weaponId"> {{i+1}}</span>
+              {{/if}}
               {{ if val.num>0}}
-              <span class="life life{{val.element}}"> {{val.num}}命</span>
+              <span class="life life{{val.element}}"> {{val.num}}</span>
               {{/if}}
               <div class="bg{{val.star}}"></div>
-              <img class="role_img" src="{{_res_path}}/image/role/{{val.name}}.png" onerror="whenError(this)" />
-              <div class="desc">Lv.{{val.star}}</div>
+              <img class="role_img" src="{{_res_path}}/image/list/{{type}}/{{val.name}}.png" onerror="whenError(this)" />
+              <div class="desc">Lv.{{val.level}}</div>
             </div>
              <div class="text_box">
-             <!-- TODO: weapon -->
             </div>
           </div>
           {{/each}}

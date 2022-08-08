@@ -5,7 +5,7 @@ import fs from "fs";
 
 export const rule = {
   gachaStatic: {
-    reg: "^今日抽卡统计$",
+    reg: "^/今日抽卡统计$",
     priority: 100,
     describe: "【查看】查看群内今日抽卡5x角色列表",
   }

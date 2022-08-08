@@ -18,6 +18,7 @@ export class Ayaka extends plugin {
     Object.defineProperty(rule, 'log', {
       get: () => !!this.isDispatch
     })
+    this.strengthen = App.strengthen
   }
 
   accept () {
@@ -29,8 +30,11 @@ export class Ayaka extends plugin {
     if (!msg) {
       return false
     }
-    console.log("-------------------------")
-    console.log(msg)
+    if (this.e.msg.indexOf('精炼武器') !=-1 ) {
+      this.setContext('strengthen')
+      this.reply('请发送材料武器的序号', false, { at: true })
+      return true
+    }
     msg = msg.replace('#', '').trim()
     for (let fn in App.rule) {
       let cfg = App.rule[fn]

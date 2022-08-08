@@ -1,15 +1,16 @@
 import { segment } from "oicq";
 import lodash from "lodash";
 import fs from "fs";
+import gsCfg from "../../genshin/model/gsCfg.js";
 
 export const rule = {
   characterAyaka: {
-    reg: "^角色仓库$",
+    reg: "^/角色仓库$",
     priority: 100,
     describe: "【查看】查看群内抽卡5x角色列表",
   },
   weaponAyaka: {
-    reg: "^武器仓库$",
+    reg: "^/武器仓库$",
     priority: 100,
     describe: "【查看】查看群内抽卡5x武器列表",
   }
@@ -27,8 +28,7 @@ export async function characterAyaka(e, {render}){
   const user_id = e.user_id; //qq
   const name = e.sender.card; //qq昵称
 
-
-  let keyaka = `genshin:gachayaka:${user_id}`;
+  let keyaka = `genshin:gachaList:${user_id}`;
   let gachayaka = await global.redis.get(keyaka);
   gachayaka = JSON.parse(gachayaka || '{"character":[],"weapon":[]}');
 
@@ -55,7 +55,7 @@ export async function characterAyaka(e, {render}){
         name: res.name,
         element: res.element,
         num: 0,
-        star: 5
+        star: res.star
       })
     }
   })
@@ -65,6 +65,7 @@ export async function characterAyaka(e, {render}){
   let base64 = await render("pages", "gachaList", {
     save_id: user_id,
     name: name,
+    user_id: user_id,
     list: data, //{name, element, num}
     type: 'character'
   });
@@ -86,14 +87,15 @@ export async function weaponAyaka(e, {render}){
 
  // return await e.reply([segment.at(e.user_id, name), ` 功能尚未开启`]);
 
-  let keyaka = `genshin:gachayaka:${user_id}`;
+  let keyaka = `genshin:gachaList:${user_id}`;
   let gachayaka = await global.redis.get(keyaka);
   gachayaka = JSON.parse(gachayaka || '{"character":[],"weapon":[]}');
 
   let base64 = await render("pages", "gachaList", {
     save_id: user_id,
     name: name,
-    gachayaka: gachayaka.weapon,
+    user_id: user_id,
+    list: gachayaka.weapon,
     type: 'weapon'
   });
 

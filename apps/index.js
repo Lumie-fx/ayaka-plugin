@@ -10,6 +10,7 @@ import {tencentAI} from './aiCover.js'
 import {ayakaVoice} from './voiceQuery.js'
 import {bilibiliLinkTransfer} from './bilibiliLinkTransfer.js'
 import {pretendSearch,pretendSet,pretend} from './pretend.js'
+import {strengthen} from './weapon.js'
 import __config from '../config.js';
 
 import {gachaStatic} from './gachaStatic.js'
@@ -37,66 +38,67 @@ export {
   pretendSearch,
   pretendSet,
   pretend,
+  strengthen
 };
 
 let rule = {
   syw: {
-    reg: "^抽[取]*",
+    reg: "^/刷遗物*",
     priority: 1000, //优先级，越小优先度越高
     describe: "【抽取】获取随机圣遗物",
   },
   sywOne: {
-    reg: "^查看[0-9]+$",
+    reg: "^/查看[0-9]+$",
     priority: 1000,
     describe: "【查看】查看的某个圣遗物",
   },
   sywLevelUp: {
-    reg: "^强化$",
+    reg: "^/强化$",
     priority: 1000,
     describe: "【强化】圣遗物强化",
   },
   sywSave: {
-    reg: "^保存$",
+    reg: "^/保存$",
     priority: 1000,
     describe: "【保存】保存圣遗物",
   },
   sywDeleteAll: {
-    reg: "^删除全部圣遗物$",
+    reg: "^/删除全部圣遗物$",
     priority: 1000,
     describe: "【删除】删除已存的所有圣遗物",
   },
   sywDeleteOne: {
-    reg: "^删除[0-9]+$",
+    reg: "^/删除[0-9]+$",
     priority: 1000,
     describe: "【删除】删除选定序号的圣遗物",
   },
   sywList: {
-    reg: "^圣遗物仓库?$",
+    reg: "^/圣遗物仓库?$",
     priority: 1000,
     describe: "【查看】查看保存的圣遗物",
   },
   sywMenu: {
-    reg: "^圣遗物菜单$",
+    reg: "^/圣遗物仓库$",
     priority: 100,
     describe: "【查看】查看保存的圣遗物",
   },
   gachaCover: {
-    reg: "^#*(10|[武器池]*[十]+|抽|单)[连抽卡奖][123武器池]*$",
+    reg: "^/*(10|[武器池]*[十]+|抽|单)[连抽卡奖][123武器池]*$",
     priority: __config.useAyakaGacha ? 10 : 9999,
     describe: "【十连，十连2，十连武器】模拟原神抽卡",
   },
   characterAyaka: {
-    reg: "^角色仓库$",
+    reg: "^/角色仓库$",
     priority: 100,
     describe: "【查看】查看群内抽卡5x角色列表",
   },
   weaponAyaka: {
-    reg: "^武器仓库$",
+    reg: "^/武器仓库$",
     priority: 100,
     describe: "【查看】查看群内抽卡5x武器列表",
   },
   helpCover: {
-    reg: "^#*(命令|帮助|菜单|help|说明|功能|指令|使用说明)$",
+    reg: "^/*(命令|帮助|菜单|help|说明|功能|指令|使用说明)$",
     priority: __config.useAyakaMenu ? 10 : 9999,
     describe: "【#帮助】查看指令说明",
   },
@@ -106,7 +108,7 @@ let rule = {
     describe: "腾讯智障ai",
   },
   ayakaVoice: {
-    reg: "^#*(.*)语音$",
+    reg: "^/*(.*)语音$",
     priority: 200,
     describe: "【#帮助】查看指令说明",
   },
@@ -117,17 +119,17 @@ let rule = {
   },
 
   pretendSearch: {
-    reg: "^伪装查看群号$",
+    reg: "^/伪装查看群号$",
     priority: 200,
     describe: "伪装查看群号合集",
   },
   pretendDel: {
-    reg: "^伪装删除$",
+    reg: "^/伪装删除$",
     priority: 200,
     describe: "伪装删除群号",
   },
   pretendSet: {
-    reg: "^伪装设置群号[0-9]+$",
+    reg: "^/伪装设置群号[0-9]+$",
     priority: 200,
     describe: "伪装设置群号",
   },
@@ -136,6 +138,12 @@ let rule = {
     priority: 10000,
     describe: "发言",
   },
+  strengthen: {
+    reg: "^/精炼武器*",
+    priority: 1000,
+    describe: "【抽取】获取随机圣遗物",
+    fnc: strengthen
+  }
 };
 
 lodash.forEach(rule, (r) => {

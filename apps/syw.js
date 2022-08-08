@@ -5,32 +5,32 @@ import fs from "fs";
 
 export const rule = {
   syw: {
-    reg: "^抽[取]*",
+    reg: "^/刷遗物*",
     priority: 1000,
     describe: "【抽取】获取随机圣遗物",
   },
   sywOne: {
-    reg: "^查看[0-9]+$",
+    reg: "^/查看[0-9]+$",
     priority: 1000,
     describe: "【查看】查看的某个圣遗物",
   },
   sywLevelUp: {
-    reg: "^强化$", //匹配的正则
+    reg: "^/强化$", //匹配的正则
     priority: 1000, //优先级，越小优先度越高
     describe: "【强化】圣遗物强化", //描述说明
   },
   sywSave: {
-    reg: "^保存$", //匹配的正则
+    reg: "^/保存$", //匹配的正则
     priority: 1000, //优先级，越小优先度越高
     describe: "【保存】保存圣遗物", //描述说明
   },
   sywDeleteAll: {
-    reg: "^删除全部圣遗物$",
+    reg: "^/删除全部圣遗物$",
     priority: 1000,
     describe: "【删除】删除已存的所有圣遗物",
   },
   sywDeleteOne: {
-    reg: "^删除[0-9]+$",
+    reg: "^/删除[0-9]+$",
     priority: 1000,
     describe: "【删除】删除选定序号的圣遗物",
   }
@@ -76,12 +76,12 @@ export async function syw(e, {render}) {
   //
   let user_id = e.user_id; //qq
   let name = e.sender.card; //?
-  let group_id = e.group_id; //?群号
 
-  if(e.msg.length > 5) return;
+  if(e.msg.length > 10) return;
   //e.msg 发的关键指令
   // Bot.logger.mark(e.msg);
-  const _syw = e.msg.replace('抽取','').replace('抽','').replace('套',''); //少女
+  const _syw = e.msg.replace('/刷遗物','').replace('套',''); //少女
+  console.log(_syw)
   let sywObj = null;
 
   sywObj = sywConfig.list.filter(res=>{
@@ -89,7 +89,7 @@ export async function syw(e, {render}) {
   })[0];
 
   if(!sywObj){
-    return await e.reply('要输入具体的套装名称哦，比如：抽取水套');
+    return await e.reply('要输入具体的套装名称哦，比如：/刷圣遗物水套');
   }
 
   const _regArr = sywObj.type;
@@ -401,7 +401,7 @@ export async function sywOne(e, {render}){
     return await e.reply([segment.at(e.user_id, name), ` 你现在没有圣遗物哦~`]);
   }
 
-  const index = parseInt(e.msg.replace('查看', ''));
+  const index = parseInt(e.msg.replace('/查看', ''));
 
   let bagOne = sywData.bag[index - 1];
   if(!bagOne){

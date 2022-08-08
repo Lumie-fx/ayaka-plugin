@@ -12,17 +12,17 @@ if (!fs.existsSync(`.${__path}`)) {
 export const rule = {
   //帮助说明
   pretendSearch: {
-    reg: "^伪装查看群号$",
+    reg: "^/伪装查看群号$",
     priority: 200,
     describe: "伪装查看群号",
   },
   pretendDel: {
-    reg: "^伪装删除$",
+    reg: "^/伪装删除$",
     priority: 200,
     describe: "伪装删除群号",
   },
   pretendSet: {
-    reg: "^伪装设置群号[0-9]+$",
+    reg: "^/伪装设置群号[0-9]+$",
     priority: 200,
     describe: "伪装设置群号",
   },

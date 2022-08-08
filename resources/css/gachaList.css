@@ -88,6 +88,18 @@ body {
   top: 0;
   /*filter: contrast(95%);*/
 }
+
+.role_box .element_img {
+  overflow: hidden;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 9;
+  width: 30%;
+}
+
+
 .bg105 {
   background-image: url(../image/bg105.png);
   width: 100%;
@@ -190,13 +202,14 @@ body {
   top: 0px;
   right: 0px;
   z-index: 9;
-  font-size: 16px;
+  font-size: 15px;
   text-align: center;
   color: #fff;
   border-radius: 2px;
   padding: 1px 3px;
   border-radius: 3px;
   font-family: "tttgbnumber";
+  background: rgba(0,0,0,.6);
 }
 .life1 {
   background-color: #62a8ea;
@@ -216,6 +229,22 @@ body {
 .life6 {
   background-color: #ff5722;
 }
+
+.role_box .weaponId {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 9;
+  font-size: 15px;
+  text-align: center;
+  color: #fff;
+  border-radius: 2px;
+  padding: 1px 3px;
+  border-radius: 3px;
+  font-family: "tttgbnumber";
+  background: rgba(0,0,0,.6);
+}
+
 .base_info span {
   margin-left: 5px;
 }

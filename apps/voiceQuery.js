@@ -15,7 +15,7 @@ if (!fs.existsSync(`./voice/`)) {
 export const rule = {
   //帮助说明
   ayakaVoice: {
-    reg: "^#*(.*)语音$",
+    reg: "^/*(.*)语音$",
     priority: 200,
     describe: "【#帮助】查看指令说明",
   },

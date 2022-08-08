@@ -6,7 +6,7 @@ const _path = process.cwd();
 
 export const rule = {
   sywMenu: {
-    reg: "^圣遗物菜单$",
+    reg: "^/圣遗物菜单$",
     priority: 100,
     describe: "【查看】查看保存的圣遗物",
   }
