@@ -18,6 +18,11 @@ export const rule = {
     priority: 1000, //优先级，越小优先度越高
     describe: "【强化】圣遗物强化", //描述说明
   },
+  sywLevelUp20: {
+    reg: "^强化20$", //匹配的正则
+    priority: 1000, //优先级，越小优先度越高
+    describe: "【强化】圣遗物强化到20级", //描述说明
+  },
   sywSave: {
     reg: "^保存$", //匹配的正则
     priority: 1000, //优先级，越小优先度越高
@@ -281,6 +286,114 @@ export async function sywLevelUp(e, {render}){
   }
   return true;
 }
+
+
+//强化至20级
+export async function sywLevelUp20(e, {render}){
+  if (e.img || e.hasReply) {
+    return;
+  }
+
+  const user_id = e.user_id; //qq
+  const name = e.sender.card; //qq昵称
+
+  const key = `genshin:syw:${user_id}`;
+  let sywData = await global.redis.get(key);
+  sywData = JSON.parse(sywData || '{}');
+  if(!sywData.today && !sywData.bag){
+    return await e.reply([segment.at(e.user_id, name), ` 你现在没有圣遗物，要先抽取圣遗物哦~`]);
+  }
+
+  if(!sywData.today) sywData.today = [];
+  if(!sywData.bag) sywData.bag = [];
+
+  const _today = sywData.today.filter(res=>res.isNow)[0]
+  const _bag = sywData.bag.filter(res=>res.isNow)[0]
+  const one = _today || _bag; //当前圣遗物
+
+  if(!one){
+    return await e.reply([segment.at(e.user_id, name), ` 你需要通过「查看」命令先选中一个圣遗物哦~`]);
+  }
+
+  const mainLevel = ['0','4','8','12','16','20'];
+  if(one.level === '20'){
+    return await e.reply([segment.at(e.user_id, name), ` 你已经强化到最高等级啦~`]);
+  }
+
+  const func = ()=>{
+    const levelNow = mainLevel.indexOf(one.level); //当前等级列
+    one.level = mainLevel[levelNow+1];             //等级+4
+    const newMainObj = sywConfig.upgradeList[one.mainAttr]; //主属性对象
+    const newMainNum = newMainObj.main[levelNow+1];         //主属性新等级数值
+    one.mainNum = newMainObj.type === 'number' ? newMainNum.toFixed(0) : (newMainNum.toFixed(1)+'%') //5.8%
+    const secondUpIdx = lodash.sample([0,1,2,3]);  //副属性升级的index
+    const secOne = one.secondArr[secondUpIdx];     //副属性选定
+
+    if(one.secondArr.length<4){ //3词条
+      const mainBase = sywConfig.base[one.type]; //base集合
+      const attrAll = lodash.concat(one.secondArr.map(res=>res.attr), one.mainAttr); //已有的属性
+      const newAttr = lodash.sample(mainBase.secondary.filter(res=>!attrAll.includes(res)));//新属性
+      const secObj = sywConfig.upgradeList[newAttr]; //当前副属性对象
+      const secNum = lodash.sample(secObj.secondary);//副属性值
+      one.secondArr.push({
+        attr: newAttr,
+        attrZh: sywConfig.en2zh[newAttr],
+        realNum: parseFloat(secNum.toFixed(2)),
+        num: secObj.type === 'number' ? secNum.toFixed(0) : (secNum.toFixed(1)+'%')
+      })
+    }else{
+      const _newNum = lodash.sample(sywConfig.upgradeList[secOne.attr].secondary) + secOne.realNum;
+      one.secondArr[secondUpIdx] = {
+        attr: secOne.attr,
+        attrZh: secOne.attrZh,
+        realNum: parseFloat(_newNum.toFixed(2)),
+        num: sywConfig.upgradeList[secOne.attr].type === 'number' ? _newNum.toFixed(0) : (_newNum.toFixed(1)+'%')
+      };
+    }
+  }
+
+  while(one.level !== '20'){
+    func()
+  }
+
+  const base64 = await render("pages", "syw", {
+    save_id: user_id,
+    name: name,
+    syw: one,
+    sywDetail: getSywDetailInfo(one.name)
+  });
+
+  if (base64) {
+    sywData.today.map(res=>{
+      if(res.id === one.id){
+        const _res = JSON.parse(JSON.stringify(one));
+        res.level = _res.level;
+        res.mainNum = _res.mainNum;
+        res.secondArr = _res.secondArr;
+        res.isNow = !!_today;
+      }
+    });
+
+    sywData.bag.map(res=>{
+      if(res.id === one.id){
+        const _res = JSON.parse(JSON.stringify(one));
+        res.level = _res.level;
+        res.mainNum = _res.mainNum;
+        res.secondArr = _res.secondArr;
+        res.isNow = !!_bag;
+      }
+    });
+
+    redis.set(key, JSON.stringify(sywData), {
+      EX: 30e6
+    });
+    let msg = segment.image(`base64://${base64}`);
+    let msgRes = await e.reply(msg);
+  }
+  return true;
+}
+
+
 
 //保存
 export async function sywSave(e){

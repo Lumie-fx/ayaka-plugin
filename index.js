@@ -1,6 +1,6 @@
 import lodash from "lodash";
 import schedule from "node-schedule";
-import {syw,sywOne,sywLevelUp,sywSave,sywDeleteAll,sywDeleteOne} from './apps/syw.js'
+import {syw,sywOne,sywLevelUp,sywLevelUp20,sywSave,sywDeleteAll,sywDeleteOne} from './apps/syw.js'
 import {sywList} from './apps/sywList.js'
 import {sywMenu} from './apps/sywMenu.js'
 import {gachaCover} from './apps/gachaCover.js'
@@ -22,6 +22,7 @@ export {
   syw,
   sywOne,
   sywLevelUp,
+  sywLevelUp20,
   sywSave,
   sywDeleteAll,
   sywDeleteOne,
@@ -54,6 +55,11 @@ let rule = {
     reg: "^强化$",
     priority: 1000,
     describe: "【强化】圣遗物强化",
+  },
+  sywLevelUp20: {
+    reg: "^强化20$", //匹配的正则
+    priority: 1000, //优先级，越小优先度越高
+    describe: "【强化】圣遗物强化到20级", //描述说明
   },
   sywSave: {
     reg: "^保存$",
