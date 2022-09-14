@@ -13,7 +13,7 @@
         <div class="status">包裹</div>
         {{each bag}}
         <div class="syw">
-          <img class="syw-img" src="{{_sys_res_path}}/genshin/logo/reliquaries/{{$value.name}}.png" alt="">
+          <img class="syw-img" src="{{_res_path}}/reliquaries/{{$value.name}}.png" alt="">
           <div class="syw-name">{{$value.secondMini}}</div>
           <div class="index">{{$index+1}}</div>
           {{if $value.isNow}}
@@ -28,7 +28,7 @@
         <div class="status">今日</div>
         {{each today}}
         <div class="syw">
-          <img class="syw-img" src="{{_sys_res_path}}/genshin/logo/reliquaries/{{$value.name}}.png" alt="">
+          <img class="syw-img" src="{{_res_path}}/reliquaries/{{$value.name}}.png" alt="">
           <div class="syw-name">{{$value.secondMini}}</div>
           <div class="index">{{$index+1+todayIdxAdd}}</div>
           {{if $value.isNow}}
