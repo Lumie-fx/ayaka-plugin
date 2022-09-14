@@ -1,31 +1,38 @@
 import { segment } from "oicq";
 import lodash from "lodash";
 import fs from "fs";
-
-
-export const rule = {
-  sywList: {
-    reg: "^查看(圣遗物)?$",
-    priority: 100,
-    describe: "【查看】查看保存的圣遗物",
-  }
-};
+import { render } from "../adapter/render.js";
 
 //创建html文件夹
-if (!fs.existsSync(`./data/html/genshin/sywList/`)) {
-  fs.mkdirSync(`./data/html/genshin/sywList/`);
-}
+// if (!fs.existsSync(`./data/html/genshin/sywList/`)) {
+//   fs.mkdirSync(`./data/html/genshin/sywList/`);
+// }
 
 let sywConfig = {};
 
-await init();
+//await sywList.init();
 
-export async function init() {
+export class sywList extends plugin {
+  constructor () {
+    super({
+      name: '查看圣遗物',
+      dsc: '查看模拟抽取圣遗物',
+      /** https://oicqjs.github.io/oicq/#events */
+      event: 'message',
+      priority: 100,
+rule: [{
+  reg: "^查看(圣遗物)?$",
+  fnc: 'sywList',
+  },
+]}
+)}
+
+ async  init() {
   sywConfig = JSON.parse(fs.readFileSync(process.cwd()+"/plugins/ayaka-plugin/resources/meta/configs/syw.json", "utf8"));
 }
 
 //查看
-export async function sywList(e, {render}){
+ async  sywList(e){
   if (e.img || e.hasReply) {
     return;
   }
@@ -62,6 +69,7 @@ export async function sywList(e, {render}){
     res.secondMini = _list ? _list.slice(0,-1) : '';
   });
 
+
   let base64 = await render("pages", "sywList", {
     save_id: user_id,
     name: name,
@@ -71,10 +79,11 @@ export async function sywList(e, {render}){
   });
 
   if (base64) {
-    let msg = segment.image(`base64://${base64}`);
-    let msgRes = await e.reply(msg);
+    //let msg = segment.image(`base64://${base64}`);
+    let msgRes = await e.reply(base64);
   }
 
   return true;
 
+}
 }
