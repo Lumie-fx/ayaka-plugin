@@ -1,3 +1,6 @@
+master分支进行3.0版本适配和功能迁移。
+
+
 # ayaka-plugin
 yunzai-bot组件，ayaka
 
