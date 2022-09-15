@@ -1,0 +1,47 @@
+#001
+{
+  name: 'stars will',
+  quality: 80,
+  saveId: 1160229372,
+  cwd: 'F:/learn/project3.0-20220914/Yunzai-Bot',
+  tplFile: './plugins/genshin/resources/html/gacha/gacha.html',
+  pluResPath: 'F:/learn/project3.0-20220914/Yunzai-Bot/plugins/genshin/resources/',
+  headStyle: '<style> .head_box { background: url(F:/learn/project3.0-20220914/Yunzai-Bot/plugins/genshin/resources/img/namecard/甘雨.png) #fff; background-position-x: 42px; background-repeat: no-repeat; background-size: auto 101%; }</style>',
+  info: '甘雨「80抽」',
+  nowFive: 1,
+  nowFour: 1,
+  poolName: '角色池：甘雨',
+  isWeapon: false,
+  bingWeapon: false,
+  lifeNum: 0,
+  list: [
+    {
+      name: '甘雨',
+      star: 5,
+      type: 'role',
+      num: 80,
+      element: '冰',
+      index: 10,
+      isBigUP: false,
+      isBing: false,
+      have: false,
+      rand: 5
+    },
+    {
+      name: '多莉',
+      star: 4,
+      type: 'role',
+      element: '雷',
+      index: 6,
+      have: false
+    },
+    { name: '魔导绪论', star: 3, type: 'weapon', element: '法器', index: 1 },
+    { name: '弹弓', star: 3, type: 'weapon', element: '弓', index: 2 },
+    { name: '翡玉法球', star: 3, type: 'weapon', element: '法器', index: 3 },
+    { name: '黑缨枪', star: 3, type: 'weapon', element: '枪', index: 4 },
+    { name: '神射手之誓', star: 3, type: 'weapon', element: '弓', index: 5 },
+    { name: '魔导绪论', star: 3, type: 'weapon', element: '法器', index: 7 },
+    { name: '弹弓', star: 3, type: 'weapon', element: '弓', index: 8 },
+    { name: '黎明神剑', star: 3, type: 'weapon', element: '单手剑', index: 9 }
+  ]
+}

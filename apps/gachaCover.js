@@ -35,6 +35,8 @@ export class gacha extends plugin {
 
     let data = await this.GachaData.run()
 
+    //#001 logger.mark(data)
+
     /** 生成图片 */
     let img = await puppeteer.screenshot('gacha', data)
     if (!img) return
