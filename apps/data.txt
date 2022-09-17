@@ -1,8 +1,8 @@
 #001
 {
-  name: 'stars will',
+  name: 'qq name',
   quality: 80,
-  saveId: 1160229372,
+  saveId: 'your qq_id',
   cwd: 'F:/learn/project3.0-20220914/Yunzai-Bot',
   tplFile: './plugins/genshin/resources/html/gacha/gacha.html',
   pluResPath: 'F:/learn/project3.0-20220914/Yunzai-Bot/plugins/genshin/resources/',
@@ -44,4 +44,20 @@
     { name: '弹弓', star: 3, type: 'weapon', element: '弓', index: 8 },
     { name: '黎明神剑', star: 3, type: 'weapon', element: '单手剑', index: 9 }
   ]
+}
+
+ayaka:${id}:role => [{
+  name: '甘雨', star: 5, element: '冰', num: 1
+},{
+  name: '多莉', star: 4, element: '雷', num: 1(命座:自动增加)
+}]
+
+ayaka:${id}:weapon => [{
+  name: '糟心', star: 4, element: '法器', num: 1(精炼:不自动增加)
+}]
+
+
+
+ayaka:${id}:item => {
+  starlight: 0, //星辉
 }

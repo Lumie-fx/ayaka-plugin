@@ -4,6 +4,8 @@ import GachaData from '../../genshin/model/gachaData.js'
 import fs from 'node:fs'
 import lodash from 'lodash'
 import puppeteer from '../../../lib/puppeteer/puppeteer.js'
+import utils from '../utils/utils.js'
+
 export class gacha extends plugin {
   constructor () {
     super({
@@ -35,7 +37,68 @@ export class gacha extends plugin {
 
     let data = await this.GachaData.run()
 
+    /** ayaka gacha cover start*/
+
     //#001 logger.mark(data)
+
+    let savedRole = await utils.getRedis(`ayaka:${data.saveId}:role`);
+    let savedWeapon = await utils.getRedis(`ayaka:${data.saveId}:weapon`);
+    let savedItem = await utils.getRedis(`ayaka:${data.saveId}:item`, {});
+    //星辉
+    let starlight = savedItem?.starlight || 0;
+    //
+    //utils.type(data.saveId), utils.type(savedRole), savedWeapon)
+    const groupData = lodash.groupBy(data.list, 'type');
+    if(groupData?.role){
+      groupData.role.map(res => {
+        if(res.star > 3){
+          const here = lodash.find(savedRole, {name: res.name});
+          if(here){
+            here.num += 1;
+            if(res.star === 4){
+              if(here.num < 8) starlight += 2;
+              else starlight += 5;
+            }
+            if(res.star === 5){
+              if(here.num < 8) starlight += 10;
+              else starlight += 25;
+            }
+          }
+          else savedRole.push({name: res.name, star: res.star, element: res.element, num: 1});
+        }
+      });
+      await utils.setRedis(`ayaka:${data.saveId}:role`, savedRole);
+    }
+    if(groupData?.weapon){
+      groupData.weapon.map(res => {
+        if(res.star > 3){
+          savedWeapon.push({
+            name: res.name,
+            star: res.star,
+            element: res.element,
+            num: 1
+          });
+          if(res.star === 4){
+            starlight += 2;
+          }
+          if(res.star === 5){
+            starlight += 10;
+          }
+        }
+      });
+      await utils.setRedis(`ayaka:${data.saveId}:weapon`, savedWeapon);
+    }
+
+    await utils.setRedis(`ayaka:${data.saveId}:item`, {...savedItem, starlight});
+
+    // const newR = await utils.getRedis(`ayaka:${data.saveId}:role`);
+    // const newW = await utils.getRedis(`ayaka:${data.saveId}:weapon`);
+    // const newI = await utils.getRedis(`ayaka:${data.saveId}:item`);
+    // console.log(newR)
+    // console.log(newW)
+    // console.log(newI)
+
+    /** ayaka gacha cover end*/
 
     /** 生成图片 */
     let img = await puppeteer.screenshot('gacha', data)
