@@ -23,9 +23,7 @@ export class ayakaTest extends plugin {
     if (e.img || e.hasReply) {
       return;
     }
-    await utils.setRedis('test', {value: 'test ayaka set redis'})
-    const v = await utils.getRedis('test');
-    logger.mark(v.value)
+    logger.mark(e)
 
 
     return true;

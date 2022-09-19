@@ -11,7 +11,10 @@ export async function render (app = '', tpl = '', data = {}, imgType = 'jpeg') {
   data._plugin = plugin
 
   if (lodash.isUndefined(data._res_path)) {
-    data._res_path = `../../../../../plugins/${plugin}/resources/`
+    data._res_path = `../../../../../plugins/${plugin}/resources/`;
+    data.ayaka = `../../../../../plugins/${plugin}/resources/`;
+    data._sys_res_path = `../../../../../plugins/`;
+    data.root = `../../../../../plugins/`;
   }
   Data.createDir(_path + '/data/', `html/${plugin}/${app}/${tpl}`)
   data.saveId = data.saveId || data.save_id || tpl

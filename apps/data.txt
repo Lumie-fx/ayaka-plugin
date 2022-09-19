@@ -47,13 +47,13 @@
 }
 
 ayaka:${id}:role => [{
-  name: '甘雨', star: 5, element: '冰', num: 1
+  name: '甘雨', star: 5, element: '冰', num: 1, level: 1
 },{
-  name: '多莉', star: 4, element: '雷', num: 1(命座:自动增加)
+  name: '多莉', star: 4, element: '雷', num: 1(命座:自动增加), level: 1
 }]
 
 ayaka:${id}:weapon => [{
-  name: '糟心', star: 4, element: '法器', num: 1(精炼:不自动增加)
+  name: '糟心', star: 4, element: '法器', num: 1(精炼:不自动增加), level: 1
 }]
 
 
@@ -61,3 +61,94 @@ ayaka:${id}:weapon => [{
 ayaka:${id}:item => {
   starlight: 0, //星辉
 }
+
+
+
+private =>
+{
+  post_type: 'message',
+  message_id: 'RSex/AAAHOtA4lBTYyhvugA=',
+  user_id: 1160229372,
+  time: 1663594426,
+  seq: 7403,
+  rand: 1088573523,
+  font: '微软雅黑',
+  message: [ { type: 'text', text: '测试' } ],
+  raw_message: '测试',
+  message_type: 'private',
+  sub_type: 'friend',
+  sender: {
+    user_id: 1160229372,
+    nickname: 'stars will',
+    group_id: undefined,
+    discuss_id: undefined,
+    card: 'stars will'
+  },
+  from_id: 1160229372,
+  to_id: 1516109679,
+  auto_reply: false,
+  friend: Friend {},
+  reply: [AsyncFunction (anonymous)],
+  self_id: 1516109679,
+  msg: '测试',
+  logText: '[私聊][stars will(1160229372)]',
+  isPrivate: true,
+  isMaster: true,
+  replyNew: [Function (anonymous)],
+  original_msg: '测试',
+  logFnc: '[ayaka测试命令][ayakaTest]',
+  checkAuth: [AsyncFunction (anonymous)],
+  getMysApi: [AsyncFunction (anonymous)]
+}
+
+group =>
+{
+  post_type: 'message',
+  message_id: 'LqemakUnsfwAABsV3Ln9+WMob8sB',
+  user_id: 1160229372,
+  time: 1663594443,
+  seq: 6933,
+  rand: 3703176697,
+  font: '微软雅黑',
+  message: [ { type: 'text', text: '测试' } ],
+  raw_message: '测试',
+  message_type: 'group',
+  sender: {
+    user_id: 1160229372,
+    nickname: 'stars will',
+    card: 'stars will',
+    sex: 'unknown',
+    age: 0,
+    area: '',
+    level: 1,
+    role: 'owner',
+    title: ''
+  },
+  group_id: 782739050,
+  group_name: '123',
+  block: false,
+  sub_type: 'normal',
+  anonymous: null,
+  atme: false,
+  atall: false,
+  group: Group {},
+  member: Member {},
+  reply: [AsyncFunction (anonymous)],
+  recall: [Function (anonymous)],
+  self_id: 1516109679,
+  msg: '测试',
+  logText: '[123(stars will)]',
+  isGroup: true,
+  isMaster: true,
+  replyNew: [Function (anonymous)],
+  original_msg: '测试',
+  logFnc: '[ayaka测试命令][ayakaTest]',
+  checkAuth: [AsyncFunction (anonymous)],
+  getMysApi: [AsyncFunction (anonymous)]
+}
+
+
+<!--  {{_sys_res_path}}/genshin/gacha/gacha.css -->
+<!--  _sys_res_path   \genshin\resources\img\gacha\items\草.png -->
+<!--  F:\learn\project3.0-20220914\Yunzai-Bot\plugins\genshin\resources\img\role -->
+<!--   {{_sys_res_path}}/genshin/gacha/items/shadow-{{$value.star}}.png -->

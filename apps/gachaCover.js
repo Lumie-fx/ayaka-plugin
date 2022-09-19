@@ -64,7 +64,13 @@ export class gacha extends plugin {
               else starlight += 25;
             }
           }
-          else savedRole.push({name: res.name, star: res.star, element: res.element, num: 1});
+          else savedRole.push({
+            name: res.name,
+            star: res.star,
+            element: res.element,
+            num: 1,
+            level: 1,
+          });
         }
       });
       await utils.setRedis(`ayaka:${data.saveId}:role`, savedRole);
@@ -76,7 +82,8 @@ export class gacha extends plugin {
             name: res.name,
             star: res.star,
             element: res.element,
-            num: 1
+            num: 1,
+            level: 1,
           });
           if(res.star === 4){
             starlight += 2;
