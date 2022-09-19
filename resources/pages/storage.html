@@ -10,19 +10,19 @@
     <div class="container" id="container">
       <div class="main_box">
         <div class="base_info">
-          <div class="uid">ID: {{user_id}}</div>
+          <div class="uid">ID: {{name}}</div>
         </div>
         <div class="item_box">
           {{each list as val i}}
           <div class="item">
             <div class="role_box">
-              {{ if val.element && type=="character"}}
+              {{if val.element && type=="character"}}
                 <img class="element_img" src="{{root}}/genshin/resources/img/gacha/items/{{val.element}}.png"/>
               {{else}}
                 <span class="weaponId"> {{i+1}}</span>
               {{/if}}
-              {{ if val.num>0}}
-                <span class="life life{{val.element}}"> {{val.num}}</span>
+              {{if val.num>0}}
+                <span class="life life{{val.element}}"> {{if val.num > 7}} 6 {{else}} {{val.num-1}} {{/if}}</span>
               {{/if}}
               <div class="bg{{val.star}}"></div>
               <img class="role_img" src="{{root}}/genshin/resources/img/role/{{val.name}}.png"/>
