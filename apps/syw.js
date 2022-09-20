@@ -2,6 +2,7 @@ import { segment } from "oicq";
 import lodash from "lodash";
 import fs from "fs";
 import { render } from "../adapter/render.js";
+import utils from "../utils/utils.js";
 
 // if (!fs.existsSync(process.cwd()+`/data/html/genshin/syw/`)) {
 //   fs.mkdirSync(process.cwd()+`/data/html/genshin/syw/`);
@@ -21,7 +22,7 @@ export class syw extends plugin {
       event: 'message',
       priority: 5000,
       rule: [{
-        reg: '^抽[取]*',
+        reg: '^[注定一]*抽[取]*',
         fnc: 'syw',
       },{
         reg: '^查看[0-9]+$',
@@ -116,19 +117,27 @@ export class syw extends plugin {
     let name = e.sender.card; //?
     let group_id = e.group_id; //?群号
 
-    if(e.msg.length > 5) return;
+    if(e.msg.length > 7) return;
     //e.msg 发的关键指令
     // Bot.logger.mark(e.msg);
-    const _syw = e.msg.replace('抽取','').replace('抽','').replace('套',''); //少女
+    let decideFlag = false;
+    let _syw = e.msg.replace('抽取','').replace('抽','').replace('套',''); //少女
+    if(_syw.indexOf('注定') > -1){
+      const isTodayUsed = await utils.getRedis(`ayaka:${user_id}:sywDecideGet`, false);
+      if(isTodayUsed){
+        return await e.reply([segment.at(e.user_id, name), ` 一天只能注定抽取一次哦~`]);
+      }
+      decideFlag = true;
+      _syw = _syw.replace('注定一','')
+    }
     let sywObj = null;
 
     sywObj = sywConfig.list.filter(res=>{
       return new RegExp(res.reg).test(_syw);
     })[0];
 
-
     if(!sywObj){
-      return await e.reply('要输入具体的套装名称哦，比如：抽取水套');
+      return false;
     }
 
     const _regArr = sywObj.type;
@@ -142,8 +151,17 @@ export class syw extends plugin {
     const mainAttr = lodash.sample(_config.main);      //随机主属性en
     const mainAttrObj = sywConfig.upgradeList[mainAttr];//该属性是数字还是百分比
     const mainNum = sywConfig.upgradeList[mainAttr].main[0];//主属性数值num
-    const secAttrList = _config.secondary.filter(res=>res!==mainAttr);//副属性随机集合[en]
-    const secondAttrSample = lodash.sampleSize(secAttrList,Math.random()>.75?4:3);//副属性抽取
+    let secAttrList = _config.secondary.filter(res=>res!==mainAttr);//副属性随机集合[en]
+    let secondAttrSample = null;
+    if(decideFlag){
+      const critList = secAttrList.filter(res => ['critical','criticalDamage'].includes(res));
+      const otherList =  secAttrList.filter(res => !['critical','criticalDamage'].includes(res));
+      const decideNum = Math.random() > .75 ? 4: 3;
+      let newList = lodash.sampleSize(otherList, decideNum - critList.length).concat(critList);
+      secondAttrSample = lodash.sampleSize(newList, newList.length);
+    }else{
+      secondAttrSample = lodash.sampleSize(secAttrList,Math.random()>.75?4:3);//副属性抽取
+    }
     const type = sywBase.indexOf(symbolType);
     const thisSyw = {
       isNow: true,                                  //是否现在在升级的(用户唯一)
@@ -175,8 +193,14 @@ export class syw extends plugin {
       return await e.reply([segment.at(e.user_id, name), ` 你的体力剩余${strObj.strength}点，不足以获取圣遗物哦~`]);
     }
 
-    let key = `genshin:syw:${user_id}`;
+    if(decideFlag){
+      const hh = new Date().getHours();
+      const mm = new Date().getMinutes();
+      const ss = new Date().getSeconds();
+      await utils.setRedis(`ayaka:${user_id}:sywDecideGet`, true, 86400 - hh*3600 - mm*60 - ss);
+    }
 
+    let key = `genshin:syw:${user_id}`;
 
 
     let base64 = await render("pages", "syw", {
@@ -187,7 +211,6 @@ export class syw extends plugin {
       strength: strObj.strength,
       fullStrength: strObj.fullStrength
     });
-
 
 
     if (base64) {
@@ -466,9 +489,8 @@ export class syw extends plugin {
         isNow: true
       });
 
-
       redis.set(key, JSON.stringify(sywData), {
-        EX: 30e6
+        EX: 30e7
       });
       return await e.reply([segment.at(e.user_id, name), ` 圣遗物保存成功~`]);
     }else{

@@ -152,3 +152,12 @@ group =>
 <!--  _sys_res_path   \genshin\resources\img\gacha\items\草.png -->
 <!--  F:\learn\project3.0-20220914\Yunzai-Bot\plugins\genshin\resources\img\role -->
 <!--   {{_sys_res_path}}/genshin/gacha/items/shadow-{{$value.star}}.png -->
+
+
+ayaka:${id}:sywDecideGet
+
+
+
+
+
+

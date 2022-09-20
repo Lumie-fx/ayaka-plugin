@@ -1,7 +1,8 @@
 export default {
-  async setRedis(key, value){
+  //                         1=1s  35day
+  async setRedis(key, value, time = 30e6){
     await redis.set(key, JSON.stringify(value), {
-      EX: 30e6
+      EX: time
     })
   },
   async getRedis(key, type = []){
