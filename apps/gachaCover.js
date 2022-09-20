@@ -76,6 +76,9 @@ export class gacha extends plugin {
       await utils.setRedis(`ayaka:${data.saveId}:role`, savedRole);
     }
     if(groupData?.weapon){
+
+      let weaponId = await utils.getRedis(`ayaka:${data.saveId}:weaponId`, 0);
+
       groupData.weapon.map(res => {
         if(res.star > 3){
           savedWeapon.push({
@@ -84,6 +87,7 @@ export class gacha extends plugin {
             element: res.element,
             num: 1,
             level: 1,
+            id: weaponId++,
           });
           if(res.star === 4){
             starlight += 2;
@@ -94,15 +98,16 @@ export class gacha extends plugin {
         }
       });
       await utils.setRedis(`ayaka:${data.saveId}:weapon`, savedWeapon);
+      await utils.setRedis(`ayaka:${data.saveId}:weaponId`, weaponId);
     }
 
     await utils.setRedis(`ayaka:${data.saveId}:item`, {...savedItem, starlight});
 
     // const newR = await utils.getRedis(`ayaka:${data.saveId}:role`);
-    // const newW = await utils.getRedis(`ayaka:${data.saveId}:weapon`);
+    const newW = await utils.getRedis(`ayaka:${data.saveId}:weapon`);
     // const newI = await utils.getRedis(`ayaka:${data.saveId}:item`);
     // console.log(newR)
-    // console.log(newW)
+    console.log(newW)
     // console.log(newI)
 
     /** ayaka gacha cover end*/

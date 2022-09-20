@@ -53,7 +53,7 @@ ayaka:${id}:role => [{
 }]
 
 ayaka:${id}:weapon => [{
-  name: '糟心', star: 4, element: '法器', num: 1(精炼:不自动增加), level: 1
+  name: '糟心', star: 4, element: '法器', num: 1(精炼:不自动增加), level: 1, id: number
 }]
 
 

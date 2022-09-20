@@ -14,6 +14,9 @@ export default {
     }
     return item
   },
+  async clearRedis(key){
+    await redis.set(key, '')
+  },
   type(item){
     return Object.prototype.toString.call(item).slice(8,-1)
   }

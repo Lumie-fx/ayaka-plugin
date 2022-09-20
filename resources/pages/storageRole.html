@@ -16,7 +16,7 @@
           {{each list as val i}}
           <div class="item">
             <div class="role_box">
-              {{if val.element && type=="character"}}
+              {{if val.element }}
                 <img class="element_img" src="{{root}}/genshin/resources/img/gacha/items/{{val.element}}.png"/>
               {{else}}
                 <span class="weaponId"> {{i+1}}</span>
