@@ -47,50 +47,6 @@ export class syw extends plugin {
   }
 
 
-  async  strengthCalculate (user_id){
-    const strengthKey = `genshin:syw_strength:${user_id}`;
-    let strengthStr = await global.redis.get(strengthKey);
-    let strengthObj = null;
-    if(!strengthStr){
-      strengthObj = {
-        lastUpdatedTime: +new Date(),
-        strength: 160
-      }
-    }else{
-      strengthObj = JSON.parse(strengthStr);
-    }
-
-    const now = +new Date(),
-      strengthTime = 480000; //每点体力恢复时间 86400 * 1000 / 180;
-
-    // Bot.logger.mark((now - strengthObj.lastUpdatedTime)/strengthTime);
-
-    const recover = parseInt((now - strengthObj.lastUpdatedTime)/strengthTime + ''); //恢复的体力
-    if(strengthObj.strength + recover >= 160){
-      strengthObj.strength = 160;
-    }else{
-      strengthObj.strength = strengthObj.strength + recover;
-    }
-
-    let flag = true;
-
-    if(strengthObj.strength < 20){
-      flag = false;
-    }else{
-      strengthObj.strength = strengthObj.strength - 20;//如果是从抽取圣遗物的入口进入
-      strengthObj.lastUpdatedTime = now;
-      await global.redis.set(strengthKey, JSON.stringify(strengthObj), {
-        EX: 30e6
-      });
-    }
-
-    return {
-      flag,
-      fullStrength: 160,
-      strength: strengthObj.strength
-    };
-  }
-
 //通过单个圣遗物名字, 获取套装名称、套装效果文字说明
   getSywDetailInfo(fullName){
     let _key = '';
@@ -187,7 +143,7 @@ export class syw extends plugin {
     }
 
     // Bot.logger.mark(thisSyw);
-    const strObj = await this.strengthCalculate(user_id);
+    const strObj = await utils.strengthCalculate(user_id, 20);
 
     if(!strObj.flag){
       return await e.reply([segment.at(e.user_id, name), ` 你的体力剩余${strObj.strength}点，不足以获取圣遗物哦~`]);
@@ -482,7 +438,9 @@ export class syw extends plugin {
       })[0]; //今日最新的/选中的圣遗物   今日now的圣遗物选出, 并把now置为false
       if(!sywData.bag) sywData.bag = [];
       if(sywData.bag.some(res=>res.id===one.id)) return await e.reply([segment.at(e.user_id, name), ` 这个圣遗物你已经保存过啦！`]);
-      if(sywData.bag.length>8) return await e.reply([segment.at(e.user_id, name), ` 当前最多只能保存8个圣遗物哦~`]);
+      if(sywData.bag.length > utils.config.syw.bag){
+        return await e.reply([segment.at(e.user_id, name), ` 当前最多只能保存${utils.config.syw.bag}个圣遗物哦~`]);
+      }
 
       sywData.bag.push({
         ...one,

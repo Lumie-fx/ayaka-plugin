@@ -20,70 +20,70 @@ export class sywList extends plugin {
       /** https://oicqjs.github.io/oicq/#events */
       event: 'message',
       priority: 100,
-rule: [{
-  reg: "^查看(圣遗物)?$",
-  fnc: 'sywList',
-  },
-]}
-)}
+      rule: [{
+        reg: "^查看(圣遗物)?$",
+        fnc: 'sywList',
+      }]
+    })
+  }
 
- async  init() {
-  sywConfig = JSON.parse(fs.readFileSync(process.cwd()+"/plugins/ayaka-plugin/resources/meta/configs/syw.json", "utf8"));
-}
+  async  init() {
+    sywConfig = JSON.parse(fs.readFileSync(process.cwd()+"/plugins/ayaka-plugin/resources/meta/configs/syw.json", "utf8"));
+  }
 
 //查看
- async  sywList(e){
-  if (e.img || e.hasReply) {
-    return;
-  }
-  const user_id = e.user_id; //qq
-  const name = e.sender.card; //qq昵称
+  async  sywList(e){
+    if (e.img || e.hasReply) {
+      return;
+    }
+    const user_id = e.user_id; //qq
+    const name = e.sender.card; //qq昵称
 
-  const key = `genshin:syw:${user_id}`;
-  let sywData = await global.redis.get(key);
+    const key = `genshin:syw:${user_id}`;
+    let sywData = await global.redis.get(key);
 
-  sywData = JSON.parse(sywData || '{}');
+    sywData = JSON.parse(sywData || '{}');
 
-  if((!sywData.bag || sywData.bag.length === 0) && (!sywData.today || sywData.bag.today === 0)){
-    return await e.reply([segment.at(e.user_id, name), ` 你的背包里没有圣遗物哦~`]);
-  }
+    if((!sywData.bag || sywData.bag.length === 0) && (!sywData.today || sywData.bag.today === 0)){
+      return await e.reply([segment.at(e.user_id, name), ` 你的背包里没有圣遗物哦~`]);
+    }
 
-  if(!sywData.bag) sywData.bag = [];
-  if(!sywData.today) sywData.today = [];
+    if(!sywData.bag) sywData.bag = [];
+    if(!sywData.today) sywData.today = [];
 
-  sywData.bag.map(res=>{
-    let _list = '';
-    res.secondMini = res.secondArr.filter(_es=>{
-      const mini = sywConfig.en2mini[_es.attr];
-      if(mini) _list+=mini+'/';
+    sywData.bag.map(res=>{
+      let _list = '';
+      res.secondMini = res.secondArr.filter(_es=>{
+        const mini = sywConfig.en2mini[_es.attr];
+        if(mini) _list+=mini+'/';
+      });
+      res.secondMini = _list ? _list.slice(0,-1) : '';
     });
-    res.secondMini = _list ? _list.slice(0,-1) : '';
-  });
 
-  sywData.today.map(res=>{
-    let _list = '';
-    res.secondArr.map(_es=>{
-      const mini = sywConfig.en2mini[_es.attr];
-      if(mini) _list+=mini+'/';
+    sywData.today.map(res=>{
+      let _list = '';
+      res.secondArr.map(_es=>{
+        const mini = sywConfig.en2mini[_es.attr];
+        if(mini) _list+=mini+'/';
+      });
+      res.secondMini = _list ? _list.slice(0,-1) : '';
     });
-    res.secondMini = _list ? _list.slice(0,-1) : '';
-  });
 
 
-  let base64 = await render("pages", "sywList", {
-    save_id: user_id,
-    name: name,
-    bag: sywData.bag,
-    today: sywData.today,
-    todayIdxAdd: sywData.bag.length
-  });
+    let base64 = await render("pages", "sywList", {
+      save_id: user_id,
+      name: name,
+      bag: sywData.bag,
+      today: sywData.today,
+      todayIdxAdd: sywData.bag.length
+    });
 
-  if (base64) {
-    //let msg = segment.image(`base64://${base64}`);
-    let msgRes = await e.reply(base64);
+    if (base64) {
+      //let msg = segment.image(`base64://${base64}`);
+      let msgRes = await e.reply(base64);
+    }
+
+    return true;
+
   }
-
-  return true;
-
-}
 }

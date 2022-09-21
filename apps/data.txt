@@ -153,11 +153,14 @@ group =>
 <!--  F:\learn\project3.0-20220914\Yunzai-Bot\plugins\genshin\resources\img\role -->
 <!--   {{_sys_res_path}}/genshin/gacha/items/shadow-{{$value.star}}.png -->
 
+#注定一抽
+ayaka:${id}:sywDecideGet => boolean
 
-ayaka:${id}:sywDecideGet
-
-
-
+#体力
+ayaka:${id}:strength => {
+  lastUpdatedTime: +new Date(),
+  strength: 160
+}
 
 
 
