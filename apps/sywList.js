@@ -32,7 +32,7 @@ export class sywList extends plugin {
   }
 
 //查看
-  async  sywList(e){
+  async sywList(e){
     if (e.img || e.hasReply) {
       return;
     }

@@ -23,8 +23,13 @@ export class ayakaTest extends plugin {
     if (e.img || e.hasReply) {
       return;
     }
-    logger.mark(e)
+    const user_id = e.user_id;
 
+
+
+    const item = await utils.getRedis(`ayaka:${user_id}:item`)
+    console.log(item)
+    console.log(utils.config.syw.levelup['4'])
 
     return true;
   }

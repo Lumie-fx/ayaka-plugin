@@ -29,6 +29,9 @@ export class storage extends plugin {
       },{
         reg: "^-删除无用武器$", /*删除4星及以下[未升级&&未精炼]武器*/
         fnc: 'ayakaWeaponDelete',
+      },{
+        reg: "^-材料$",
+        fnc: 'ayakaMaterial',
       }]
     })
   }
@@ -141,6 +144,30 @@ export class storage extends plugin {
     return await e.reply([segment.at(e.user_id, name), ` 无用武器删除成功~`]);
   }
 
+  //查看item材料
+  async ayakaMaterial(e){
+    if (e.img || e.hasReply) {
+      return;
+    }
 
+    logger.mark('===ayaka storage material===')
+
+    const user_id = e.user_id; //qq
+    const name = e.sender.card; //qq昵称
+
+    let item = await utils.getRedis(`ayaka:${user_id}:item`, {});
+
+    // let base64 = await render("pages", "storageWeapon", {
+    //   name: name,
+    //   user_id: user_id,
+    //   list: weapon.sort((a, b) => b.star - a.star), //{name, star, element, num, level}
+    //   type: 'weapon'
+    // });
+    //
+    // if (base64) {
+    //   await e.reply(base64);
+    // }
+    return true;
+  }
 
 }

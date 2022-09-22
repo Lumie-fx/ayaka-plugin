@@ -64,7 +64,7 @@ export class syw extends plugin {
   }
 
 //#抽圣遗物
-  async  syw(e) {                          //*, {render}*
+  async syw(e) {                          //*, {render}*
     if (e.img || e.hasReply) {
       return;
     }
@@ -109,14 +109,15 @@ export class syw extends plugin {
     const mainNum = sywConfig.upgradeList[mainAttr].main[0];//主属性数值num
     let secAttrList = _config.secondary.filter(res=>res!==mainAttr);//副属性随机集合[en]
     let secondAttrSample = null;
+    const randomType = utils.config.syw.random4;
     if(decideFlag){
       const critList = secAttrList.filter(res => ['critical','criticalDamage'].includes(res));
       const otherList =  secAttrList.filter(res => !['critical','criticalDamage'].includes(res));
-      const decideNum = Math.random() > .75 ? 4: 3;
+      const decideNum = Math.random() < randomType ? 4: 3;
       let newList = lodash.sampleSize(otherList, decideNum - critList.length).concat(critList);
       secondAttrSample = lodash.sampleSize(newList, newList.length);
     }else{
-      secondAttrSample = lodash.sampleSize(secAttrList,Math.random()>.75?4:3);//副属性抽取
+      secondAttrSample = lodash.sampleSize(secAttrList,Math.random() < randomType?4:3);//副属性抽取
     }
     const type = sywBase.indexOf(symbolType);
     const thisSyw = {
@@ -143,7 +144,8 @@ export class syw extends plugin {
     }
 
     // Bot.logger.mark(thisSyw);
-    const strObj = await utils.strengthCalculate(user_id, 20);
+    const sywStrength = utils.config.syw.strength;
+    const strObj = await utils.strengthCalculate(user_id, sywStrength);
 
     if(!strObj.flag){
       return await e.reply([segment.at(e.user_id, name), ` 你的体力剩余${strObj.strength}点，不足以获取圣遗物哦~`]);
@@ -154,9 +156,19 @@ export class syw extends plugin {
       const mm = new Date().getMinutes();
       const ss = new Date().getSeconds();
       await utils.setRedis(`ayaka:${user_id}:sywDecideGet`, true, 86400 - hh*3600 - mm*60 - ss);
+      await utils.loadSaveItemByNum(user_id, 'shining', .2);
+    }else{
+      await utils.loadSaveItemByNum(user_id, 'shining', .01);
     }
 
     let key = `genshin:syw:${user_id}`;
+
+    //获取精粹(圣遗物升级材料)
+    const addEssence = utils.config.syw.essence;
+    let essRandom = addEssence * .5;
+    let essCalc = Math.floor(Math.random() * essRandom + 1) + addEssence * .75;
+
+    await utils.loadSaveItemByNum(user_id, 'relicEssence', essCalc);
 
 
     let base64 = await render("pages", "syw", {
@@ -208,7 +220,7 @@ export class syw extends plugin {
   }
 
 //强化
-  async  sywLevelUp(e){
+  async sywLevelUp(e){
     if (e.img || e.hasReply) {
       return;
     }
@@ -307,7 +319,7 @@ export class syw extends plugin {
 
 
 //强化至20级
-  async  sywLevelUp20(e){
+  async sywLevelUp20(e){
     if (e.img || e.hasReply) {
       return;
     }
@@ -414,7 +426,7 @@ export class syw extends plugin {
 
 
 //保存
-  async  sywSave(e){
+  async sywSave(e){
 
     if (e.img || e.hasReply) {
       return;
@@ -483,7 +495,7 @@ export class syw extends plugin {
   }
 
 //删除圣遗物
-  async  sywDeleteOne(e){
+  async sywDeleteOne(e){
     if (e.img || e.hasReply) {
       return;
     }
@@ -518,7 +530,7 @@ export class syw extends plugin {
 
 
 //查看
-  async  sywOne(e){
+  async sywOne(e){
     if (e.img || e.hasReply) {
       return;
     }
@@ -569,7 +581,7 @@ export class syw extends plugin {
     return true;
   }
 
-  async  init(isUpdate) {
+  async init(isUpdate) {
     //当前缓存
     sywConfig = JSON.parse(fs.readFileSync(process.cwd()+"/plugins/ayaka-plugin/resources/meta/configs/syw.json", "utf8"));
   }

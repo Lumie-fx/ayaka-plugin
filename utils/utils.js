@@ -14,38 +14,43 @@ export default {
   async setRedis(key, value, time = 30e6){
     await redis.set(key, JSON.stringify(value), {
       EX: time
-    })
+    });
+    return true;
   },
   async getRedis(key, type = []){
-    const value = await redis.get(key)
+    const value = await redis.get(key);
     let item = null;
     try{
-      item = value ? JSON.parse(value) : type
+      item = value ? JSON.parse(value) : type;
     }catch (e){
-      item = value
+      item = value;
     }
-    return item
+    return item;
   },
   async clearRedis(key){
-    await redis.set(key, '')
+    await redis.set(key, '');
   },
   type(item){
-    return Object.prototype.toString.call(item).slice(8,-1)
+    return Object.prototype.toString.call(item).slice(8,-1);
   },
 
   //体力消耗
   async strengthCalculate(user_id, amount = 20){
+
+    const max = this.config.strength.max;
+    const recovery = this.config.strength.recovery;
+
     const strengthKey = `ayaka:${user_id}:strength`;
     let strengthObj = await this.getRedis(strengthKey, {
       lastUpdatedTime: +new Date(),
-      strength: 160
+      strength: max
     });
 
-    const now = + new Date(), strengthTime = 480000; //每点体力恢复时间 86400 * 1000 / 180;
+    const now = + new Date(), strengthTime = 86400000 / recovery; //每点体力恢复时间 86400 * 1000 / 180;
 
     const recover = parseInt((now - strengthObj.lastUpdatedTime)/strengthTime + ''); //恢复的体力
-    if(strengthObj.strength + recover >= 160){
-      strengthObj.strength = 160;
+    if(strengthObj.strength + recover >= max){
+      strengthObj.strength = max;
     }else{
       strengthObj.strength = strengthObj.strength + recover;
     }
@@ -62,8 +67,19 @@ export default {
 
     return {
       flag, //true 成功 false体力不足
-      fullStrength: 160,
+      fullStrength: max,
       strength: strengthObj.strength
     };
+  },
+
+  //num道具的存取    qq号     物品key   变更数量
+  async loadSaveItemByNum(userId, itemName, changeNum){
+    let savedItem = await this.getRedis(`ayaka:${userId}:item`, {});
+    let itemCalc = (savedItem?.[itemName] || 0) + changeNum;
+    if(itemCalc < 0){
+      return false;
+    }else{
+      return await this.setRedis(`ayaka:${userId}:item`, {...savedItem, [itemName]: itemCalc});
+    }
   }
 }

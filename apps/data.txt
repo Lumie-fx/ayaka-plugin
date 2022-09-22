@@ -60,6 +60,7 @@ ayaka:${id}:weapon => [{
 
 ayaka:${id}:item => {
   starlight: 0, //星辉
+  relicEssence: 0, //圣物精粹 => 升级圣遗物用
 }
 
 
