@@ -5,9 +5,9 @@ import fetch from 'node-fetch'
 import { render } from "../adapter/render.js";
 import utils from '../utils/utils.js'
 
-if (!fs.existsSync(process.cwd()+`/data/html/ayaka-plugin/storage/`)) {
-  fs.mkdirSync(process.cwd()+`/data/html/ayaka-plugin/storage/`);
-}
+// if (!fs.existsSync(process.cwd()+`/data/html/ayaka-plugin/storage/`)) {
+//   fs.mkdirSync(process.cwd()+`/data/html/ayaka-plugin/storage/`);
+// }
 
 export class storage extends plugin {
   constructor () {
