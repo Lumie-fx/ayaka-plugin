@@ -9,7 +9,7 @@ strength:
   max: 160       #体力上限
   recovery: 180  #每日体力恢复
 
-syw: #todo 强化重置 by starlight
+syw: #todo 强化重置 by starlight   2.分解/删除提供80%精粹
   bag: 8         #圣遗物可保存包裹大小
   essence: 16    #圣遗物精粹(强化圣遗物)获取中位数, 25%上下浮动
   random4: .25   #圣遗物出4词条概率

@@ -47,7 +47,9 @@
 }
 
 ayaka:${id}:role => [{
-  name: '甘雨', star: 5, element: '冰', num: 1, level: 1
+  name: '甘雨', star: 5, element: '冰', num: 1, level: 1, equip: {
+    weaponId: weapon_id
+  }
 },{
   name: '多莉', star: 4, element: '雷', num: 1(命座:自动增加), level: 1
 }]

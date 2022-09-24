@@ -1,41 +1,39 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
-    <link rel="shortcut icon" href="#" />
-    <link rel="stylesheet" type="text/css" href="{{ayaka}}/css/storage.css?v=1.0" />
-  </head>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <link rel="shortcut icon" href="#" />
+  <link rel="stylesheet" type="text/css" href="{{ayaka}}/css/storage.css?v=1.0" />
+</head>
 
-  <body {{ if list.length <= 8}}class="list8"{{/if}}>
-    <div class="container" id="container">
-      <div class="main_box">
-        <div class="base_info">
-          <div class="uid">ID: {{name}}</div>
-        </div>
-        <div class="item_box">
-          {{each list as val i}}
-          <div class="item">
-            <div class="role_box">
-              {{if val.element }}
-                <img class="element_img" src="{{root}}/genshin/resources/img/gacha/items/{{val.element}}.png"/>
-              {{else}}
-                <span class="weaponId"> {{i+1}}</span>
-              {{/if}}
-              {{if val.num>0}}
-                <span class="life life{{val.element}}"> {{if val.num > 7}} 6 {{else}} {{val.num-1}} {{/if}}</span>
-              {{/if}}
-              <div class="bg{{val.star}}"></div>
-              <img class="role_img" src="{{root}}/genshin/resources/img/role/{{val.name}}.png"/>
-              <div class="desc">Lv.{{val.level || 1}}</div>
-            </div>
-             <div class="text_box">
-            </div>
-          </div>
-          {{/each}}
-        </div>
-      </div>
+<body {{ if list.length <= 8}}class="list8"{{/if}}>
+<div class="container" id="container">
+  <div class="main_box">
+    <div class="base_info">
+      <div class="uid">ID: {{name}}</div>
     </div>
-  </body>
-  <script type="text/javascript">
-  </script>
+    <div class="item_box">
+      {{each list as role i}}
+      <div class="item">
+        <div class="role_box">
+          <img class="element_img" src="{{root}}/genshin/resources/img/gacha/items/{{role.element}}.png"/>
+          <span class="life life{{role.element}}"> {{if role.num > 7}} 6 {{else}} {{role.num-1}} {{/if}}</span>
+          <div class="bg{{role.star}}"></div>
+          <img class="role_img" src="{{root}}/genshin/resources/img/role/{{role.name}}.png"/>
+          <div class="desc_role_level">Lv.{{role.level || 1}}</div>
+          {{if role.withWeapon }}
+            <div class="role_weapon">
+              <img class="role_weapon_img" src="{{root}}/genshin/resources/img/weapon/{{role.equip.weapon.name}}.png" alt="">
+            </div>
+          {{/if}}
+        </div>
+        <div class="text_box"></div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+</script>
 </html>

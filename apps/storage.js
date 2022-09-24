@@ -24,6 +24,9 @@ export class storage extends plugin {
         reg: "^-武器$",
         fnc: 'ayakaWeapon',
       },{
+        reg: "^-.*装备[0-9]*$",
+        fnc: 'ayakaEquip',
+      },{
         reg: "^-精炼[0-9]*$",
         fnc: 'ayakaWeaponUp',
       },{
@@ -32,6 +35,9 @@ export class storage extends plugin {
       },{
         reg: "^-材料$",
         fnc: 'ayakaMaterial',
+      },{
+        reg: "^-挖矿$",
+        fnc: 'ayakaMining',
       }]
     })
   }
@@ -48,11 +54,24 @@ export class storage extends plugin {
     const name = e.sender.card; //qq昵称
 
     let role = await utils.getRedis(`ayaka:${user_id}:role`);
+    let weapon = await utils.getRedis(`ayaka:${user_id}:weapon`);
+    role.sort((a, b) => b.star - a.star);
+    role.map(res => {
+      const thisWeapon = lodash.find(weapon, {id: res?.equip?.weaponId});
+      if(res?.equip?.weaponId > -1 && thisWeapon){
+        res.withWeapon = true;
+        res.equip.weapon = {
+          ...thisWeapon
+        };
+      }
+    });
+
+    // console.log(role)
 
     let base64 = await render("pages", "storageRole", {
       name: name,
       user_id: user_id,
-      list: role.sort((a, b) => b.star - a.star), //{name, star, element, num, level}
+      list: role, //{name, star, element, num, level}
       type: 'character'
     });
 
@@ -168,6 +187,86 @@ export class storage extends plugin {
     //   await e.reply(base64);
     // }
     return true;
+  }
+
+  //挖矿
+  async ayakaMining(e){
+    if (e.img || e.hasReply) {
+      return;
+    }
+
+    logger.mark('===ayaka storage mining===')
+
+    const user_id = e.user_id; //qq
+    const name = e.sender.card; //qq昵称
+
+    let item = await utils.getRedis(`ayaka:${user_id}:item`, {});
+
+    // let base64 = await render("pages", "storageWeapon", {
+    //   name: name,
+    //   user_id: user_id,
+    //   list: weapon.sort((a, b) => b.star - a.star), //{name, star, element, num, level}
+    //   type: 'weapon'
+    // });
+    //
+    // if (base64) {
+    //   await e.reply(base64);
+    // }
+    return true;
+  }
+
+  //装备
+  async ayakaEquip(e){
+    if (e.img || e.hasReply) {
+      return;
+    }
+
+    logger.mark('===ayaka storage equip===')
+
+    const user_id = e.user_id; //qq
+    const name = e.sender.card; //qq昵称
+
+    const keyArr = e.msg.replace('-', '').split('装备');
+    const roleName = utils.getRoleNameByNickname(keyArr[0]);
+    const weaponId = keyArr[1];
+
+    const savedRole = await utils.getRedis(`ayaka:${user_id}:role`, []);
+    let savedWeapon = await utils.getRedis(`ayaka:${user_id}:weapon`, []);
+    savedWeapon.sort((a, b) => b.star - a.star);
+
+    const role = lodash.find(savedRole, {name: roleName});
+    const weapon = savedWeapon?.[+weaponId-1];
+    if(!role){
+      return await e.reply([segment.at(e.user_id, name), ` 暂未获取角色:${roleName}`]);
+    }
+    if(!weapon){
+      return await e.reply([segment.at(e.user_id, name), ` 序号为${weaponId}的武器不存在`]);
+    }
+
+    const selectedRoleType = utils.getWeaponTypeByName(roleName);
+    if(selectedRoleType !== weapon.element){
+      return await e.reply([segment.at(e.user_id, name), ` ${roleName}无法装备类型为${weapon.element}的武器`]);
+    }
+
+    const weapon_id = weapon.id;
+    const anotherIsEquipArr = savedRole.filter(res => res?.equip?.weaponId === weapon_id && roleName !== res.name);
+    let outer_msg = '';
+
+    if(anotherIsEquipArr.length !== 0){
+      anotherIsEquipArr[0].equip.weaponId = -1;
+      outer_msg = ` ${anotherIsEquipArr[0].name}已卸下${weapon.name}(Lv:${weapon.level})，${role.name}已装备。`
+    }else{
+      outer_msg = ` ${role.name}已装备${weapon.name}(Lv:${weapon.level})。`
+    }
+    if(!role.equip){
+      role.equip = {};
+    }
+    role.equip.weaponId = weapon_id;
+
+    await utils.setRedis(`ayaka:${user_id}:role`, savedRole);
+
+    return await e.reply([segment.at(e.user_id, name), outer_msg]);
+
   }
 
 }

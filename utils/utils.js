@@ -1,14 +1,43 @@
 import YAML from 'yaml'
 import fs from 'node:fs'
+import * as nickNameList from "../../miao-plugin/config/system/character.js";
 
 const ayakaConfig = YAML.parse(
   fs.readFileSync(process.cwd()+"/plugins/ayaka-plugin/config/ayaka.set.yaml", "utf8")
+)
+const role2weaponType = YAML.parse(
+  fs.readFileSync(process.cwd()+"/plugins/ayaka-plugin/config/role2weaponType.yaml", "utf8")
 )
 
 export default {
   //配置注入
   config: {
     ...ayakaConfig
+  },
+  set: {
+    role2weaponType
+  },
+  //根据别名获取正式名称
+  getRoleNameByNickname(nick){
+    const character = nickNameList.characters;
+    let name = '';
+    for(let key in character){
+      if(character[key].indexOf(nick) > -1){
+        name = character[key][0];
+      }
+    }
+    return name;
+  },
+  //根据名字获取角色武器类型 [法器 单手剑 双手剑 枪 弓]
+  getWeaponTypeByName(name){
+    const role2weaponType = this.set.role2weaponType
+    let type = '';
+    for(let key in role2weaponType){
+      if(role2weaponType[key].indexOf(name) > -1){
+        type = key;
+      }
+    }
+    return type;
   },
   //                         1=1s  35day
   async setRedis(key, value, time = 30e6){
