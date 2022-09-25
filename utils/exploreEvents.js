@@ -19,9 +19,11 @@ export default {
     ],
     lv4: [
       {text: '你走到了北国银行门口，', key: 'check', check: ['BankOfNorthVIPCard'], checkSucc: 'northBankSucc', checkFail: 'northBankFail'},
+      {text: '你到了黄金屋，遇到了好战的公子，', key: 'check', check: true, checkSucc: 'tartagliaV1'},
     ],
     lv5: [
       {text: '你在路中央看到了亮闪闪的东西，过去将它捡了起来。', key: 'primogem', amount: 100},
+      {text: '你遇见小吉祥草王，得到了神明灌装知识，然后晕了过去。'},
     ]
   },
   check: {
@@ -31,9 +33,21 @@ export default {
     ],
     northBankFail: [
       {text: '因为没有贵宾卡，只能走开了。'},
-      {text: '妄想进入银行，被管理人发现并揍了一顿，探索中断。', key: 'finish'},
+      {text: '妄想进入银行，被管理人发现并揍了一顿。', key: 'finish'},
       {text: '使用荒星卡bug卡进了银行，', key: 'check', check: true, checkSucc: 'northBankSucc'},
-    ]
+    ],
+    tartagliaV1: [
+      {text: '他二话不说就跟你开打，你被暴揍了一顿。'},
+      {text: '他二话不说就跟你开打，结果被你几下制服，开启了二阶段。', key: 'check', check: true, checkSucc: 'tartagliaV2'},
+    ],
+    tartagliaV2: [
+      {text: '他使用雷元素力用迅捷的动作让你反应不及，你被暴揍了一顿。'},
+      {text: '他使用雷元素力后仍被你压制，愤怒之下开启了魔王武装。', key: 'check', check: true, checkSucc: 'tartagliaV3'},
+    ],
+    tartagliaV3: [
+      {text: '魔王武装后的达达利亚过于恐怖，你被暴揍了一顿。'},
+      {text: '你自沉着应对，矫健的身姿游走于电光水隙之间，把他打成了地脉花，你获得了丰富的奖励。', key: 'primogem', amount: 200},
+    ],
   },
 
   msgList: [],
@@ -58,7 +72,8 @@ export default {
 
     num += Math.floor(Math.random() * 20) + 10;
 
-    // console.log(num);
+    //todo
+    console.log(num);
 
     let eventLv = '';
     if(num >= 0) eventLv = 'lv1';
@@ -107,6 +122,7 @@ export default {
     await func(event);
 
     if(finish){
+      this.msgList.push('探索中断。');
       return this.msgList;
     }else{
       await this.next(num, id);
