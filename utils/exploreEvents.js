@@ -41,7 +41,7 @@ export default {
       {text: '他二话不说就跟你开打，结果被你几下制服，开启了二阶段。', key: 'check', check: true, checkSucc: 'tartagliaV2'},
     ],
     tartagliaV2: [
-      {text: '他使用雷元素力用迅捷的动作让你反应不及，你被暴揍了一顿。'},
+      {text: '他使用雷元素力后迅捷的动作让你反应不及，你被暴揍了一顿。'},
       {text: '他使用雷元素力后仍被你压制，愤怒之下开启了魔王武装。', key: 'check', check: true, checkSucc: 'tartagliaV3'},
     ],
     tartagliaV3: [
