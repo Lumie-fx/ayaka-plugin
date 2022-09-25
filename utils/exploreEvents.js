@@ -50,7 +50,7 @@ export default {
     this.msgList.push('已结束。');
 
     //todo 数据保存
-    console.log(this.gain);
+    // console.log(this.gain);
 
     return this.msgList;
   },
@@ -58,7 +58,7 @@ export default {
 
     num += Math.floor(Math.random() * 20) + 10;
 
-    console.log(num);
+    // console.log(num);
 
     let eventLv = '';
     if(num >= 0) eventLv = 'lv1';

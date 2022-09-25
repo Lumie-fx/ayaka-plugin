@@ -29,7 +29,7 @@ export class ayakaExplore extends plugin {
     const name = e.sender.card; //qq昵称
 
     const msg = await exploreEvents.start(0, user_id);
-    console.log(msg)
+    // console.log(msg)
     // await e.reply(await Bot.makeForwardMsg(msgList));
     const newList = msg.map(res => {
       return {
