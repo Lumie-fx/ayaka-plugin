@@ -1,3 +1,36 @@
+
+
+ayaka:${id}:role => [{
+  name: '甘雨', star: 5, element: '冰', num: 1, level: 1, equip: {
+    weaponId: weapon_id
+  }
+},{
+  name: '多莉', star: 4, element: '雷', num: 1(命座:自动增加), level: 1
+}]
+
+ayaka:${id}:weapon => [{
+  name: '糟心', star: 4, element: '法器', num: 1(精炼:不自动增加), level: 1, id: number
+}]
+
+
+
+ayaka:${id}:item => {
+  starlight: 0, //星辉
+  relicEssence: 0, //圣物精粹 => 升级圣遗物用
+}
+
+#注定一抽
+ayaka:${id}:sywDecideGet => boolean
+
+#体力
+ayaka:${id}:strength => {
+  lastUpdatedTime: +new Date(),
+  strength: 160
+}
+
+
+
+
 #001
 {
   name: 'qq name',
@@ -44,25 +77,6 @@
     { name: '弹弓', star: 3, type: 'weapon', element: '弓', index: 8 },
     { name: '黎明神剑', star: 3, type: 'weapon', element: '单手剑', index: 9 }
   ]
-}
-
-ayaka:${id}:role => [{
-  name: '甘雨', star: 5, element: '冰', num: 1, level: 1, equip: {
-    weaponId: weapon_id
-  }
-},{
-  name: '多莉', star: 4, element: '雷', num: 1(命座:自动增加), level: 1
-}]
-
-ayaka:${id}:weapon => [{
-  name: '糟心', star: 4, element: '法器', num: 1(精炼:不自动增加), level: 1, id: number
-}]
-
-
-
-ayaka:${id}:item => {
-  starlight: 0, //星辉
-  relicEssence: 0, //圣物精粹 => 升级圣遗物用
 }
 
 
@@ -156,14 +170,57 @@ group =>
 <!--  F:\learn\project3.0-20220914\Yunzai-Bot\plugins\genshin\resources\img\role -->
 <!--   {{_sys_res_path}}/genshin/gacha/items/shadow-{{$value.star}}.png -->
 
-#注定一抽
-ayaka:${id}:sywDecideGet => boolean
 
-#体力
-ayaka:${id}:strength => {
-  lastUpdatedTime: +new Date(),
-  strength: 160
+
+
+syw =>
+
+{
+  isNow: true,
+  id: '1663766152686syw',
+  name: '遍结寒霜的傲骨',
+  type: 'glass',
+  typeZh: '空之杯',
+  level: '20',
+  mainAttr: 'attack',
+  mainAttrZh: '攻击力',
+  eleType: '',
+  mainNum: '46.6%',
+  secondArr: [
+    { attr: 'critical', attrZh: '暴击率', realNum: 7, num: '7.0%' },
+    {
+      attr: 'criticalDamage',
+      attrZh: '暴击伤害',
+      realNum: 14.76,
+      num: '14.8%'
+    },
+    { attr: 'defence', attrZh: '防御力', realNum: 17.49, num: '17.5%' },
+    { attr: 'life', attrZh: '生命值', realNum: 9.91, num: '9.9%' }
+  ]
 }
 
 
 
+{
+  isNow: true,
+  id: '1663766152686syw',
+  name: '遍结寒霜的傲骨',
+  type: 'glass',
+  typeZh: '空之杯',
+  level: '0',
+  mainAttr: 'attack',
+  mainAttrZh: '攻击力',
+  eleType: '',
+  mainNum: '7.0%',
+  secondArr: [
+    { attr: 'defence', attrZh: '防御力', realNum: 7.29, num: '7.3%' },
+    {
+      attr: 'criticalDamage',
+      attrZh: '暴击伤害',
+      realNum: 6.22,
+      num: '6.2%'
+    },
+    { attr: 'critical', attrZh: '暴击率', realNum: 3.89, num: '3.9%' },
+    { attr: 'life', attrZh: '生命值', realNum: 5.83, num: '5.8%' }
+  ]
+}

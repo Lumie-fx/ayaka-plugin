@@ -37,6 +37,9 @@ export class syw extends plugin {
         reg: '^保存$', //匹配的正则
         fnc: 'sywSave',
       },{
+        reg: '^重置$', //匹配的正则
+        fnc: 'sywReset',
+      },{
         reg: '^删除全部圣遗物$',
         fnc: 'sywDeleteAll',
       },{
@@ -219,7 +222,76 @@ export class syw extends plugin {
     return true;
   }
 
-//强化
+  //重置
+  async sywReset(e){
+    if (e.img || e.hasReply) {
+      return;
+    }
+
+    const user_id = e.user_id;
+    const name = e.sender.card;
+    const sywListAll = await utils.getRedis(`genshin:syw:${user_id}`, {});
+
+    if(!sywListAll.bag){
+      return await e.reply([segment.at(e.user_id, name), ` 你的包裹中没有圣遗物，请先保存圣遗物~`]);
+    }
+
+    const isNowSyw = lodash.find(sywListAll.bag, {isNow: true});
+    if(!isNowSyw){
+      return await e.reply([segment.at(e.user_id, name), ` 只能重置包裹中的圣遗物~`]);
+    }
+
+    const reduce = utils.config.syw.resetCost;
+    const relicStatus = await utils.loadSaveItemByNum(user_id, 'relicEssence', - reduce);
+    const relicNum = await utils.getRedis(`ayaka:${user_id}:item`);
+    if(!relicStatus){
+      return await e.reply([segment.at(e.user_id, name), ` 重置需要${reduce}圣遗物精粹，你当前的精粹数量为${relicNum.relicEssence}，可通过抽取圣遗物获取。`]);
+    }
+
+    const mainAttr = isNowSyw.mainAttr;      //随机主属性en
+    const mainAttrObj = sywConfig.upgradeList[mainAttr];//该属性是数字还是百分比
+    const mainNum = sywConfig.upgradeList[mainAttr].main[0];//主属性数值num
+    const randomType = utils.config.syw.resetLoss;
+    const nowSecondList = isNowSyw.secondArr.map(res => res.attr);
+    const secondAttrSample = lodash.sampleSize(nowSecondList, Math.random() < randomType ? 4 : 3);//副属性抽取
+    const thisSyw = {
+      ...isNowSyw,
+      level: '0',                                   //当前等级
+      mainNum: mainAttrObj.type === 'number' ? mainNum.toFixed(0) : (mainNum.toFixed(1)+'%'), //717
+      secondArr: secondAttrSample.map(res=>{
+        const inner = sywConfig.upgradeList[res],
+          num = lodash.sample(inner.secondary);
+        return {
+          attr: res,         //life
+          attrZh: sywConfig.en2zh[res],//生命值
+          realNum: parseFloat(num.toFixed(2)),
+          num: inner.type === 'number' ? num.toFixed(0) : (num.toFixed(1)+'%') //5.8%
+        }
+      })
+    }
+
+    let base64 = await render("pages", "syw", {
+      save_id: user_id,
+      name: name,
+      syw: thisSyw,
+      sywDetail: this.getSywDetailInfo(thisSyw.name),
+    });
+
+    if (base64) {
+      sywListAll.bag.map(res=>{
+        if(res.id === thisSyw.id){
+          res.level = thisSyw.level;
+          res.mainNum = thisSyw.mainNum;
+          res.secondArr = thisSyw.secondArr;
+        }
+      });
+      await utils.setRedis(`genshin:syw:${user_id}`, sywListAll)
+      await e.reply(base64);
+    }
+    return true;
+  }
+
+  //强化
   async sywLevelUp(e){
     if (e.img || e.hasReply) {
       return;

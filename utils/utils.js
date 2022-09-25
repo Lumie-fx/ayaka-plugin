@@ -101,7 +101,7 @@ export default {
     };
   },
 
-  //num道具的存取    qq号     物品key   变更数量
+  //num道具的存取            qq号     物品key   变更数量
   async loadSaveItemByNum(userId, itemName, changeNum){
     let savedItem = await this.getRedis(`ayaka:${userId}:item`, {});
     let itemCalc = (savedItem?.[itemName] || 0) + changeNum;
