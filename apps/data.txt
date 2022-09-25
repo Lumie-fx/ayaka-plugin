@@ -15,9 +15,15 @@ ayaka:${id}:weapon => [{
 
 
 ayaka:${id}:item => {
-  starlight: 0, //星辉
+  starlight: 0,    //星辉
   relicEssence: 0, //圣物精粹 => 升级圣遗物用
+  mora: 10000,     //摩拉
+  primogem: 0      //原石
 }
+
+ayaka:${id}:explore => [ //探险每个步骤临时道具
+  BankOfNorthVIPCard  //北国银行贵宾卡
+]
 
 #注定一抽
 ayaka:${id}:sywDecideGet => boolean
@@ -223,4 +229,30 @@ syw =>
     { attr: 'critical', attrZh: '暴击率', realNum: 3.89, num: '3.9%' },
     { attr: 'life', attrZh: '生命值', realNum: 5.83, num: '5.8%' }
   ]
+}
+
+
+
+
+async func1(e) {
+     //不开放私聊功能
+     if (!e.isGroup) {
+        return;
+    }
+    /** 设置上下文 */
+    this.setContext('keyword', isGroup = false, time = 120);
+    /** 回复 */
+    await e.reply('', false, { at: true });
+    return;
+}
+
+
+async func2(e) {
+     //不开放私聊功能
+     if (!e.isGroup) {
+        return;
+    }
+    /** 结束上下文 */
+    this.finish('keyword');
+    return;
 }
