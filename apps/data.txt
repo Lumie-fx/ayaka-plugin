@@ -23,7 +23,14 @@ ayaka:${id}:item => {
 
 ayaka:${id}:explore => [ //探险每个步骤临时道具
   BankOfNorthVIPCard  //北国银行贵宾卡
+  TreasureMap //盗宝团藏宝图
+  CanningKnowledge //罐装知识
+  LotsOfWater //很多水
 ]
+
+ayaka:${id}:exploreSavedItem => { //探索保存的长期道具
+
+}
 
 #注定一抽
 ayaka:${id}:sywDecideGet => boolean
@@ -32,6 +39,12 @@ ayaka:${id}:sywDecideGet => boolean
 ayaka:${id}:strength => {
   lastUpdatedTime: +new Date(),
   strength: 160
+}
+
+#探险相关
+ayaka:${id}:explore =>{
+  exploreLv: 0, //探险等级
+  exploreExp: 0, //探险经验
 }
 
 

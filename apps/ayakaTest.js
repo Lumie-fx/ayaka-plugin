@@ -27,17 +27,9 @@ export class ayakaTest extends plugin {
     }
     const user_id = e.user_id;
 
-    const list = utils.set.role2weaponType
-    const name = '砂糖'
+    const list = utils.config.explore
 
-    let type = '';
-    for(let key in list){
-      if(list[key].indexOf(name) > -1){
-        type = key;
-      }
-    }
-    console.log(type)
-
+    console.log(utils.config.explore.expGain[4])
 
     // const item = await utils.getRedis(`ayaka:${user_id}:item`)
     // console.log(item)

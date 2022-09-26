@@ -28,6 +28,8 @@ export class ayakaExplore extends plugin {
     const user_id = e.user_id; //qq
     const name = e.sender.card; //qq昵称
 
+    //todo 体力消耗40
+
     const msg = await exploreEvents.start(0, user_id);
     // console.log(msg)
     // await e.reply(await Bot.makeForwardMsg(msgList));
