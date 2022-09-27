@@ -29,7 +29,7 @@ ayaka:${id}:explore => [ //探险每个步骤临时道具
 ]
 
 ayaka:${id}:exploreSavedItem => { //探索保存的长期道具
-
+  KazariGanTian/KazariShenShe/KazariWuBaiZang/KazariHuangHai/KazariSheFengXing/FoxMask //神樱大祓道具
 }
 
 #注定一抽
