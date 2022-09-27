@@ -4,26 +4,44 @@ import utils from "../utils/utils.js";
 export default {
   event: {
     lv1: [
-      {text: '遇见盗宝鼬，一不留神被偷了摩拉。', key: 'calc', thing: 'mora', amount: - Math.ceil(Math.random()*5) * 1000},
-      {text: '遇见盗宝鼬，打晕它得到了摩拉。', key: 'calc', thing: 'mora', amount: Math.ceil(Math.random()*5) * 1000},
+      {text: '遇见盗宝鼬，一不留神被偷了摩拉。', thing: 'mora', amount: - Math.ceil(Math.random()*5) * 1000},
+      {text: '遇见盗宝鼬，打晕它得到了摩拉。', thing: 'mora', amount: Math.ceil(Math.random()*5) * 1000},
       {text: '遇见盗宝鼬，相安无事无事发生。'},
+      {text: '你走在路上，遇到了野生的旋转冰蕈兽，', key: 'check', check: true, checkSucc: 'patchMushroom'},
+      {text: '你走在路上，遇到了野生的浮游草蕈兽，', key: 'check', check: true, checkSucc: 'patchMushroom'},
+      {text: '你走在路上，遇到了野生的伸缩风蕈兽，', key: 'check', check: true, checkSucc: 'patchMushroom'},
+      {text: '你走在路上，遇到了野生的伸缩火蕈兽，', key: 'check', check: true, checkSucc: 'patchMushroom'},
+      {text: '你走在路上，遇到了野生的旋转雷蕈兽，', key: 'check', check: true, checkSucc: 'patchMushroom'},
+      {text: '你走在路上，遇到了野生的伸缩岩蕈兽，', key: 'check', check: true, checkSucc: 'patchMushroom'},
+      {text: '你走在路上，遇到了野生的浮游水蕈兽，', key: 'check', check: true, checkSucc: 'patchMushroom'},
       {text: '被大野猪拱了，你很生气但是追不上它。'},
-      {text: '被大野猪拱了，你追上去把它剁成了兽肉。'},
+      {text: '被大野猪拱了，你追上去把它剁成了兽肉。', thing: 'exp', amount: 1},
       {text: '看见了飞在空中的晶蝶，但是它飞太高了你拿它没有办法。'},
       {text: '看见了飞在空中的晶蝶，你尝试抓它', key: 'check', check: true, checkSucc: 'catchCrystalButterfly'},
       {text: '你很口渴，去喝了不少水。', key: 'item', item: ['LotsOfWater']},
       {text: '你发现你穿越到了500年前，', key: 'check', check: true, checkSucc: 'go500Ago'},
+      {text: '你见到了一群丘丘人，痛揍了它们一顿，得到了不少摩拉。', thing: 'mora', amount: 8000},
+      {text: '你见到了一群丘丘人，痛揍了它们一顿。', thing: 'exp', amount: 2},
+      {text: '一个火把丘丘人冲上来对你使出了火之神神乐，你被连招致死。', key: 'finish'},
     ],
     lv2: [
       {text: '你走在路上，意外捡到了北国银行的贵宾卡。', key: 'item', item: ['BankOfNorthVIPCard']},
-      {text: '你见到了一群丘丘人，痛揍了它们一顿，得到了不少摩拉。', key: 'calc', thing: 'mora', amount: 8000},
-      {text: '一个火把丘丘人突然袭击你，你被撞倒在地，摩拉散落一地。', key: 'calc', thing: 'mora', amount: -5000},
       {text: '你遇见了多莉，得到了奇怪的罐装知识。', key: 'item', item: ['CanningKnowledge']},
       {text: '你遇见了带面具的巫女，', key: 'check', check: true, checkSucc: 'helpWitch', priority: 100},
+      {text: '你到了西风骑士团，遇到了从中走出的骑兵队长，'}, //todo v我50
+      {text: '你看到3朵甜甜花围着一个宝箱，'}, //todo 骗骗花
+      {text: '一个雷莹术士突然对你展开攻击，你猝不及防之下中招了。', thing: 'exp', amount: -2},
+      {text: '你看见一个落单的雷莹术士，', key: 'check', check: true, checkSucc: 'meetFatui'},
+      {text: '你看见一个落单的愚人众岩使游击兵，', key: 'check', check: true, checkSucc: 'meetFatui'},
+      {text: '你看见一个落单的愚人众冰铳重卫士，', key: 'check', check: true, checkSucc: 'meetFatui'},
+      {text: '你看见一个落单的愚人众火铳游击兵，', key: 'check', check: true, checkSucc: 'meetFatui'},
+      {text: '你看见一个落单的愚人众雷锤前锋军，', key: 'check', check: true, checkSucc: 'meetFatui'},
     ],
     lv3: [
-      {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了许多摩拉。', key: 'calc', thing: 'mora', amount: 20000},
+      {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了许多摩拉。', thing: 'mora', amount: 20000},
+      {text: '你见到了一群盗宝团，痛揍了它们一顿。', thing: 'exp', amount: 3},
       {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了一张藏宝图。', key: 'item', item: ['TreasureMap']},
+      {text: '你遇见了一个愚人众小队，以执行官达达鸭朋友的名义骗到了不少战略资金。', thing: 'mora', amount: 50000},
       {text: '你遇见了镀金旅团，', key: 'check', check: true, checkSucc: 'meetGoldenParty'},
     ],
     lv4: [
@@ -33,18 +51,35 @@ export default {
       {text: '经历了许多事件，你心生困意，找了个地方睡了一觉，', key: 'check', check: ['ChildBody'], checkSucc: 'meetLanNaRaSucc', checkFail: 'meetLanNaRaFail'},
     ],
     lv5: [
-      {text: '你在路中央看到了亮闪闪的东西，过去将它捡了起来。', key: 'calc', thing: 'primogem', amount: 100},
+      {text: '你在路中央看到了亮闪闪的东西，过去将它捡了起来。', thing: 'primogem', amount: 100},
       {text: '你遇见了？？？', key: 'check', check: ['CanningKnowledge','LotsOfWater'], checkSucc: 'naXiDaSucc', checkFail: 'naXiDaFail'},
       {text: '你来到了鸣神大社，', key: 'check', check: ['FoxMask'], checkSucc: 'goMingShenSucc', checkFail: 'goMingShenFail'},
     ]
   },
   check: {
+    meetFatui: [
+      {text: '大路朝天，各走一边，你们打了个照面就走开了。'},
+      {text: '你觉得你可以，然后冲了上去，但是你被打趴了。', thing: 'exp', amount: -2},
+      {text: '你觉得你可以，然后冲了上去，没想到你真打赢了。', thing: 'exp', amount: 2},
+    ],
+    patchMushroom: [
+      {text: '觉得它太可爱了没忍心欺负它。'},
+      {text: '把它打成了蘑菇孢子。', thing: 'exp', amount: 1},
+      {text: '打跑了一只，引来了一群，这次跑的是你。', thing: 'exp', amount: 1},
+      {text: ['你以为是蕈兽，实际上你看错了，他是飘浮灵，', '你被打跑了。']},
+      {text: ['你以为是蕈兽，实际上你看错了，他是飘浮灵，', '它嚣张的眼神让你很生气，你跟它干了一架，'], key: 'check', check: true, checkSucc: 'fightWithPiaoFuLing'},
+    ],
+    fightWithPiaoFuLing: [
+      {text: '很抱歉你没打过。'},
+      {text: '你干掉了它，正当你松口气的时候，它突然爆炸把你炸晕了。', thing: 'exp', amount: 1},
+      {text: '你用体重优势把它从空中扯下，戳爆了它。', thing: 'exp', amount: 3},
+    ],
     goMingShenSucc: [
       //todo 非重复获得判断
       {text: '欣赏樱花的途中，八重宫司认出了你手中的面具，她感慨颇深，并愿折下狐枝随你同行。', key: 'role', role: '八重神子'}, //todo deleteItem: [] 是否可重复做
     ],
     goMingShenFail: [
-      {text: '欣赏了神社内的樱花。'},
+      {text: '欣赏了神社内的樱花，觉得心情愉悦。'},
     ],
     meetLanNaRaSucc: [
       {text: '因为你是小孩子，醒来后你居然看见一棵蔬菜给你准备了不少水果。支线制作中...'},
@@ -62,7 +97,7 @@ export default {
     ],
     northBankSucc: [
       {text: '找到服务员交还了贵宾卡。', priority: 300},
-      {text: '进入了银行，意外找到了储藏室中的摩拉箱。', key: 'calc', thing: 'mora', amount: 200000},
+      {text: '进入了银行，意外找到了储藏室中的摩拉箱。', thing: 'mora', amount: 200000},
     ],
     northBankFail: [
       {text: '因为没有贵宾卡，只能走开了。'},
@@ -71,7 +106,7 @@ export default {
     ],
     tartagliaV0: [
       {text: '他看你只是个小孩子，对你没兴趣，把你赶走了。'},
-      {text: '他看你是个小孩子，觉得你很可爱，给了你一些摩拉买玩具。', key: 'calc', thing: 'mora', amount: 100000},
+      {text: '他看你是个小孩子，觉得你很可爱，给了你一些摩拉买玩具。', thing: 'mora', amount: 100000},
     ],
     tartagliaV1: [
       {text: '他二话不说就跟你开打，你被暴揍了一顿。'},
@@ -79,20 +114,20 @@ export default {
       {text: '他二话不说就跟你开打，被你压制后想使用大鲸鱼，结果鲸鱼今天休假了用不出来，被打进了二阶段，', key: 'check', check: true, checkSucc: 'tartagliaV2'},
     ],
     tartagliaV2: [
-      {text: '他使用雷元素力后迅捷的动作让你反应不及，你被暴揍了一顿。'},
+      {text: '他使用雷元素力后迅捷的动作让你反应不及，你被暴揍了一顿。', thing: 'exp', amount: 3},
       {text: '他使用雷元素力后仍被你压制，愤怒之下开启了魔王武装，', key: 'check', check: true, checkSucc: 'tartagliaV3'},
       {text: '他使用雷元素力后因为速度过快撞到了墙，为了掩饰尴尬开启了魔王武装', key: 'check', check: true, checkSucc: 'tartagliaV3'},
     ],
     tartagliaV3: [
-      {text: '魔王武装后的达达利亚过于恐怖，你被暴揍了一顿。'},
-      {text: '你自沉着应对，矫健的身姿游走于电光水隙之间，最终把他打成了地脉花，你获得了丰富的奖励。', key: 'calc', thing: 'primogem', amount: 100},
+      {text: '魔王武装后的达达利亚过于恐怖，你被暴揍了一顿。', thing: 'exp', amount: 5},
+      {text: '你自沉着应对，矫健的身姿游走于电光水隙之间，最终把他打成了地脉花，你获得了丰富的奖励。', thing: 'primogem', amount: 100},
     ],
     catchCrystalButterfly: [
       {text: '可惜它飞太高了你够不着。'},
       {text: '最终被你抓到了。', key: 'strength', amount: 20},
     ],
     naXiDaSucc: [
-      {text: '但是你水喝多了尿急没有理她，而是直接冲向了厕所，出来后发现她在等你，她说她叫纳西妲，并帮你解开了罐装知识的秘密，你得到了亮闪闪的东西。', key: 'calc', thing: 'primogem', amount: 300},
+      {text: '但是你水喝多了尿急没有理她，而是直接冲向了厕所，出来后发现她在等你，她说她叫纳西妲，并帮你解开了罐装知识的秘密，你得到了亮闪闪的东西。', thing: 'primogem', amount: 300},
     ],
     naXiDaFail: [
       {text: '但是你并不认识？？？'},
@@ -135,6 +170,7 @@ export default {
     primogem: '原石',
     exploreExp: '探索经验',
     strength: '体力',
+    exp: '额外探索经验',
   },
 
   exploreLv: 0,
@@ -227,13 +263,14 @@ export default {
       if(event.text){
         this.msgList = this.msgList.concat(event.text);
       }
+      if(event.thing){
+        this.gain[event.thing] = (this.gain?.[event.thing] || 0) + event.amount;
+      }
+
       if(event.key === 'finish'){
         finish = true;
       }else if(event.key === 'item'){
         this.itemList = lodash.uniq(this.itemList.concat(event.item));
-        if(event.thing){
-          this.gain[event.thing] = (this.gain?.[event.thing] || 0) + event.amount;
-        }
         if(event.saveItem){
           //let exploreSavedItem = await utils.getRedis(`ayaka:${id}:exploreSavedItem`, []);
           //await utils.setRedis(`ayaka:${id}:exploreSavedItem`, lodash.uniq([...exploreSavedItem, ...event.item]));
@@ -245,6 +282,9 @@ export default {
         }
         if(event.check === true){
           const newEventList = this.check[event.checkSucc];
+          await func(this.sample(newEventList));
+        }else if(event.check === false){
+          const newEventList = this.check[event.checkFail];
           await func(this.sample(newEventList));
         }else{
           let flag = true;
@@ -259,9 +299,7 @@ export default {
         //todo event.role = '八重神子'
 
       }else{
-        if(event.thing){
-          this.gain[event.thing] = (this.gain?.[event.thing] || 0) + event.amount;
-        }
+
       }
     }
 

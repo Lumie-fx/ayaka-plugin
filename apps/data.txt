@@ -18,7 +18,8 @@ ayaka:${id}:item => {
   starlight: 0,    //星辉
   relicEssence: 0, //圣物精粹 => 升级圣遗物用
   mora: 10000,     //摩拉
-  primogem: 0      //原石
+  primogem: 0,     //原石
+  exp: 0,          //额外探险经验
 }
 
 ayaka:${id}:explore => [ //探险每个步骤临时道具

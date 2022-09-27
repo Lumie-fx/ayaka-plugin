@@ -4,8 +4,6 @@ import fs from "fs";
 import fetch from 'node-fetch'
 import { render } from "../adapter/render.js";
 import utils from "../utils/utils.js";
-import * as nickNameList from "../../miao-plugin/config/system/character.js";
-import {characters} from "../../miao-plugin/config/system/character.js";
 
 export class ayakaTest extends plugin {
   constructor () {

@@ -1,6 +1,6 @@
 import YAML from 'yaml'
 import fs from 'node:fs'
-import * as nickNameList from "../../miao-plugin/config/system/character.js";
+import * as nickNameList from "../../miao-plugin/config/system/character_system.js";
 
 const ayakaConfig = YAML.parse(
   fs.readFileSync(process.cwd()+"/plugins/ayaka-plugin/config/ayaka.set.yaml", "utf8")
