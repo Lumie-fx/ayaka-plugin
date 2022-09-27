@@ -18,7 +18,7 @@ export default {
       {text: '你见到了一群丘丘人，痛揍了它们一顿，得到了不少摩拉。', key: 'calc', thing: 'mora', amount: 8000},
       {text: '一个火把丘丘人突然袭击你，你被撞倒在地，摩拉散落一地。', key: 'calc', thing: 'mora', amount: -5000},
       {text: '你遇见了多莉，得到了奇怪的罐装知识。', key: 'item', item: ['CanningKnowledge']},
-      {text: '你遇见了带面具的巫女，她希望你帮她，', key: 'check', check: true, checkSucc: 'helpWitch', banned: []},
+      {text: '你遇见了带面具的巫女，', key: 'check', check: true, checkSucc: 'helpWitch', banned: []},
     ],
     lv3: [
       {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了许多摩拉。', key: 'calc', thing: 'mora', amount: 20000},
@@ -72,13 +72,20 @@ export default {
       {text: '她说她叫八重神子，她带面具只是觉得好玩。', priority: 300},
       {text: '她说她叫博丽灵梦，不好意思走错片场了。', priority: 300},
       //todo  banned 根据已经有的包里/长期道具，将不会出现此条支线
-      {text: '她说她叫花散里，希望你能帮她祓除神樱的污秽，', key: 'check', check: true, checkSucc: 'kazariLine'},
+      {banned: ['FoxMask'], text: '她说她叫花散里，希望你能帮她祓除神樱的污秽，', key: 'check',
+       check: ['KazariGanTian', 'KazariShenShe', 'KazariWuBaiZang', 'KazariHuangHai', 'KazariSheFengXing'], checkSucc: 'kazariLineFin', checkFail: 'kazariLine'},
       {text: '她说她叫阿祇，希望你能帮她举行千灯的仪式，支线制作中...'},
       {text: '她说她叫久岐忍，希望你能帮她摆脱家庭束缚，支线制作中...'},
     ],
     kazariLine: [
-      {banned: ['kazariGanTian'], text: '获得绀田村长的情报，祓去了村下神樱枝条的污秽。', key: 'item', item: ['kazariGanTian'], saveItem: true},
-      {banned: ['kazariShenShe'], text: '来到废弃神社，得到影子的帮助，祓去了山中神樱枝条的污秽。', key: 'item', item: ['kazariShenShe'], saveItem: true},
+      {banned: ['KazariGanTian'], text: '来到绀田村，获得绀田村长的情报，祓去了村下神樱枝条的污秽。', key: 'item', item: ['KazariGanTian'], saveItem: true, thing: 'primogem', amount: 50},
+      {banned: ['KazariShenShe'], text: '来到废弃神社，得到巫女影子的帮助，祓去了山下神樱枝条的污秽。', key: 'item', item: ['KazariShenShe'], saveItem: true, thing: 'primogem', amount: 50},
+      {banned: ['KazariWuBaiZang'], text: '来到镇守之森，得到五百藏的指引，祓去了隐藏在山中神樱枝条的污秽。', key: 'item', item: ['KazariWuBaiZang'], saveItem: true, thing: 'primogem', amount: 50},
+      {banned: ['KazariHuangHai'], text: '来到荒海，历经千辛万苦，祓去了海底深处神樱枝条的污秽。', key: 'item', item: ['KazariHuangHai'], saveItem: true, thing: 'primogem', amount: 50},
+      {banned: ['KazariSheFengXing'], text: '来到社奉行，得到了神里绫华的帮助，祓去了社奉行山下神樱枝条的污秽。', key: 'item', item: ['KazariSheFengXing'], saveItem: true, thing: 'primogem', amount: 50},
+    ],
+    kazariLineFin: [
+      {text: ['你成功解决了5处污秽，花散里告诉你该进行最后的大祓了，', '一番恶战过后，你成功消灭了恶瘴，但是面具巫女。。。', '你得到了珍稀物品「狐狸面具」。'], key: 'item', item: ['FoxMask'], saveItem: true},
     ]
   },
 
@@ -183,7 +190,7 @@ export default {
 
     const func = async (event) => {
       if(event.text){
-        this.msgList.push(event.text);
+        this.msgList = this.msgList.concat(event.text);
       }
       if(event.key === 'finish'){
         finish = true;
@@ -195,6 +202,10 @@ export default {
         });
         if(event.thing){
           this.gain[event.thing] = (this.gain?.[event.thing] || 0) + event.amount;
+        }
+        if(event.saveItem){
+          let exploreSavedItem = await utils.getRedis(`ayaka:${id}:exploreSavedItem`, []);
+          await utils.setRedis(`ayaka:${id}:exploreSavedItem`, lodash.uniq([...exploreSavedItem, ...event.item]));
         }
       }else if(event.key === 'check'){
         if(event.check === true){
