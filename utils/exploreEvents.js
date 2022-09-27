@@ -9,16 +9,17 @@ export default {
       {text: '遇见盗宝鼬，相安无事无事发生。'},
       {text: '被大野猪拱了，你很生气但是追不上它。'},
       {text: '被大野猪拱了，你追上去把它剁成了兽肉。'},
-      {text: '看见了飞在空中的晶蝶，但是它飞太高了你拿它没有办法'},
+      {text: '看见了飞在空中的晶蝶，但是它飞太高了你拿它没有办法。'},
       {text: '看见了飞在空中的晶蝶，你尝试抓它', key: 'check', check: true, checkSucc: 'catchCrystalButterfly'},
       {text: '你很口渴，去喝了不少水。', key: 'item', item: ['LotsOfWater']},
+      {text: '你发现你穿越到了500年前，', key: 'check', check: true, checkSucc: 'go500Ago'},
     ],
     lv2: [
       {text: '你走在路上，意外捡到了北国银行的贵宾卡。', key: 'item', item: ['BankOfNorthVIPCard']},
       {text: '你见到了一群丘丘人，痛揍了它们一顿，得到了不少摩拉。', key: 'calc', thing: 'mora', amount: 8000},
       {text: '一个火把丘丘人突然袭击你，你被撞倒在地，摩拉散落一地。', key: 'calc', thing: 'mora', amount: -5000},
       {text: '你遇见了多莉，得到了奇怪的罐装知识。', key: 'item', item: ['CanningKnowledge']},
-      {text: '你遇见了带面具的巫女，', key: 'check', check: true, checkSucc: 'helpWitch', banned: []},
+      {text: '你遇见了带面具的巫女，', key: 'check', check: true, checkSucc: 'helpWitch'},
     ],
     lv3: [
       {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了许多摩拉。', key: 'calc', thing: 'mora', amount: 20000},
@@ -86,12 +87,16 @@ export default {
     ],
     kazariLineFin: [
       {text: ['你成功解决了5处污秽，花散里告诉你该进行最后的大祓了，', '一番恶战过后，你成功消灭了恶瘴，但是面具巫女。。。', '你得到了珍稀物品「狐狸面具」。'], key: 'item', item: ['FoxMask'], saveItem: true},
+    ],
+    go500Ago: [
+      {text: '原来这是一个梦。', priority: 900},
+      {text: '支线制作中...'},
     ]
   },
 
   msgList: [],
   itemList: [],
-  exploreSavedItem: {}, //探索保存的长期道具
+  exploreSavedItem: [], //探索保存的长期道具
   gain: {},
   attr: {
     base: [5,5,5,5],
@@ -114,6 +119,7 @@ export default {
       exploreExp: 0,
     };
     const exploreSave = await utils.getRedis(`ayaka:${id}:explore`, {});
+    this.exploreSavedItem = await utils.getRedis(`ayaka:${id}:exploreSavedItem`, []);
     this.exploreLv = exploreSave?.exploreLv || 0;
     this.exploreExp = exploreSave?.exploreExp || 0;
 
@@ -145,8 +151,9 @@ export default {
     this.msgList.push(gainMsg);
 
     //数据处理
-    //todo 数据保存
+    //todo this.gain数据保存
     console.log(this.gain);
+    await utils.setRedis(`ayaka:${id}:exploreSavedItem`, this.exploreSavedItem);
 
     return this.msgList;
   },
@@ -204,8 +211,9 @@ export default {
           this.gain[event.thing] = (this.gain?.[event.thing] || 0) + event.amount;
         }
         if(event.saveItem){
-          let exploreSavedItem = await utils.getRedis(`ayaka:${id}:exploreSavedItem`, []);
-          await utils.setRedis(`ayaka:${id}:exploreSavedItem`, lodash.uniq([...exploreSavedItem, ...event.item]));
+          //let exploreSavedItem = await utils.getRedis(`ayaka:${id}:exploreSavedItem`, []);
+          //await utils.setRedis(`ayaka:${id}:exploreSavedItem`, lodash.uniq([...exploreSavedItem, ...event.item]));
+          this.exploreSavedItem = lodash.uniq(this.exploreSavedItem.concat(event.item));
         }
       }else if(event.key === 'check'){
         if(event.check === true){
@@ -213,8 +221,9 @@ export default {
           await func(this.sample(newEventList));
         }else{
           let flag = true;
+          const allList = this.getAllItemList();
           event.check.forEach(res => {
-            if(!this.itemList.includes(res)) flag = false;
+            if(!allList.includes(res)) flag = false;
           });
           const newEventList = flag ? this.check[event.checkSucc] : this.check[event.checkFail];
           await func(this.sample(newEventList));
@@ -237,16 +246,26 @@ export default {
   },
 
   sample(eventArr){
-    const priorityArr = eventArr.map(res => res?.priority || 100);
+    const allList = this.getAllItemList();
+    //过滤bannedArr后的eventList
+    const purifyArr = eventArr.filter(res => !res?.banned || res.banned.filter(rr=>allList.includes(rr)).length === 0);
+    
+    const priorityArr = purifyArr.map(res => res?.priority || 100);
     const full = priorityArr.reduce((sum, now) => sum + now, 0);
     const drop = Math.floor(Math.random() * full);
     let chooseIdx = 0;
-    eventArr.reduce((sum, now, idx) => {
+    purifyArr.reduce((sum, now, idx) => {
       if(sum - drop < 0){
         chooseIdx = idx;
       }
       return sum + (now?.priority || 100);
     }, 0);
-    return eventArr[chooseIdx];
+    return purifyArr[chooseIdx];
+  },
+  
+  getAllItemList(){
+    const itemList = lodash.cloneDeep(this.itemList);
+    const saveList = lodash.cloneDeep(this.exploreSavedItem);
+    return lodash.uniq(itemList.concat(saveList));
   }
 }
