@@ -205,6 +205,7 @@ export default {
     await this.next(num, id);
     this.msgList.push('已结束。');
     this.msgList.push('============');
+    this.msgList.push('当前为测试版本，内容扩充中，道具获取暂不计入真实收益。');
 
     let gainMsg = '本次探索获取：';
     for(let _key in this.gain){
