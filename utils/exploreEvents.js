@@ -72,9 +72,13 @@ export default {
       {text: '她说她叫八重神子，她带面具只是觉得好玩。', priority: 300},
       {text: '她说她叫博丽灵梦，不好意思走错片场了。', priority: 300},
       //todo  banned 根据已经有的包里/长期道具，将不会出现此条支线
-      {text: '她说她叫花散里，希望你能帮她祓除神樱的污秽，支线制作中...', banned: []},
+      {text: '她说她叫花散里，希望你能帮她祓除神樱的污秽，', key: 'check', check: true, checkSucc: 'kazariLine'},
       {text: '她说她叫阿祇，希望你能帮她举行千灯的仪式，支线制作中...'},
       {text: '她说她叫久岐忍，希望你能帮她摆脱家庭束缚，支线制作中...'},
+    ],
+    kazariLine: [
+      {banned: ['kazariGanTian'], text: '获得绀田村长的情报，祓去了村下神樱枝条的污秽。', key: 'item', item: ['kazariGanTian'], saveItem: true},
+      {banned: ['kazariShenShe'], text: '来到废弃神社，得到影子的帮助，祓去了山中神樱枝条的污秽。', key: 'item', item: ['kazariShenShe'], saveItem: true},
     ]
   },
 
