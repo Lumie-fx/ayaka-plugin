@@ -26,6 +26,7 @@ ayaka:${id}:explore => [ //探险每个步骤临时道具
   TreasureMap //盗宝团藏宝图
   CanningKnowledge //罐装知识
   LotsOfWater //很多水
+  ChildBody //孩童身躯  --> todo 遇见兰那罗支线 添加need逻辑 公子嫌你弱不打/给你摩拉买糖吃 
 ]
 
 ayaka:${id}:exploreSavedItem => { //探索保存的长期道具
