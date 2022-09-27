@@ -24,6 +24,7 @@ export default {
     lv3: [
       {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了许多摩拉。', key: 'calc', thing: 'mora', amount: 20000},
       {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了一张藏宝图。', key: 'item', item: ['TreasureMap']},
+      {text: '你遇见了镀金旅团，', key: 'check', check: true, checkSucc: 'meetGoldenParty'},
     ],
     lv4: [
       {text: '你走到了北国银行门口，', key: 'check', check: ['BankOfNorthVIPCard'], checkSucc: 'northBankSucc', checkFail: 'northBankFail'},
@@ -36,6 +37,14 @@ export default {
     ]
   },
   check: {
+    meetGoldenParty: [
+      {text: '觉得他们人太多，自己可能不是对手，走开了。'},
+      {text: '见到了正在跳舞的沙中净水，一时看入迷了，结果被人发现从后面击中了后脑勺，晕了过去，', check: true, checkSucc: 'beKnockedOff'},
+    ],
+    beKnockedOff: [
+      {text: '晕倒后，你被灌下了神秘药水，身体变成了小孩子的模样！', key: 'item', item: ['ChildBody']},
+      {text: '晕倒后，你被送去了博士「Dottore」的研究所，寄。', key: 'finish'},
+    ],
     northBankSucc: [
       {text: '找到服务员交还了贵宾卡。', priority: 300},
       {text: '进入了银行，意外找到了储藏室中的摩拉箱。', key: 'calc', thing: 'mora', amount: 200000},
@@ -202,11 +211,7 @@ export default {
       if(event.key === 'finish'){
         finish = true;
       }else if(event.key === 'item'){
-        event.item.forEach(res => {
-          if(!this.itemList.includes(res)){
-            this.itemList.push(res);
-          }
-        });
+        this.itemList = lodash.uniq(this.itemList.concat(event.item));
         if(event.thing){
           this.gain[event.thing] = (this.gain?.[event.thing] || 0) + event.amount;
         }
@@ -216,6 +221,9 @@ export default {
           this.exploreSavedItem = lodash.uniq(this.exploreSavedItem.concat(event.item));
         }
       }else if(event.key === 'check'){
+        if(event?.item?.length > 0){
+          this.itemList = lodash.uniq(this.itemList.concat(event.item));
+        }
         if(event.check === true){
           const newEventList = this.check[event.checkSucc];
           await func(this.sample(newEventList));
