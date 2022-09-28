@@ -16,8 +16,9 @@ export default {
       {text: '你发现你穿越到了500年前，', key: 'check', check: true, checkSucc: 'go500Ago'},
       {text: '你见到了一群丘丘人，痛揍了它们一顿，得到了不少摩拉。', thing: 'mora', amount: 8000},
       {text: '你见到了一群丘丘人，痛揍了它们一顿。', thing: 'exp', amount: 2},
-      {text: '一个火把丘丘人冲上来对你使出了火之神神乐，你被连招致死。', key: 'finish'},
+      {text: '一个火把丘丘人冲上来对你使出了火之神神乐，你应对不及，被连招致死。', key: 'finish'},
       {text: '你在蒙德桥上看见了一群鸽子，', key: 'check', check: true, checkSucc: 'meetDoveV1'},
+      {text: '你在蒙德城内上看见一个少女在为如何打碎木桩发愁，她说她叫艾琳，想让你教她，', key: 'check', check: true, checkSucc: 'meetAiLin'},
     ],
     lv2: [
       {text: '你走在路上，意外捡到了北国银行的贵宾卡。', key: 'item', item: ['BankOfNorthVIPCard']},
@@ -26,7 +27,7 @@ export default {
       {text: '你到了西风骑士团，遇到了从中走出的骑兵队长，'}, //todo v我50
       {text: '你看到3朵甜甜花围着一个宝箱，'}, //todo 骗骗花
       {text: '一个雷莹术士突然对你展开攻击，你猝不及防之下中招了。', thing: 'exp', amount: -2},
-      {text: `你看见一个落单的愚人众${lodash.sample(['雷莹术士','岩使游击兵','冰铳重卫士','火铳游击兵','雷锤前锋军'])}，`, key: 'check', check: true, checkSucc: 'meetFatui'},
+      {text: `你看见一个落单的${lodash.sample(['雷莹术士','岩使游击兵','冰铳重卫士','火铳游击兵','雷锤前锋军'])}，`, key: 'check', check: true, checkSucc: 'meetFatui'},
     ],
     lv3: [
       {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了许多摩拉。', thing: 'mora', amount: 20000},
@@ -48,6 +49,10 @@ export default {
     ]
   },
   check: {
+    meetAiLin: [
+      {text: '支线制作中...'}, //todo
+      //{text: `你使用了${AiLinSkill=lodash.sample[]}，`}, //todo 学习各个技能..
+    ],
     meetDoveV1: [
       {text: '你使出风元素之力，把它们打成了禽肉。', thing: 'exp', amount: 1},
       {text: '你想把它们打成禽肉，但是它们全都飞走了。'},
