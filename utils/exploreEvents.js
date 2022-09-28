@@ -7,13 +7,7 @@ export default {
       {text: '遇见盗宝鼬，一不留神被偷了摩拉。', thing: 'mora', amount: - Math.ceil(Math.random()*5) * 1000},
       {text: '遇见盗宝鼬，打晕它得到了摩拉。', thing: 'mora', amount: Math.ceil(Math.random()*5) * 1000},
       {text: '遇见盗宝鼬，相安无事无事发生。'},
-      {text: '你走在路上，遇到了野生的旋转冰蕈兽，', key: 'check', check: true, checkSucc: 'patchMushroom'},
-      {text: '你走在路上，遇到了野生的浮游草蕈兽，', key: 'check', check: true, checkSucc: 'patchMushroom'},
-      {text: '你走在路上，遇到了野生的伸缩风蕈兽，', key: 'check', check: true, checkSucc: 'patchMushroom'},
-      {text: '你走在路上，遇到了野生的伸缩火蕈兽，', key: 'check', check: true, checkSucc: 'patchMushroom'},
-      {text: '你走在路上，遇到了野生的旋转雷蕈兽，', key: 'check', check: true, checkSucc: 'patchMushroom'},
-      {text: '你走在路上，遇到了野生的伸缩岩蕈兽，', key: 'check', check: true, checkSucc: 'patchMushroom'},
-      {text: '你走在路上，遇到了野生的浮游水蕈兽，', key: 'check', check: true, checkSucc: 'patchMushroom'},
+      {text: '你走在路上，遇到了野生的菌类，', key: 'check', check: true, checkSucc: 'patchMushroom'},
       {text: '被大野猪拱了，你很生气但是追不上它。'},
       {text: '被大野猪拱了，你追上去把它剁成了兽肉。', thing: 'exp', amount: 1},
       {text: '看见了飞在空中的晶蝶，但是它飞太高了你拿它没有办法。'},
@@ -23,6 +17,7 @@ export default {
       {text: '你见到了一群丘丘人，痛揍了它们一顿，得到了不少摩拉。', thing: 'mora', amount: 8000},
       {text: '你见到了一群丘丘人，痛揍了它们一顿。', thing: 'exp', amount: 2},
       {text: '一个火把丘丘人冲上来对你使出了火之神神乐，你被连招致死。', key: 'finish'},
+      {text: '你在蒙德桥上看见了一群鸽子，', key: 'check', check: true, checkSucc: 'meetDoveV1'},
     ],
     lv2: [
       {text: '你走在路上，意外捡到了北国银行的贵宾卡。', key: 'item', item: ['BankOfNorthVIPCard']},
@@ -31,11 +26,7 @@ export default {
       {text: '你到了西风骑士团，遇到了从中走出的骑兵队长，'}, //todo v我50
       {text: '你看到3朵甜甜花围着一个宝箱，'}, //todo 骗骗花
       {text: '一个雷莹术士突然对你展开攻击，你猝不及防之下中招了。', thing: 'exp', amount: -2},
-      {text: '你看见一个落单的雷莹术士，', key: 'check', check: true, checkSucc: 'meetFatui'},
-      {text: '你看见一个落单的愚人众岩使游击兵，', key: 'check', check: true, checkSucc: 'meetFatui'},
-      {text: '你看见一个落单的愚人众冰铳重卫士，', key: 'check', check: true, checkSucc: 'meetFatui'},
-      {text: '你看见一个落单的愚人众火铳游击兵，', key: 'check', check: true, checkSucc: 'meetFatui'},
-      {text: '你看见一个落单的愚人众雷锤前锋军，', key: 'check', check: true, checkSucc: 'meetFatui'},
+      {text: `你看见一个落单的愚人众${lodash.sample(['雷莹术士','岩使游击兵','冰铳重卫士','火铳游击兵','雷锤前锋军'])}，`, key: 'check', check: true, checkSucc: 'meetFatui'},
     ],
     lv3: [
       {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了许多摩拉。', thing: 'mora', amount: 20000},
@@ -46,8 +37,8 @@ export default {
     ],
     lv4: [
       {text: '你走到了北国银行门口，', key: 'check', check: ['BankOfNorthVIPCard'], checkSucc: 'northBankSucc', checkFail: 'northBankFail'},
-      {text: '你到了黄金屋，遇到了好战的公子，', key: 'check', check: ['ChildBody'], checkSucc: 'tartagliaV0', checkFail: 'tartagliaV1'},
-      {text: '你到了黄金屋，屋内没有一个人，但是里面的摩拉都是贴图你拿不起来。'},
+      {text: '你到了黄金屋，遇到了好战的公子，', key: 'check', check: ['ChildBody'], checkSucc: 'tartagliaStep0', checkFail: 'tartagliaStep1'},
+      {text: '你到了黄金屋，屋内全是摩拉，却没有一个人，但是里面的摩拉都是贴图你拿不起来。'},
       {text: '经历了许多事件，你心生困意，找了个地方睡了一觉，', key: 'check', check: ['ChildBody'], checkSucc: 'meetLanNaRaSucc', checkFail: 'meetLanNaRaFail'},
     ],
     lv5: [
@@ -57,12 +48,23 @@ export default {
     ]
   },
   check: {
+    meetDoveV1: [
+      {text: '你使出风元素之力，把它们打成了禽肉。', thing: 'exp', amount: 1},
+      {text: '你想把它们打成禽肉，但是它们全都飞走了。'},
+      {text: ['你使出风元素之力，把它们打成了禽肉，', '然后提米出现了，'], thing: 'exp', amount: 1, key: 'check', check: true, checkSucc: 'meetTiMi'},
+    ],
+    meetTiMi: [
+      {text: '支线制作中...'}, //todo
+    ],
     meetFatui: [
       {text: '大路朝天，各走一边，你们打了个照面就走开了。'},
       {text: '你觉得你可以，然后冲了上去，但是你被打趴了。', thing: 'exp', amount: -2},
       {text: '你觉得你可以，然后冲了上去，没想到你真打赢了。', thing: 'exp', amount: 2},
     ],
     patchMushroom: [
+      {text: `你觉得它是${lodash.sample(['浮游水','伸缩岩','旋转雷','伸缩火','伸缩风','浮游草','旋转冰'])}蕈兽，`, key: 'check', check: true, checkSucc: 'patchMushroomStep1'},
+    ],
+    patchMushroomStep1: [
       {text: '觉得它太可爱了没忍心欺负它。'},
       {text: '把它打成了蘑菇孢子。', thing: 'exp', amount: 1},
       {text: '打跑了一只，引来了一群，这次跑的是你。', thing: 'exp', amount: 1},
@@ -104,21 +106,21 @@ export default {
       {text: '妄想进入银行，被管理人发现并揍了一顿。', key: 'finish'},
       {text: '使用荒星卡bug卡进了银行，', key: 'check', check: true, checkSucc: 'northBankSucc'},
     ],
-    tartagliaV0: [
+    tartagliaStep0: [
       {text: '他看你只是个小孩子，对你没兴趣，把你赶走了。'},
       {text: '他看你是个小孩子，觉得你很可爱，给了你一些摩拉买玩具。', thing: 'mora', amount: 100000},
     ],
-    tartagliaV1: [
+    tartagliaStep1: [
       {text: '他二话不说就跟你开打，你被暴揍了一顿。'},
-      {text: '他二话不说就跟你开打，结果被你几下制服，开启了二阶段，', key: 'check', check: true, checkSucc: 'tartagliaV2'},
-      {text: '他二话不说就跟你开打，被你压制后想使用大鲸鱼，结果鲸鱼今天休假了用不出来，被打进了二阶段，', key: 'check', check: true, checkSucc: 'tartagliaV2'},
+      {text: '他二话不说就跟你开打，结果被你几下制服，开启了二阶段，', key: 'check', check: true, checkSucc: 'tartagliaStep2'},
+      {text: '他二话不说就跟你开打，被你压制后想使用大鲸鱼，结果鲸鱼今天休假了用不出来，被打进了二阶段，', key: 'check', check: true, checkSucc: 'tartagliaStep2'},
     ],
-    tartagliaV2: [
+    tartagliaStep2: [
       {text: '他使用雷元素力后迅捷的动作让你反应不及，你被暴揍了一顿。', thing: 'exp', amount: 3},
-      {text: '他使用雷元素力后仍被你压制，愤怒之下开启了魔王武装，', key: 'check', check: true, checkSucc: 'tartagliaV3'},
-      {text: '他使用雷元素力后因为速度过快撞到了墙，为了掩饰尴尬开启了魔王武装', key: 'check', check: true, checkSucc: 'tartagliaV3'},
+      {text: '他使用雷元素力后仍被你压制，愤怒之下开启了魔王武装，', key: 'check', check: true, checkSucc: 'tartagliaStep3'},
+      {text: '他使用雷元素力后因为速度过快撞到了墙，为了掩饰尴尬开启了魔王武装', key: 'check', check: true, checkSucc: 'tartagliaStep3'},
     ],
-    tartagliaV3: [
+    tartagliaStep3: [
       {text: '魔王武装后的达达利亚过于恐怖，你被暴揍了一顿。', thing: 'exp', amount: 5},
       {text: '你自沉着应对，矫健的身姿游走于电光水隙之间，最终把他打成了地脉花，你获得了丰富的奖励。', thing: 'primogem', amount: 100},
     ],
