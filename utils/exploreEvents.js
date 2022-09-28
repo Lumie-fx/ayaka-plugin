@@ -4,8 +4,8 @@ import utils from "../utils/utils.js";
 export default {
   event: {
     lv1: [
-      {text: '遇见盗宝鼬，一不留神被偷了摩拉。', thing: 'mora', amount: - Math.ceil(Math.random()*5) * 1000},
-      {text: '遇见盗宝鼬，打晕它得到了摩拉。', thing: 'mora', amount: Math.ceil(Math.random()*5) * 1000},
+      {text: '遇见盗宝鼬，一不留神被偷了摩拉。', thing: 'mora', amount: - lodash.random(1, 5) * 1000},
+      {text: '遇见盗宝鼬，打晕它得到了摩拉。', thing: 'mora', amount: lodash.random(1, 5) * 1000},
       {text: '遇见盗宝鼬，相安无事无事发生。'},
       {text: '你走在路上，遇到了野生的菌类，', key: 'check', check: true, checkSucc: 'patchMushroom'},
       {text: '被大野猪拱了，你很生气但是追不上它。'},
@@ -51,14 +51,30 @@ export default {
   check: {
     meetAiLin: [
       {text: '支线制作中...'}, //todo
-      //{text: `你使用了${AiLinSkill=lodash.sample[]}，`}, //todo 学习各个技能..
+      //{text: '你只是随意用了一个技能，'}, //todo 学习各个技能..
     ],
     meetDoveV1: [
       {text: '你使出风元素之力，把它们打成了禽肉。', thing: 'exp', amount: 1},
       {text: '你想把它们打成禽肉，但是它们全都飞走了。'},
-      {text: ['你使出风元素之力，把它们打成了禽肉，', '然后提米出现了，'], thing: 'exp', amount: 1, key: 'check', check: true, checkSucc: 'meetTiMi'},
+      {text: ['你使出风元素之力，把它们打成了禽肉，',
+              '然后提米出现了，',
+              '他说鸽子是朋友，你居然把它们杀了，'], thing: 'exp', amount: 1, key: 'check', check: true, checkSucc: 'meetTiMi'},
     ],
     meetTiMi: [
+      {text: '他朝你不停哭诉，然后你好好地安慰了他。', priority: 200},
+      {text: ['你正想解释，结果他突然露出真面目，其实他是愚人众执行官首席「公鸡」。', '他说鸽子的死值得你足足死去1000次为之缅怀悼念，', '你，死了。'], priority: 20, key: 'finish'},
+      {text: '你正想解释，载着他的独眼小宝突然对你发起攻击，', key: 'check', check: this.refineAttr.agi > lodash.random(5, 10), checkSucc: 'avoidTiMiAttackSucc', checkFail: 'avoidTiMiAttackFail'},
+    ],
+    avoidTiMiAttackSucc: [
+      {text: '你反应及时并躲开了攻击，一场战斗在所难免——', key: 'check', check: this.refineAttr.str > lodash.random(6, 10), checkSucc: 'fightTiMiAttackSucc', checkFail: 'fightTiMiAttackFail'},
+    ],
+    avoidTiMiAttackFail: [
+      {text: '你没能躲开，死的不明不白。', key: 'finish'},
+    ],
+    fightTiMiAttackSucc: [
+      {text: '支线制作中...'}, //todo
+    ],
+    fightTiMiAttackFail: [
       {text: '支线制作中...'}, //todo
     ],
     meetFatui: [
@@ -142,7 +158,6 @@ export default {
     helpWitch: [
       {text: '她说她叫八重神子，她带面具只是觉得好玩。', priority: 300},
       {text: '她说她叫博丽灵梦，不好意思走错片场了。', priority: 300},
-      //banned 根据已经有的包里/长期道具，将不会出现此条支线
       {banned: ['FoxMask'], text: '她说她叫花散里，希望你能帮她祓除神樱的污秽，', key: 'check', priority: 100,
        check: ['KazariGanTian', 'KazariShenShe', 'KazariWuBaiZang', 'KazariHuangHai', 'KazariSheFengXing'], checkSucc: 'kazariLineFin', checkFail: 'kazariLine'},
       {text: '她说她叫阿祇，希望你能帮她举行千灯的仪式，支线制作中...'},
@@ -170,8 +185,8 @@ export default {
   gain: {},
   attr: {
     base: [5,5,5,5],
-    refine: {}
   },
+  refineAttr: {},
   gainList: {
     mora: '摩拉',
     primogem: '原石',
@@ -200,7 +215,7 @@ export default {
       const idx = Math.floor(Math.random() * 4);
       this.attr.base[idx] ++;
     }
-    this.attr.refine = {
+    this.refineAttr = {
       str: this.attr.base[0],
       int: this.attr.base[1],
       agi: this.attr.base[2],
