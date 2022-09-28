@@ -12,7 +12,7 @@ export default {
       {text: '被大野猪拱了，你追上去把它剁成了兽肉。', thing: 'exp', amount: 1},
       {text: '看见了飞在空中的晶蝶，但是它飞太高了你拿它没有办法。'},
       {text: '看见了飞在空中的晶蝶，你尝试抓它', key: 'check', check: true, checkSucc: 'catchCrystalButterfly'},
-      {text: '你很口渴，去喝了不少水。', key: 'item', item: ['LotsOfWater']},
+      {text: '你很口渴，去喝了不少水。', item: ['LotsOfWater']},
       {text: '你发现你穿越到了500年前，', key: 'check', check: true, checkSucc: 'go500Ago'},
       {text: '你见到了一群丘丘人，痛揍了它们一顿，得到了不少摩拉。', thing: 'mora', amount: 8000},
       {text: '你见到了一群丘丘人，痛揍了它们一顿。', thing: 'exp', amount: 2},
@@ -21,8 +21,8 @@ export default {
       {text: '你在蒙德城内上看见一个少女在为如何打碎木桩发愁，她说她叫艾琳，想让你教她，', key: 'check', check: true, checkSucc: 'meetAiLin'},
     ],
     lv2: [
-      {text: '你走在路上，意外捡到了北国银行的贵宾卡。', key: 'item', item: ['BankOfNorthVIPCard']},
-      {text: '你遇见了多莉，得到了奇怪的罐装知识。', key: 'item', item: ['CanningKnowledge']},
+      {text: '你走在路上，意外捡到了北国银行的贵宾卡。', item: ['BankOfNorthVIPCard']},
+      {text: '你遇见了多莉，得到了奇怪的罐装知识。', item: ['CanningKnowledge']},
       {text: '你遇见了带面具的巫女，', key: 'check', check: true, checkSucc: 'helpWitch', priority: 100},
       {text: '你到了西风骑士团，遇到了从中走出的骑兵队长，'}, //todo v我50
       {text: '你看到3朵甜甜花围着一个宝箱，'}, //todo 骗骗花
@@ -32,7 +32,7 @@ export default {
     lv3: [
       {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了许多摩拉。', thing: 'mora', amount: 20000},
       {text: '你见到了一群盗宝团，痛揍了它们一顿。', thing: 'exp', amount: 3},
-      {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了一张藏宝图。', key: 'item', item: ['TreasureMap']},
+      {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了一张藏宝图。', item: ['TreasureMap']},
       {text: '你遇见了一个愚人众小队，以执行官达达鸭朋友的名义骗到了不少战略资金。', thing: 'mora', amount: 50000},
       {text: '你遇见了镀金旅团，', key: 'check', check: true, checkSucc: 'meetGoldenParty'},
     ],
@@ -99,7 +99,7 @@ export default {
       {text: '见到了正在跳舞的沙中净水，一时看入迷了，结果被人发现从后面击中了后脑勺，晕了过去，', key: 'check', check: true, checkSucc: 'beKnockedOff'},
     ],
     beKnockedOff: [
-      {text: '晕倒后，你被灌下了神秘药水，身体变成了小孩子的模样！', key: 'item', item: ['ChildBody']},
+      {text: '晕倒后，你被灌下了神秘药水，身体变成了小孩子的模样！', item: ['ChildBody']},
       {text: '晕倒后，你被送去了博士「Dottore」的研究所，寄。', key: 'finish'},
     ],
     northBankSucc: [
@@ -131,7 +131,7 @@ export default {
     ],
     catchCrystalButterfly: [
       {text: '可惜它飞太高了你够不着。'},
-      {text: '最终被你抓到了。', key: 'strength', amount: 20},
+      {text: '最终被你抓到了。', thing: 'strength', amount: 20},
     ],
     naXiDaSucc: [
       {text: '但是你水喝多了尿急没有理她，而是直接冲向了厕所，出来后发现她在等你，她说她叫纳西妲，并帮你解开了罐装知识的秘密，你得到了亮闪闪的东西。', thing: 'primogem', amount: 300},
@@ -149,14 +149,14 @@ export default {
       {text: '她说她叫久岐忍，希望你能帮她摆脱家庭束缚，支线制作中...'},
     ],
     kazariLine: [
-      {banned: ['KazariGanTian'], text: '来到绀田村，获得绀田村长的情报，祓去了村下神樱枝条的污秽。', key: 'item', item: ['KazariGanTian'], saveItem: true, thing: 'primogem', amount: 50},
-      {banned: ['KazariShenShe'], text: '来到废弃神社，得到巫女影子的帮助，祓去了山下神樱枝条的污秽。', key: 'item', item: ['KazariShenShe'], saveItem: true, thing: 'primogem', amount: 50},
-      {banned: ['KazariWuBaiZang'], text: '来到镇守之森，得到五百藏的指引，祓去了隐藏在山中神樱枝条的污秽。', key: 'item', item: ['KazariWuBaiZang'], saveItem: true, thing: 'primogem', amount: 50},
-      {banned: ['KazariHuangHai'], text: '来到荒海，历经千辛万苦，祓去了海底深处神樱枝条的污秽。', key: 'item', item: ['KazariHuangHai'], saveItem: true, thing: 'primogem', amount: 50},
-      {banned: ['KazariSheFengXing'], text: '来到社奉行，得到了神里绫华的帮助，祓去了社奉行山下神樱枝条的污秽。', key: 'item', item: ['KazariSheFengXing'], saveItem: true, thing: 'primogem', amount: 50},
+      {banned: ['KazariGanTian'], text: '来到绀田村，获得绀田村长的情报，祓去了村下神樱枝条的污秽。', item: ['KazariGanTian'], saveItem: true, thing: 'primogem', amount: 50},
+      {banned: ['KazariShenShe'], text: '来到废弃神社，得到巫女影子的帮助，祓去了山下神樱枝条的污秽。', item: ['KazariShenShe'], saveItem: true, thing: 'primogem', amount: 50},
+      {banned: ['KazariWuBaiZang'], text: '来到镇守之森，得到五百藏的指引，祓去了隐藏在山中神樱枝条的污秽。', item: ['KazariWuBaiZang'], saveItem: true, thing: 'primogem', amount: 50},
+      {banned: ['KazariHuangHai'], text: '来到荒海，历经千辛万苦，祓去了海底深处神樱枝条的污秽。', item: ['KazariHuangHai'], saveItem: true, thing: 'primogem', amount: 50},
+      {banned: ['KazariSheFengXing'], text: '来到社奉行，得到了神里绫华的帮助，祓去了社奉行山下神樱枝条的污秽。', item: ['KazariSheFengXing'], saveItem: true, thing: 'primogem', amount: 50},
     ],
     kazariLineFin: [
-      {text: ['你成功解决了5处污秽，花散里告诉你该进行最后的大祓了，', '一番恶战过后，你成功消灭了恶瘴，但是面具巫女她自己......', '你得到了珍稀物品「狐狸面具」。'], key: 'item', item: ['FoxMask'], saveItem: true},
+      {text: ['你成功解决了5处污秽，花散里告诉你该进行最后的大祓了，', '一番恶战过后，你成功消灭了恶瘴，但是面具巫女她自己......', '你得到了珍稀物品「狐狸面具」。'], item: ['FoxMask'], saveItem: true},
     ],
     go500Ago: [
       {text: '原来这是一个梦。', priority: 900},
@@ -271,23 +271,19 @@ export default {
       if(event.text){
         this.msgList = this.msgList.concat(event.text);
       }
-      if(event.thing){
+      if(event?.thing){
         this.gain[event.thing] = (this.gain?.[event.thing] || 0) + event.amount;
+      }
+      if(event?.item?.length > 0){
+        this.itemList = lodash.uniq(this.itemList.concat(event.item));
+      }
+      if(event?.saveItem){
+        this.exploreSavedItem = lodash.uniq(this.exploreSavedItem.concat(event.item));
       }
 
       if(event.key === 'finish'){
         finish = true;
-      }else if(event.key === 'item'){
-        this.itemList = lodash.uniq(this.itemList.concat(event.item));
-        if(event.saveItem){
-          //let exploreSavedItem = await utils.getRedis(`ayaka:${id}:exploreSavedItem`, []);
-          //await utils.setRedis(`ayaka:${id}:exploreSavedItem`, lodash.uniq([...exploreSavedItem, ...event.item]));
-          this.exploreSavedItem = lodash.uniq(this.exploreSavedItem.concat(event.item));
-        }
       }else if(event.key === 'check'){
-        if(event?.item?.length > 0){
-          this.itemList = lodash.uniq(this.itemList.concat(event.item));
-        }
         if(event.check === true){
           const newEventList = this.check[event.checkSucc];
           await func(this.sample(newEventList));
