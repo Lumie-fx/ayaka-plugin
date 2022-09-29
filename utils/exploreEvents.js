@@ -12,7 +12,7 @@ export default {
       {text: '被大野猪拱了，你追上去把它剁成了兽肉。', thing: 'exp', amount: 1},
       {text: '看见了飞在空中的晶蝶，但是它飞太高了你拿它没有办法。'},
       {text: '看见了飞在空中的晶蝶，你尝试抓它', next: 'catchCrystalButterfly'},
-      {text: '你很口渴，去喝了不少水。', item: ['LotsOfWater'], key: 'check', check: this.refineAttr.luk > lodash.random(6,8), checkSucc: 'waterIsGood'},
+      {text: '你很口渴，去喝了不少水。', item: ['LotsOfWater'], key: 'check', check:attr=>attr.luck>lodash.random(6,8), checkSucc: 'waterIsGood'},
       {text: '你发现你穿越到了500年前，', next: 'go500Ago'},
       {text: '你见到了一群丘丘人，痛揍了它们一顿，得到了不少摩拉。', thing: 'mora', amount: 8000},
       {text: '你见到了一群丘丘人，痛揍了它们一顿。', thing: 'exp', amount: 2},
@@ -39,7 +39,7 @@ export default {
       {text: '你在璃月港散步，', next: 'walkingOnLiYue'}
     ],
     lv4: [
-      {banned: ['OldStone'], text: '你来到层岩巨渊，走在路上被什么东西绊了一跤，你一看，', key: 'check', check: this.refineAttr.luk > lodash.random(4,8), checkSucc: 'oldStoneSucc', checkFail: 'oldStoneFail'},
+      {banned: ['OldStone'], text: '你来到层岩巨渊，走在路上被什么东西绊了一跤，你一看，', key: 'check', check:attr=>attr.luck>lodash.random(4,8), checkSucc: 'oldStoneSucc', checkFail: 'oldStoneFail'},
       {text: '你走到了北国银行门口，', key: 'check', check: ['BankOfNorthVIPCard'], checkSucc: 'northBankSucc', checkFail: 'northBankFail'},
       {text: '你到了黄金屋，遇到了好战的公子，', key: 'check', check: ['ChildBody'], checkSucc: 'tartagliaStep0', checkFail: 'tartagliaStep1'},
       {text: '你到了黄金屋，屋内全是摩拉，却没有一个人，但是里面的摩拉都是贴图你拿不起来。'},
@@ -65,13 +65,14 @@ export default {
     ],
     meetZhongLiSucc: [
       {text: ['老大爷目不斜视听着书，突然出声：“小友，不妨坐下来一同听书？”',
-             '这老大爷明明没有看你，你却觉得自己的全身被看透，身体不自觉地坐于一旁，就连精神也完全陷入听书之中，平日里呕哑嘲哳的说书，此时竟如白开水般被你吸纳理解……',
-             '……“正所谓——「金石迸碎荡尘埃，磐山纡水尽为开，创龙点睛得助力，盘桓遂引雨露来！」”说书结束，田铁嘴退场，',
+             '这老大爷明明没有看你，你却觉得自己的全身被看透，身体不自觉地坐于一旁，就连精神也完全陷入听书之中，平日里呕哑嘲哳的说书，此时竟如白开水般被你吸纳理解...',
+             '...“正所谓——「金石迸碎荡尘埃，磐山纡水尽为开，创龙点睛得助力，盘桓遂引雨露来！」”说书结束，田铁嘴退场，',
              '你久久无法回神，老大爷喝完最后一口茶，侧目：“小友于我有缘，可否将「老石」割爱于我？”',
-             '你不自觉地拿出从层岩巨渊之外得来的石头，回过神来，那奇人与手上的石头皆已消失不见。'], thing: 'exp', amout: 10, item: ['ZhongLiThink'], deleteItem: ['OldStone']},
+             '你不自觉地拿出从层岩巨渊之外得来的石头，回过神来，那奇人与手上的石头皆已消失不见。',
+             '远处，钟离嘴角微扬。'], thing: 'exp', amount: 10, item: ['ZhongLiThink'], deleteItem: ['OldStone']},
     ],
     meetZhongLiFail: [
-      {text: '你对说书不感兴趣，走开了。', thing: 'exp', amout: 1},
+      {text: '你对说书不感兴趣，走开了。', thing: 'exp', amount: 1},
     ],
     oldStoneSucc: [
       {text: '绊倒你的是一块蓝紫色的晶莹石头，你觉得它不简单，把它装入了口袋。', item: ['OldStone'], saveItem: true},
@@ -80,8 +81,8 @@ export default {
       {text: '原来就是一块普通石头，你只能自认倒霉。'},
     ],
     wangShuCook: [
-      {text: '你做的是金丝虾球，吸引了刻晴的注意。', item: ['KeQingThink'], thing: 'exp', amout: 1},
-      {text: '你做的是杏仁豆腐，吸引了魈的注意。', item: ['XiaoThink'], thing: 'exp', amout: 1},
+      {text: '你做的是金丝虾球，吸引了刻晴的注意。', item: ['KeQingThink'], thing: 'exp', amount: 1},
+      {text: '你做的是杏仁豆腐，吸引了魈的注意。', item: ['XiaoThink'], thing: 'exp', amount: 1},
       {text: '你做的是仙跳墙，但是你水平太菜搞砸了，赔了不少材料钱。', thing: 'mora', amount: -20000},
     ],
     waterIsGood: [
@@ -108,10 +109,10 @@ export default {
       {text: ['你正想解释，结果他突然露出真面目，其实他是愚人众执行官首席「公鸡」。',
               '他说鸽子的死值得你足足死去1000次为之缅怀悼念，',
               '你，死了。'], priority: 20, key: 'finish'},
-      {text: '你正想解释，载着他的独眼小宝突然对你发起攻击，', key: 'check', check: this.refineAttr.agi > lodash.random(5, 10), checkSucc: 'avoidTiMiAttackSucc', checkFail: 'avoidTiMiAttackFail'},
+      {text: '你正想解释，载着他的独眼小宝突然对你发起攻击，', key: 'check', check:attr=>attr.agi>lodash.random(5,10), checkSucc: 'avoidTiMiAttackSucc', checkFail: 'avoidTiMiAttackFail'},
     ],
     avoidTiMiAttackSucc: [
-      {text: '你反应及时并躲开了攻击，一场战斗在所难免——', key: 'check', check: this.refineAttr.str > lodash.random(6, 10), checkSucc: 'fightTiMiAttackSucc', checkFail: 'fightTiMiAttackFail'},
+      {text: '你反应及时并躲开了攻击，一场战斗在所难免——', key: 'check', check:attr=>attr.str>lodash.random(6,10), checkSucc: 'fightTiMiAttackSucc', checkFail: 'fightTiMiAttackFail'},
     ],
     avoidTiMiAttackFail: [
       {text: '你没能躲开，死的不明不白。', key: 'finish'},
@@ -249,6 +250,7 @@ export default {
 
   async start(id){
     //初始化数据
+    this.num = 0;
     this.msgList = [];
     this.itemList = [];
     this.gain = {
@@ -269,7 +271,7 @@ export default {
       str: this.attr.base[0],
       int: this.attr.base[1],
       agi: this.attr.base[2],
-      luc: this.attr.base[3],
+      luck: this.attr.base[3],
     }
     //初始化属性
 
@@ -360,7 +362,7 @@ export default {
         this.exploreSavedItem = lodash.uniq(this.exploreSavedItem.concat(event.item));
       }
       if(event?.deleteItem){
-        _.pullAll(this.exploreSavedItem, event.deleteItem);
+        lodash.pullAll(this.exploreSavedItem, event.deleteItem);
       }
       if(event?.func){
         event.func();
@@ -374,16 +376,24 @@ export default {
       }
       
       if(event.key === 'check'){
-        if(event.check === true){
+        let _check = event.check;
+        if(utils.type(event.check) === 'Function'){
+          _check = event.check(this.refineAttr);
+        }
+        if(_check === true){
           const newEventList = this.check[event.checkSucc];
           await func(this.sample(newEventList));
-        }else if(event.check === false && event.checkFail){
-          const newEventList = this.check[event.checkFail];
-          await func(this.sample(newEventList));
+        }else if(_check === false){
+          if(event.checkFail){
+            const newEventList = this.check[event.checkFail];
+            await func(this.sample(newEventList));
+          }else{
+            console.log('go next')
+          }
         }else{
           let flag = true;
           const allList = this.getAllItemList();
-          event.check.forEach(res => {
+          _check.forEach(res => {
             if(!allList.includes(res)) flag = false;
           });
           const newEventList = flag ? this.check[event.checkSucc] : this.check[event.checkFail];
