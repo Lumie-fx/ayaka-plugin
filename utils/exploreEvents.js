@@ -19,24 +19,24 @@ export default {
       {text: '一个火把丘丘人冲上来对你使出了火之神神乐，你应对不及，被连招致死。', key: 'finish'},
       {text: '你在蒙德桥上看见了一群鸽子，', next: 'meetDoveV1'},
       {text: '你在蒙德城内上看见一个少女在为如何打碎木桩发愁，她说她叫艾琳，想让你教她，', next: 'meetAiLin'},
+      {text: '你在蒙德城中得知安娜身患重病，在许愿池中用摩拉许下了愿望，你的幸运提升了。', thing: 'mora', amount: -10000, func:()=>{this.refineAttr.luck+=1;}},
     ],
     lv2: [
       {text: '你走在路上，意外捡到了北国银行的贵宾卡。', item: ['BankOfNorthVIPCard']},
       {text: '你遇见了多莉，得到了奇怪的罐装知识。', item: ['CanningKnowledge']},
       {text: '你遇见了带面具的巫女，', next: 'helpWitch'},
-      {text: '你到了西风骑士团，遇到了从中走出的骑兵队长，', next: 'meetKaiYa'}, //todo v我50
+      {text: '你到了西风骑士团，遇到了从中走出的骑兵队长，', next: 'meetKaiYa'},
       {text: '你看到3朵甜甜花围着一个宝箱，心生戒备，绕开花朵打开了宝箱，拿到了奖励。', thing: 'mora', amount: 15000},
       {text: '一个雷莹术士突然对你展开攻击，你猝不及防之下中招了。', thing: 'exp', amount: -2},
       {text: `你看见一个落单的${lodash.sample(['雷莹术士','岩使游击兵','冰铳重卫士','火铳游击兵','雷锤前锋军'])}，`, next: 'meetFatui'},
       {text: '你来到望舒客栈，借着言笑大厨的厨具做了一道拿手好菜，', next: 'wangShuCook'},
     ],
     lv3: [
-      {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了许多摩拉。', thing: 'mora', amount: 20000},
-      {text: '你见到了一群盗宝团，痛揍了它们一顿。', thing: 'exp', amount: 3},
-      {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了一张藏宝图。', item: ['TreasureMap']},
+      {text: '你见到了一群盗宝团，', next: 'meetDaoBaoTuan'},
       {text: '你遇见了一个愚人众小队，以执行官达达鸭朋友的名义骗到了不少战略资金。', thing: 'mora', amount: 50000},
       {text: '你遇见了镀金旅团，', next: 'meetGoldenParty'},
-      {text: '你在璃月港散步，', next: 'walkingOnLiYue'}
+      {text: '你在璃月港散步，', next: 'walkingOnLiYue'},
+
     ],
     lv4: [
       {banned: ['OldStone'], text: '你来到层岩巨渊，走在路上被什么东西绊了一跤，你一看，', key: 'check', check:attr=>attr.luck>lodash.random(4,8), checkSucc: 'oldStoneSucc', checkFail: 'oldStoneFail'},
@@ -49,6 +49,7 @@ export default {
       {text: '你在路中央看到了亮闪闪的东西，过去将它捡了起来。', thing: 'primogem', amount: 100},
       {text: '你遇见了？？？', key: 'check', check: ['CanningKnowledge','LotsOfWater'], checkSucc: 'naXiDaSucc', checkFail: 'naXiDaFail'},
       {text: '你来到了鸣神大社，', key: 'check', check: ['FoxMask'], checkSucc: 'goMingShenSucc', checkFail: 'goMingShenFail'},
+      //todo 逐月节 刻晴邀约
     ],
     //魔神级
     lv6: [
@@ -60,6 +61,11 @@ export default {
     lv8: []
   },
   check: {
+    meetDaoBaoTuan: [
+      {text: '痛揍了它们一顿，得到了许多摩拉。', thing: 'mora', amount: 20000},
+      {text: '痛揍了它们一顿。', thing: 'exp', amount: 3},
+      {text: '痛揍了它们一顿，得到了一张藏宝图。', item: ['TreasureMap']},
+    ],
     walkingOnLiYue: [
       {text: '偶然听到了田铁嘴在说书，在他面前一个老大爷喝着茶，听的津津有味，', key: 'check', check: ['OldStone'], checkSucc: 'meetZhongLiSucc', checkFail: 'meetZhongLiFail'}
     ],
@@ -75,7 +81,7 @@ export default {
       {text: '你对说书不感兴趣，走开了。', thing: 'exp', amount: 1},
     ],
     oldStoneSucc: [
-      {text: '绊倒你的是一块蓝紫色的晶莹石头，你觉得它不简单，把它装入了口袋。', item: ['OldStone'], saveItem: true},
+      {text: '绊倒你的是一块蓝紫色的晶莹石头，你觉得它不简单，把它装入了口袋。', saveItem: ['OldStone']},
     ],
     oldStoneFail: [
       {text: '原来就是一块普通石头，你只能自认倒霉。'},
@@ -94,7 +100,7 @@ export default {
       {banned: new Date().getDay() !== 4, text: '他说今天是疯狂星期四，想v你50吃顿好的。', thing: 'mora', amount: 50},
     ],
     meetAiLin: [
-      {text: '支线制作中...'}, //todo
+      {text: '支线制作中...', thing: 'exp', amount: 1}, //todo
       //{text: '你只是随意用了一个技能，'}, //todo 学习各个技能..
     ],
     meetDoveV1: [
@@ -118,10 +124,10 @@ export default {
       {text: '你没能躲开，死的不明不白。', key: 'finish'},
     ],
     fightTiMiAttackSucc: [
-      {text: '支线制作中...'}, //todo
+      {text: '支线制作中...', thing: 'exp', amount: 1}, //todo
     ],
     fightTiMiAttackFail: [
-      {text: '支线制作中...'}, //todo
+      {text: '支线制作中...', thing: 'exp', amount: 1}, //todo
     ],
     meetFatui: [
       {text: '大路朝天，各走一边，你们打了个照面就走开了。'},
@@ -146,8 +152,8 @@ export default {
       {text: '你用体重优势把它从空中扯下，戳爆了它。', thing: 'exp', amount: 3},
     ],
     goMingShenSucc: [
-      //todo 非重复获得判断
-      {text: '欣赏樱花的途中，八重宫司认出了你手中的面具，她感慨颇深，并愿折下狐枝随你同行。', key: 'role', role: '八重神子'}, //todo deleteItem: [] 是否可重复做
+      {text: '欣赏樱花的途中，八重宫司认出了你手中的面具，她感慨颇深，并愿折下狐枝随你同行。', key: 'role', role: '八重神子',
+        deleteItem: ['KazariGanTian', 'KazariShenShe', 'KazariWuBaiZang', 'KazariHuangHai', 'KazariSheFengXing', 'FoxMask']},
     ],
     goMingShenFail: [
       {text: '欣赏了神社内的樱花，觉得心情愉悦。'},
@@ -212,20 +218,20 @@ export default {
       {text: '她说她叫久岐忍，希望你能帮她摆脱家庭束缚，支线制作中...'},
     ],
     kazariLine: [
-      {banned: ['KazariGanTian'], text: '来到绀田村，获得绀田村长的情报，祓去了村下神樱枝条的污秽。', item: ['KazariGanTian'], saveItem: true, thing: 'primogem', amount: 50},
-      {banned: ['KazariShenShe'], text: '来到废弃神社，得到巫女影子的帮助，祓去了山下神樱枝条的污秽。', item: ['KazariShenShe'], saveItem: true, thing: 'primogem', amount: 50},
-      {banned: ['KazariWuBaiZang'], text: '来到镇守之森，得到五百藏的指引，祓去了隐藏在山中神樱枝条的污秽。', item: ['KazariWuBaiZang'], saveItem: true, thing: 'primogem', amount: 50},
-      {banned: ['KazariHuangHai'], text: '来到荒海，历经千辛万苦，祓去了海底深处神樱枝条的污秽。', item: ['KazariHuangHai'], saveItem: true, thing: 'primogem', amount: 50},
-      {banned: ['KazariSheFengXing'], text: '来到社奉行，得到了神里绫华的帮助，祓去了社奉行山下神樱枝条的污秽。', item: ['KazariSheFengXing'], saveItem: true, thing: 'primogem', amount: 50},
+      {banned: ['KazariGanTian'], text: '来到绀田村，获得绀田村长的情报，祓去了村下神樱枝条的污秽。', saveItem: ['KazariGanTian'], thing: 'primogem', amount: 50},
+      {banned: ['KazariShenShe'], text: '来到废弃神社，得到巫女影子的帮助，祓去了山下神樱枝条的污秽。', saveItem: ['KazariShenShe'], thing: 'primogem', amount: 50},
+      {banned: ['KazariWuBaiZang'], text: '来到镇守之森，得到五百藏的指引，祓去了隐藏在山中神樱枝条的污秽。', saveItem: ['KazariWuBaiZang'], thing: 'primogem', amount: 50},
+      {banned: ['KazariHuangHai'], text: '来到荒海，历经千辛万苦，祓去了海底深处神樱枝条的污秽。', saveItem: ['KazariHuangHai'], thing: 'primogem', amount: 50},
+      {banned: ['KazariSheFengXing'], text: '来到社奉行，得到了神里绫华的帮助，祓去了社奉行山下神樱枝条的污秽。', saveItem: ['KazariSheFengXing'], thing: 'primogem', amount: 50},
     ],
     kazariLineFin: [
       {text: ['你成功解决了5处污秽，花散里告诉你该进行最后的大祓了，',
               '一番恶战过后，你成功消灭了恶瘴，但是面具巫女她自己......',
-              '你得到了珍稀物品「狐狸面具」。'], item: ['FoxMask'], saveItem: true},
+              '你得到了珍稀物品「狐狸面具」。'], saveItem: ['FoxMask']},
     ],
     go500Ago: [
       {text: '原来这是一个梦。', priority: 900},
-      {text: '支线制作中...'},
+      {text: '支线制作中...', thing: 'exp', amount: 1}, //todo
     ]
   },
 
@@ -244,6 +250,7 @@ export default {
     exploreExp: '探索经验',
     strength: '体力',
     exp: '额外探索经验',
+    ore: '锻造用矿石',
   },
 
   exploreLv: 0,
@@ -273,6 +280,7 @@ export default {
       agi: this.attr.base[2],
       luck: this.attr.base[3],
     }
+    this.gain.ore = 16 + this.exploreLv * 2;
     //初始化属性
 
     //事件执行
@@ -358,8 +366,7 @@ export default {
         this.itemList = lodash.uniq(this.itemList.concat(event.item));
       }
       if(event?.saveItem){
-        //todo saveItem --> []
-        this.exploreSavedItem = lodash.uniq(this.exploreSavedItem.concat(event.item));
+        this.exploreSavedItem = lodash.uniq(this.exploreSavedItem.concat(event.saveItem));
       }
       if(event?.deleteItem){
         lodash.pullAll(this.exploreSavedItem, event.deleteItem);
@@ -371,6 +378,7 @@ export default {
         const newEventList = this.check[event.next];
         return await func(this.sample(newEventList));
       }
+
       if(event?.key === 'finish'){
         finish = true;
       }

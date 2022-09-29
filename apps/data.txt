@@ -20,6 +20,7 @@ ayaka:${id}:item => {
   mora: 10000,     //摩拉
   primogem: 0,     //原石
   exp: 0,          //额外探险经验
+  ore: 0,          //矿石
 }
 
 ayaka:${id}:explore => [ //探险每个步骤临时道具
@@ -28,8 +29,8 @@ ayaka:${id}:explore => [ //探险每个步骤临时道具
   CanningKnowledge //罐装知识
   LotsOfWater //很多水
   ChildBody //孩童身躯  --> todo 遇见兰那罗支线 添加need逻辑
-  KeQingThink //刻晴认识 --> todo 层岩救命
-  XiaoThink   //魈认识  --> todo 逐月节邀请
+  KeQingThink //刻晴认识 --> todo 逐月节邀请
+  XiaoThink   //魈认识  --> todo 层岩救命
   ZhongLiThink//钟离认识 --> todo
 ]
 
