@@ -50,7 +50,8 @@ export default {
   },
   check: {
     meetKaiYa: [
-      
+      {banned: new Date().getDay() !== 4, text: '他说今天是疯狂星期四，希望你v他50吃顿好的。', thing: 'mora', amount: -50},
+      {banned: new Date().getDay() !== 4, text: '他说今天是疯狂星期四，想v你50吃顿好的。', thing: 'mora', amount: 50},
     ],
     meetAiLin: [
       {text: '支线制作中...'}, //todo
