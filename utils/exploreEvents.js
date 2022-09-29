@@ -13,7 +13,7 @@ export default {
       {text: '看见了飞在空中的晶蝶，但是它飞太高了你拿它没有办法。'},
       {text: '看见了飞在空中的晶蝶，你尝试抓它', next: 'catchCrystalButterfly'},
       {text: '你很口渴，去喝了不少水。', item: ['LotsOfWater'], key: 'check', check: this.refineAttr.luk > lodash.random(6,8), checkSucc: 'waterIsGood'},
-      {text: '你发现你穿越到了500年前，', key: 'check', check: true, checkSucc: 'go500Ago'},
+      {text: '你发现你穿越到了500年前，', next: 'go500Ago'},
       {text: '你见到了一群丘丘人，痛揍了它们一顿，得到了不少摩拉。', thing: 'mora', amount: 8000},
       {text: '你见到了一群丘丘人，痛揍了它们一顿。', thing: 'exp', amount: 2},
       {text: '一个火把丘丘人冲上来对你使出了火之神神乐，你应对不及，被连招致死。', key: 'finish'},
@@ -65,10 +65,13 @@ export default {
     ],
     meetZhongLiSucc: [
       {text: ['老大爷目不斜视听着书，突然出声：“小友，不妨坐下来一同听书？”',
-             '支线制作中...'], thing: 'exp', amout: 1}, //todo 层岩加护
+             '这老大爷明明没有看你，你却觉得自己的全身被看透，身体不自觉地坐于一旁，就连精神也完全陷入听书之中，平日里呕哑嘲哳的说书，此时竟如白开水般被你吸纳理解……',
+             '……“正所谓——「金石迸碎荡尘埃，磐山纡水尽为开，创龙点睛得助力，盘桓遂引雨露来！」”说书结束，田铁嘴退场，',
+             '你久久无法回神，老大爷喝完最后一口茶，侧目：“小友于我有缘，可否将「老石」割爱于我？”',
+             '你不自觉地拿出从层岩巨渊之外得来的石头，回过神来，那奇人与手上的石头皆已消失不见。'], thing: 'exp', amout: 10, item: ['ZhongLiThink'], deleteItem: ['OldStone']},
     ],
     meetZhongLiFail: [
-      {text: '你对听书不感兴趣，走开了。', thing: 'exp', amout: 1},
+      {text: '你对说书不感兴趣，走开了。', thing: 'exp', amout: 1},
     ],
     oldStoneSucc: [
       {text: '绊倒你的是一块蓝紫色的晶莹石头，你觉得它不简单，把它装入了口袋。', item: ['OldStone'], saveItem: true},
@@ -353,7 +356,11 @@ export default {
         this.itemList = lodash.uniq(this.itemList.concat(event.item));
       }
       if(event?.saveItem){
+        //todo saveItem --> []
         this.exploreSavedItem = lodash.uniq(this.exploreSavedItem.concat(event.item));
+      }
+      if(event?.deleteItem){
+        //todo this.exploreSavedItem  -->  deleteItem = []
       }
       if(event?.func){
         event.func();
