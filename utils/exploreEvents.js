@@ -24,7 +24,7 @@ export default {
       {text: '你走在路上，意外捡到了北国银行的贵宾卡。', item: ['BankOfNorthVIPCard']},
       {text: '你遇见了多莉，得到了奇怪的罐装知识。', item: ['CanningKnowledge']},
       {text: '你遇见了带面具的巫女，', key: 'check', check: true, checkSucc: 'helpWitch', priority: 100},
-      {text: '你到了西风骑士团，遇到了从中走出的骑兵队长，'}, //todo v我50
+      {text: '你到了西风骑士团，遇到了从中走出的骑兵队长，', key: 'check', check: true, checkSucc: 'meetKaiYa'}, //todo v我50
       {text: '你看到3朵甜甜花围着一个宝箱，'}, //todo 骗骗花
       {text: '一个雷莹术士突然对你展开攻击，你猝不及防之下中招了。', thing: 'exp', amount: -2},
       {text: `你看见一个落单的${lodash.sample(['雷莹术士','岩使游击兵','冰铳重卫士','火铳游击兵','雷锤前锋军'])}，`, key: 'check', check: true, checkSucc: 'meetFatui'},
@@ -49,6 +49,9 @@ export default {
     ]
   },
   check: {
+    meetKaiYa: [
+      
+    ],
     meetAiLin: [
       {text: '支线制作中...'}, //todo
       //{text: '你只是随意用了一个技能，'}, //todo 学习各个技能..
@@ -335,7 +338,15 @@ export default {
   sample(eventArr){
     const allList = this.getAllItemList();
     //过滤bannedArr后的eventList
-    const purifyArr = eventArr.filter(res => !res?.banned || res.banned.filter(rr=>allList.includes(rr)).length === 0);
+    const purifyArr = eventArr.filter(res => {
+      //banned = true 将被过滤
+      if(res?.banned !== true){
+        //banned = ['xx1', 'xx2', ...]  且 道具中存在 xx1 || xx2 || ...  任一项将被过滤
+        if(!res?.banned || res?.banned.filter(rr=>allList.includes(rr)).length === 0){
+          return res;
+        }
+      }
+    });
     
     const priorityArr = purifyArr.map(res => res?.priority || 100);
     const full = priorityArr.reduce((sum, now) => sum + now, 0);
