@@ -360,7 +360,7 @@ export default {
         this.exploreSavedItem = lodash.uniq(this.exploreSavedItem.concat(event.item));
       }
       if(event?.deleteItem){
-        //todo this.exploreSavedItem  -->  deleteItem = []
+        _.pullAll(this.exploreSavedItem, event.deleteItem);
       }
       if(event?.func){
         event.func();
