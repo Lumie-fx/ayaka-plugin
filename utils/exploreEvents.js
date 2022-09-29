@@ -28,7 +28,7 @@ export default {
       {text: '你看到3朵甜甜花围着一个宝箱，心生戒备，绕开花朵打开了宝箱，拿到了奖励。', thing: 'mora', amount: 15000},
       {text: '一个雷莹术士突然对你展开攻击，你猝不及防之下中招了。', thing: 'exp', amount: -2},
       {text: `你看见一个落单的${lodash.sample(['雷莹术士','岩使游击兵','冰铳重卫士','火铳游击兵','雷锤前锋军'])}，`, key: 'check', check: true, checkSucc: 'meetFatui'},
-      {text: '你来到望舒客栈，借着大厨的厨具做了一道拿手好菜，', key: 'check', check: true, checkSucc: 'wangShuCook'},
+      {text: '你来到望舒客栈，借着言笑大厨的厨具做了一道拿手好菜，', key: 'check', check: true, checkSucc: 'wangShuCook'},
     ],
     lv3: [
       {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了许多摩拉。', thing: 'mora', amount: 20000},
@@ -36,8 +36,10 @@ export default {
       {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了一张藏宝图。', item: ['TreasureMap']},
       {text: '你遇见了一个愚人众小队，以执行官达达鸭朋友的名义骗到了不少战略资金。', thing: 'mora', amount: 50000},
       {text: '你遇见了镀金旅团，', key: 'check', check: true, checkSucc: 'meetGoldenParty'},
+      {text: '你在璃月港散步，', key: 'check', check: true, checkSucc: 'walkingOnLiYue'}
     ],
     lv4: [
+      {banned: ['OldStone'], text: '你来到层岩巨渊，走在路上被什么东西绊了一跤，你一看，', key: 'check', check: this.refineAttr.luk > lodash.random(4,8), checkSucc: 'oldStoneSucc', checkFail: 'oldStoneFail'},
       {text: '你走到了北国银行门口，', key: 'check', check: ['BankOfNorthVIPCard'], checkSucc: 'northBankSucc', checkFail: 'northBankFail'},
       {text: '你到了黄金屋，遇到了好战的公子，', key: 'check', check: ['ChildBody'], checkSucc: 'tartagliaStep0', checkFail: 'tartagliaStep1'},
       {text: '你到了黄金屋，屋内全是摩拉，却没有一个人，但是里面的摩拉都是贴图你拿不起来。'},
@@ -54,10 +56,26 @@ export default {
     ],
     //尘世执政级
     lv7: [],
-    //天理级别
+    //天理级/世界之外
     lv8: []
   },
   check: {
+    walkingOnLiYue: [
+      {text: '偶然听到了田铁嘴在说书，在他面前一个老大爷喝着茶，听的津津有味，', key: 'check', check: ['OldStone'], checkSucc: 'meetZhongLiSucc', checkFail: 'meetZhongLiFail'}
+    ],
+    meetZhongLiSucc: [
+      {text: ['老大爷目不斜视听着书，突然出声：“小友，不妨坐下来一同听书？”',
+             '支线制作中...'], thing: 'exp', amout: 1}, //todo 层岩加护
+    ],
+    meetZhongLiFail: [
+      {text: '你对听书不感兴趣，走开了。', thing: 'exp', amout: 1},
+    ],
+    oldStoneSucc: [
+      {text: '绊倒你的是一块蓝紫色的晶莹石头，你觉得它不简单，把它装入了口袋。', item: ['OldStone'], saveItem: true},
+    ],
+    oldStoneFail: [
+      {text: '原来就是一块普通石头，你只能自认倒霉。'},
+    ],
     wangShuCook: [
       {text: '你做的是金丝虾球，吸引了刻晴的注意。', item: ['KeQingThink'], thing: 'exp', amout: 1},
       {text: '你做的是杏仁豆腐，吸引了魈的注意。', item: ['XiaoThink'], thing: 'exp', amout: 1},
