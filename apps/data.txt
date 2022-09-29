@@ -24,7 +24,7 @@ ayaka:${id}:item => {
 
 ayaka:${id}:explore => [ //探险每个步骤临时道具
   BankOfNorthVIPCard  //北国银行贵宾卡
-  TreasureMap //盗宝团藏宝图
+  TreasureMap //盗宝团藏宝图 --> todo
   CanningKnowledge //罐装知识
   LotsOfWater //很多水
   ChildBody //孩童身躯  --> todo 遇见兰那罗支线 添加need逻辑
