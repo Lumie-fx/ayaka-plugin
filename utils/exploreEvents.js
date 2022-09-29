@@ -48,7 +48,7 @@ export default {
       {text: '你来到了鸣神大社，', key: 'check', check: ['FoxMask'], checkSucc: 'goMingShenSucc', checkFail: 'goMingShenFail'},
     ],
     lv6: [
-      {text: '你来到了一场花神诞祭，你愉快的过完了整个祭奠，直到「嘀——」的一声，你发现整个世界回到了起点。'},
+      {text: '你来到了一场花神诞祭，你愉快的过完了整个祭奠，直到「嘀——」的一声，你发现整个世界回到了起点。', func: ()=>{this.num = 0;}},
     ]
   },
   check: {
@@ -257,7 +257,7 @@ export default {
     this.num += Math.floor(Math.random() * 20) + 10;
 
     //todo
-    // 1.事件lv6~8 探险等级6、8、10解锁
+    // 1.事件lv6~8 探险等级5、7、9解锁
 
 
     const full = 100 + this.exploreLv * 10; //100~200
@@ -284,7 +284,20 @@ export default {
       eventLv = 'lv5';
       this.gain.exploreExp += utils.config.explore.expGain[4];
     }else{
-      return this.msgList;
+      //150~200 5级事件区间为7.5~10
+      //6级事件固定区间4, 7级事件固定区间2, 8级事件固定区间1
+      if(this.exploreLv >= 5 && this.num <= full + 4){
+        eventLv = 'lv6';
+        this.gain.exploreExp += utils.config.explore.expGain[5];
+      }else if(this.exploreLv >= 7 && this.num <= full + 6){
+        eventLv = 'lv7';
+        this.gain.exploreExp += utils.config.explore.expGain[6];
+      }else if(this.exploreLv >= 9 && this.num <= full + 7){
+        eventLv = 'lv8';
+        this.gain.exploreExp += utils.config.explore.expGain[7];
+      }else{
+        return this.msgList;
+      }
     }
 
     let finish = false;
@@ -302,6 +315,9 @@ export default {
       }
       if(event?.saveItem){
         this.exploreSavedItem = lodash.uniq(this.exploreSavedItem.concat(event.item));
+      }
+      if(event?.func){
+        event.func();
       }
 
       if(event.key === 'finish'){
