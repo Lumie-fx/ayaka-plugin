@@ -46,6 +46,9 @@ export default {
       {text: '你在路中央看到了亮闪闪的东西，过去将它捡了起来。', thing: 'primogem', amount: 100},
       {text: '你遇见了？？？', key: 'check', check: ['CanningKnowledge','LotsOfWater'], checkSucc: 'naXiDaSucc', checkFail: 'naXiDaFail'},
       {text: '你来到了鸣神大社，', key: 'check', check: ['FoxMask'], checkSucc: 'goMingShenSucc', checkFail: 'goMingShenFail'},
+    ],
+    lv6: [
+      {text: '你来到了一场花神诞祭，你愉快的过完了整个祭奠，直到「嘀——」的一声，你发现整个世界回到了起点。'},
     ]
   },
   check: {
@@ -183,6 +186,7 @@ export default {
     ]
   },
 
+  num: 0,               //步骤值
   msgList: [],
   itemList: [],
   exploreSavedItem: [], //探索保存的长期道具
@@ -201,7 +205,7 @@ export default {
 
   exploreLv: 0,
 
-  async start(num = 0, id){
+  async start(id){
     //初始化数据
     this.msgList = [];
     this.itemList = [];
@@ -228,7 +232,7 @@ export default {
     //初始化属性
 
     //事件执行
-    await this.next(num, id);
+    await this.next(id);
     this.msgList.push('已结束。');
     this.msgList.push('============');
     this.msgList.push('当前为测试版本，内容扩充中，道具获取暂不计入真实收益。');
@@ -248,9 +252,9 @@ export default {
 
     return this.msgList;
   },
-  async next(num, id){
+  async next(id){
 
-    num += Math.floor(Math.random() * 20) + 10;
+    this.num += Math.floor(Math.random() * 20) + 10;
 
     //todo
     // 1.事件lv6~8 探险等级6、8、10解锁
@@ -261,22 +265,22 @@ export default {
       lv1: .4, lv2: .7, lv3: .85, lv4: .95, lv5: 1
     };
 
-    console.log(num, full * per.lv1, full);
+    console.log(this.num, full * per.lv1, full);
 
     let eventLv = '';
-    if(num < full * per.lv1){
+    if(this.num < full * per.lv1){
       eventLv = 'lv1';
       this.gain.exploreExp += utils.config.explore.expGain[0];
-    }else if(num < full * per.lv2){
+    }else if(this.num < full * per.lv2){
       eventLv = 'lv2';
       this.gain.exploreExp += utils.config.explore.expGain[1];
-    }else if(num < full * per.lv3){
+    }else if(this.num < full * per.lv3){
       eventLv = 'lv3';
       this.gain.exploreExp += utils.config.explore.expGain[2];
-    }else if(num < full * per.lv4){
+    }else if(this.num < full * per.lv4){
       eventLv = 'lv4';
       this.gain.exploreExp += utils.config.explore.expGain[3];
-    }else if(num <= full * per.lv5){
+    }else if(this.num <= full * per.lv5){
       eventLv = 'lv5';
       this.gain.exploreExp += utils.config.explore.expGain[4];
     }else{
@@ -332,7 +336,7 @@ export default {
       this.msgList.push('探索中断。');
       return this.msgList;
     }else{
-      await this.next(num, id);
+      await this.next(id);
     }
   },
 
