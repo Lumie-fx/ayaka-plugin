@@ -7,36 +7,36 @@ export default {
       {text: '遇见盗宝鼬，一不留神被偷了摩拉。', thing: 'mora', amount: - lodash.random(1, 5) * 1000},
       {text: '遇见盗宝鼬，打晕它得到了摩拉。', thing: 'mora', amount: lodash.random(1, 5) * 1000},
       {text: '遇见盗宝鼬，相安无事无事发生。'},
-      {text: '你走在路上，遇到了野生的菌类，', key: 'check', check: true, checkSucc: 'patchMushroom'},
+      {text: '你走在路上，遇到了野生的菌类，', next: 'patchMushroom'},
       {text: '被大野猪拱了，你很生气但是追不上它。'},
       {text: '被大野猪拱了，你追上去把它剁成了兽肉。', thing: 'exp', amount: 1},
       {text: '看见了飞在空中的晶蝶，但是它飞太高了你拿它没有办法。'},
-      {text: '看见了飞在空中的晶蝶，你尝试抓它', key: 'check', check: true, checkSucc: 'catchCrystalButterfly'},
+      {text: '看见了飞在空中的晶蝶，你尝试抓它', next: 'catchCrystalButterfly'},
       {text: '你很口渴，去喝了不少水。', item: ['LotsOfWater'], key: 'check', check: this.refineAttr.luk > lodash.random(6,8), checkSucc: 'waterIsGood'},
       {text: '你发现你穿越到了500年前，', key: 'check', check: true, checkSucc: 'go500Ago'},
       {text: '你见到了一群丘丘人，痛揍了它们一顿，得到了不少摩拉。', thing: 'mora', amount: 8000},
       {text: '你见到了一群丘丘人，痛揍了它们一顿。', thing: 'exp', amount: 2},
       {text: '一个火把丘丘人冲上来对你使出了火之神神乐，你应对不及，被连招致死。', key: 'finish'},
-      {text: '你在蒙德桥上看见了一群鸽子，', key: 'check', check: true, checkSucc: 'meetDoveV1'},
-      {text: '你在蒙德城内上看见一个少女在为如何打碎木桩发愁，她说她叫艾琳，想让你教她，', key: 'check', check: true, checkSucc: 'meetAiLin'},
+      {text: '你在蒙德桥上看见了一群鸽子，', next: 'meetDoveV1'},
+      {text: '你在蒙德城内上看见一个少女在为如何打碎木桩发愁，她说她叫艾琳，想让你教她，', next: 'meetAiLin'},
     ],
     lv2: [
       {text: '你走在路上，意外捡到了北国银行的贵宾卡。', item: ['BankOfNorthVIPCard']},
       {text: '你遇见了多莉，得到了奇怪的罐装知识。', item: ['CanningKnowledge']},
-      {text: '你遇见了带面具的巫女，', key: 'check', check: true, checkSucc: 'helpWitch'},
-      {text: '你到了西风骑士团，遇到了从中走出的骑兵队长，', key: 'check', check: true, checkSucc: 'meetKaiYa'}, //todo v我50
+      {text: '你遇见了带面具的巫女，', next: 'helpWitch'},
+      {text: '你到了西风骑士团，遇到了从中走出的骑兵队长，', next: 'meetKaiYa'}, //todo v我50
       {text: '你看到3朵甜甜花围着一个宝箱，心生戒备，绕开花朵打开了宝箱，拿到了奖励。', thing: 'mora', amount: 15000},
       {text: '一个雷莹术士突然对你展开攻击，你猝不及防之下中招了。', thing: 'exp', amount: -2},
-      {text: `你看见一个落单的${lodash.sample(['雷莹术士','岩使游击兵','冰铳重卫士','火铳游击兵','雷锤前锋军'])}，`, key: 'check', check: true, checkSucc: 'meetFatui'},
-      {text: '你来到望舒客栈，借着言笑大厨的厨具做了一道拿手好菜，', key: 'check', check: true, checkSucc: 'wangShuCook'},
+      {text: `你看见一个落单的${lodash.sample(['雷莹术士','岩使游击兵','冰铳重卫士','火铳游击兵','雷锤前锋军'])}，`, next: 'meetFatui'},
+      {text: '你来到望舒客栈，借着言笑大厨的厨具做了一道拿手好菜，', next: 'wangShuCook'},
     ],
     lv3: [
       {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了许多摩拉。', thing: 'mora', amount: 20000},
       {text: '你见到了一群盗宝团，痛揍了它们一顿。', thing: 'exp', amount: 3},
       {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了一张藏宝图。', item: ['TreasureMap']},
       {text: '你遇见了一个愚人众小队，以执行官达达鸭朋友的名义骗到了不少战略资金。', thing: 'mora', amount: 50000},
-      {text: '你遇见了镀金旅团，', key: 'check', check: true, checkSucc: 'meetGoldenParty'},
-      {text: '你在璃月港散步，', key: 'check', check: true, checkSucc: 'walkingOnLiYue'}
+      {text: '你遇见了镀金旅团，', next: 'meetGoldenParty'},
+      {text: '你在璃月港散步，', next: 'walkingOnLiYue'}
     ],
     lv4: [
       {banned: ['OldStone'], text: '你来到层岩巨渊，走在路上被什么东西绊了一跤，你一看，', key: 'check', check: this.refineAttr.luk > lodash.random(4,8), checkSucc: 'oldStoneSucc', checkFail: 'oldStoneFail'},
@@ -98,11 +98,13 @@ export default {
       {text: '你想把它们打成禽肉，但是它们全都飞走了。'},
       {text: ['你使出风元素之力，把它们打成了禽肉，',
               '然后提米出现了，',
-              '他说鸽子是朋友，你居然把它们杀了，'], thing: 'exp', amount: 1, key: 'check', check: true, checkSucc: 'meetTiMi'},
+              '他说鸽子是朋友，你居然把它们杀了，'], thing: 'exp', amount: 1, next: 'meetTiMi'},
     ],
     meetTiMi: [
       {text: '他朝你不停哭诉，然后你好好地安慰了他。', priority: 200},
-      {text: ['你正想解释，结果他突然露出真面目，其实他是愚人众执行官首席「公鸡」。', '他说鸽子的死值得你足足死去1000次为之缅怀悼念，', '你，死了。'], priority: 20, key: 'finish'},
+      {text: ['你正想解释，结果他突然露出真面目，其实他是愚人众执行官首席「公鸡」。',
+              '他说鸽子的死值得你足足死去1000次为之缅怀悼念，',
+              '你，死了。'], priority: 20, key: 'finish'},
       {text: '你正想解释，载着他的独眼小宝突然对你发起攻击，', key: 'check', check: this.refineAttr.agi > lodash.random(5, 10), checkSucc: 'avoidTiMiAttackSucc', checkFail: 'avoidTiMiAttackFail'},
     ],
     avoidTiMiAttackSucc: [
@@ -123,14 +125,16 @@ export default {
       {text: '你觉得你可以，然后冲了上去，没想到你真打赢了。', thing: 'exp', amount: 2},
     ],
     patchMushroom: [
-      {text: `你觉得它是${lodash.sample(['浮游水','伸缩岩','旋转雷','伸缩火','伸缩风','浮游草','旋转冰'])}蕈兽，`, key: 'check', check: true, checkSucc: 'patchMushroomStep1'},
+      {text: `你觉得它是${lodash.sample(['浮游水','伸缩岩','旋转雷','伸缩火','伸缩风','浮游草','旋转冰'])}蕈兽，`, next: 'patchMushroomStep1'},
     ],
     patchMushroomStep1: [
       {text: '觉得它太可爱了没忍心欺负它。'},
       {text: '把它打成了蘑菇孢子。', thing: 'exp', amount: 1},
       {text: '打跑了一只，引来了一群，这次跑的是你。', thing: 'exp', amount: 1},
-      {text: ['你以为是蕈兽，实际上你看错了，他是飘浮灵，', '你被打跑了。']},
-      {text: ['你以为是蕈兽，实际上你看错了，他是飘浮灵，', '它嚣张的眼神让你很生气，你跟它干了一架，'], key: 'check', check: true, checkSucc: 'fightWithPiaoFuLing'},
+      {text: ['你以为是蕈兽，实际上你看错了，他是飘浮灵，',
+              '你被打跑了。']},
+      {text: ['你以为是蕈兽，实际上你看错了，他是飘浮灵，',
+              '它嚣张的眼神让你很生气，你跟它干了一架，'], next: 'fightWithPiaoFuLing'},
     ],
     fightWithPiaoFuLing: [
       {text: '很抱歉你没打过。'},
@@ -152,7 +156,7 @@ export default {
     ],
     meetGoldenParty: [
       {text: '觉得他们人太多，自己可能不是对手，走开了。'},
-      {text: '见到了正在跳舞的沙中净水，一时看入迷了，结果被人发现从后面击中了后脑勺，晕了过去，', key: 'check', check: true, checkSucc: 'beKnockedOff'},
+      {text: '见到了正在跳舞的沙中净水，一时看入迷了，结果被人发现从后面击中了后脑勺，晕了过去，', next: 'beKnockedOff'},
     ],
     beKnockedOff: [
       {text: '晕倒后，你被灌下了神秘药水，身体变成了小孩子的模样！', item: ['ChildBody']},
@@ -165,7 +169,7 @@ export default {
     northBankFail: [
       {text: '因为没有贵宾卡，只能走开了。'},
       {text: '妄想进入银行，被管理人发现并揍了一顿。', key: 'finish'},
-      {text: '使用荒星卡bug卡进了银行，', key: 'check', check: true, checkSucc: 'northBankSucc'},
+      {text: '使用荒星卡bug卡进了银行，', next: 'northBankSucc'},
     ],
     tartagliaStep0: [
       {text: '他看你只是个小孩子，对你没兴趣，把你赶走了。'},
@@ -173,13 +177,13 @@ export default {
     ],
     tartagliaStep1: [
       {text: '他二话不说就跟你开打，你被暴揍了一顿。'},
-      {text: '他二话不说就跟你开打，结果被你几下制服，开启了二阶段，', key: 'check', check: true, checkSucc: 'tartagliaStep2'},
-      {text: '他二话不说就跟你开打，被你压制后想使用大鲸鱼，结果鲸鱼今天休假了用不出来，被打进了二阶段，', key: 'check', check: true, checkSucc: 'tartagliaStep2'},
+      {text: '他二话不说就跟你开打，结果被你几下制服，开启了二阶段，', next: 'tartagliaStep2'},
+      {text: '他二话不说就跟你开打，被你压制后想使用大鲸鱼，结果鲸鱼今天休假了用不出来，被打进了二阶段，', next: 'tartagliaStep2'},
     ],
     tartagliaStep2: [
       {text: '他使用雷元素力后迅捷的动作让你反应不及，你被暴揍了一顿。', thing: 'exp', amount: 3},
-      {text: '他使用雷元素力后仍被你压制，愤怒之下开启了魔王武装，', key: 'check', check: true, checkSucc: 'tartagliaStep3'},
-      {text: '他使用雷元素力后因为速度过快撞到了墙，为了掩饰尴尬开启了魔王武装', key: 'check', check: true, checkSucc: 'tartagliaStep3'},
+      {text: '他使用雷元素力后仍被你压制，愤怒之下开启了魔王武装，', next: 'tartagliaStep3'},
+      {text: '他使用雷元素力后因为速度过快撞到了墙，为了掩饰尴尬开启了魔王武装', next: 'tartagliaStep3'},
     ],
     tartagliaStep3: [
       {text: '魔王武装后的达达利亚过于恐怖，你被暴揍了一顿。', thing: 'exp', amount: 5},
@@ -211,7 +215,9 @@ export default {
       {banned: ['KazariSheFengXing'], text: '来到社奉行，得到了神里绫华的帮助，祓去了社奉行山下神樱枝条的污秽。', item: ['KazariSheFengXing'], saveItem: true, thing: 'primogem', amount: 50},
     ],
     kazariLineFin: [
-      {text: ['你成功解决了5处污秽，花散里告诉你该进行最后的大祓了，', '一番恶战过后，你成功消灭了恶瘴，但是面具巫女她自己......', '你得到了珍稀物品「狐狸面具」。'], item: ['FoxMask'], saveItem: true},
+      {text: ['你成功解决了5处污秽，花散里告诉你该进行最后的大祓了，',
+              '一番恶战过后，你成功消灭了恶瘴，但是面具巫女她自己......',
+              '你得到了珍稀物品「狐狸面具」。'], item: ['FoxMask'], saveItem: true},
     ],
     go500Ago: [
       {text: '原来这是一个梦。', priority: 900},
@@ -352,10 +358,15 @@ export default {
       if(event?.func){
         event.func();
       }
-
-      if(event.key === 'finish'){
+      if(event?.next){
+        const newEventList = this.check[event.next];
+        return await func(this.sample(newEventList));
+      }
+      if(event?.key === 'finish'){
         finish = true;
-      }else if(event.key === 'check'){
+      }
+      
+      if(event.key === 'check'){
         if(event.check === true){
           const newEventList = this.check[event.checkSucc];
           await func(this.sample(newEventList));
