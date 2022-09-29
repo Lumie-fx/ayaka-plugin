@@ -28,10 +28,14 @@ ayaka:${id}:explore => [ //探险每个步骤临时道具
   CanningKnowledge //罐装知识
   LotsOfWater //很多水
   ChildBody //孩童身躯  --> todo 遇见兰那罗支线 添加need逻辑
+  KeQingThink //刻晴认识 --> todo 层岩救命
+  XiaoThink   //魈认识  --> todo 逐月节邀请
+  ZhongLiThink//钟离认识 --> todo
 ]
 
 ayaka:${id}:exploreSavedItem => { //探索保存的长期道具
   KazariGanTian/KazariShenShe/KazariWuBaiZang/KazariHuangHai/KazariSheFengXing/FoxMask //神樱大祓道具
+  OldStone //老石
 }
 
 #注定一抽
