@@ -12,7 +12,7 @@ export default {
       {text: '被大野猪拱了，你追上去把它剁成了兽肉。', thing: 'exp', amount: 1},
       {text: '看见了飞在空中的晶蝶，但是它飞太高了你拿它没有办法。'},
       {text: '看见了飞在空中的晶蝶，你尝试抓它', key: 'check', check: true, checkSucc: 'catchCrystalButterfly'},
-      {text: '你很口渴，去喝了不少水。', item: ['LotsOfWater']},
+      {text: '你很口渴，去喝了不少水。', item: ['LotsOfWater'], key: 'check', check: this.refineAttr.luk > lodash.random(6,8), checkSucc: 'waterIsGood'},
       {text: '你发现你穿越到了500年前，', key: 'check', check: true, checkSucc: 'go500Ago'},
       {text: '你见到了一群丘丘人，痛揍了它们一顿，得到了不少摩拉。', thing: 'mora', amount: 8000},
       {text: '你见到了一群丘丘人，痛揍了它们一顿。', thing: 'exp', amount: 2},
@@ -23,11 +23,12 @@ export default {
     lv2: [
       {text: '你走在路上，意外捡到了北国银行的贵宾卡。', item: ['BankOfNorthVIPCard']},
       {text: '你遇见了多莉，得到了奇怪的罐装知识。', item: ['CanningKnowledge']},
-      {text: '你遇见了带面具的巫女，', key: 'check', check: true, checkSucc: 'helpWitch', priority: 100},
+      {text: '你遇见了带面具的巫女，', key: 'check', check: true, checkSucc: 'helpWitch'},
       {text: '你到了西风骑士团，遇到了从中走出的骑兵队长，', key: 'check', check: true, checkSucc: 'meetKaiYa'}, //todo v我50
-      {text: '你看到3朵甜甜花围着一个宝箱，'}, //todo 骗骗花
+      {text: '你看到3朵甜甜花围着一个宝箱，心生戒备，绕开花朵打开了宝箱，拿到了奖励。', thing: 'mora', amount: 15000},
       {text: '一个雷莹术士突然对你展开攻击，你猝不及防之下中招了。', thing: 'exp', amount: -2},
       {text: `你看见一个落单的${lodash.sample(['雷莹术士','岩使游击兵','冰铳重卫士','火铳游击兵','雷锤前锋军'])}，`, key: 'check', check: true, checkSucc: 'meetFatui'},
+      {text: '你来到望舒客栈，借着大厨的厨具做了一道拿手好菜，', key: 'check', check: true, checkSucc: 'wangShuCook'},
     ],
     lv3: [
       {text: '你见到了一群盗宝团，痛揍了它们一顿，得到了许多摩拉。', thing: 'mora', amount: 20000},
@@ -47,13 +48,26 @@ export default {
       {text: '你遇见了？？？', key: 'check', check: ['CanningKnowledge','LotsOfWater'], checkSucc: 'naXiDaSucc', checkFail: 'naXiDaFail'},
       {text: '你来到了鸣神大社，', key: 'check', check: ['FoxMask'], checkSucc: 'goMingShenSucc', checkFail: 'goMingShenFail'},
     ],
+    //魔神级
     lv6: [
-      {text: '你来到了一场花神诞祭，你愉快的过完了整个祭奠，直到「嘀——」的一声，你发现整个世界回到了起点。', func: ()=>{this.num = 0;}},
-    ]
+      {text: '你来到了一场盛大的花神诞祭，你愉快的过完了整个祭奠，直到「嘀——」的一声，你发现整个世界回到了起点。', func:()=>{this.num=0;}},
+    ],
+    //尘世执政级
+    lv7: [],
+    //天理级别
+    lv8: []
   },
   check: {
+    wangShuCook: [
+      {text: '你做的是金丝虾球，吸引了刻晴的注意。', item: ['KeQingThink'], thing: 'exp', amout: 1},
+      {text: '你做的是杏仁豆腐，吸引了魈的注意。', item: ['XiaoThink'], thing: 'exp', amout: 1},
+      {text: '你做的是仙跳墙，但是你水平太菜搞砸了，赔了不少材料钱。', thing: 'mora', amount: -20000},
+    ],
+    waterIsGood: [
+      {text: '你喝到的是圣水，你觉得你现在充满了力量。', func:()=>{this.refineAttr.str+=1;}},
+    ],
     meetKaiYa: [
-      {text: '支线制作中...'}, //todo
+      {text: '因为你是异乡人，他对你很感兴趣。', thing: 'exp', amount: 1},
       {banned: new Date().getDay() !== 4, text: '他说今天是疯狂星期四，希望你v他50吃顿好的。', thing: 'mora', amount: -50},
       {banned: new Date().getDay() !== 4, text: '他说今天是疯狂星期四，想v你50吃顿好的。', thing: 'mora', amount: 50},
     ],
@@ -327,7 +341,7 @@ export default {
         if(event.check === true){
           const newEventList = this.check[event.checkSucc];
           await func(this.sample(newEventList));
-        }else if(event.check === false){
+        }else if(event.check === false && event.checkFail){
           const newEventList = this.check[event.checkFail];
           await func(this.sample(newEventList));
         }else{
