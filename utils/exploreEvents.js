@@ -43,7 +43,7 @@ export default {
       {banned: ['OldStone'], text: '你来到层岩巨渊，走在路上被什么东西绊了一跤，你一看，', key: 'check', check:attr=>attr.luck>lodash.random(4,8), checkSucc: 'oldStoneSucc', checkFail: 'oldStoneFail'},
       {text: '你走到了北国银行门口，', key: 'check', check: ['BankOfNorthVIPCard'], checkSucc: 'northBankSucc', checkFail: 'northBankFail'},
       {text: '你到了黄金屋，遇到了好战的公子，', key: 'check', check: ['ChildBody'], checkSucc: 'tartagliaStep0', checkFail: 'tartagliaStep1'},
-      {text: '你到了黄金屋，屋内全是摩拉，却没有一个人，但是里面的摩拉都是贴图你拿不起来。'},
+      {text: '你到了黄金屋，屋内除了摩拉以外什么都没有，但是里面的摩拉都是贴图你拿不起来。'},
       {text: '经历了许多事件，你心生困意，找了个地方睡了一觉，', key: 'check', check: ['ChildBody'], checkSucc: 'meetLanNaRaSucc', checkFail: 'meetLanNaRaFail'},
     ],
     lv5: [
@@ -51,7 +51,6 @@ export default {
       {text: '你遇见了？？？', key: 'check', check: ['CanningKnowledge','LotsOfWater'], checkSucc: 'naXiDaSucc', checkFail: 'naXiDaFail'},
       {text: '你来到了鸣神大社，', key: 'check', check: ['FoxMask'], checkSucc: 'goMingShenSucc', checkFail: 'goMingShenFail'},
       {text: '逐月节将至，璃月港在总务司的带领下纷纷开始准备美食与活动，', key: 'check', check: ['KeQingThink'], checkSucc: 'moonFestivalSucc', checkFail: 'moonFestivalFail'},
-      //todo 逐月节 刻晴邀约
     ],
     //魔神级
     lv6: [
@@ -64,10 +63,28 @@ export default {
   },
   check: {
     moonFestivalSucc: [
-      {text: '你受到了刻晴的邀请，由她带着', thing: 'exp', amount: 3},
+      {text: '节日开始之时，你受到了刻晴的邀请，她带着你登上群玉阁，品茗佳肴，览璃月节庆夜景，度过了一个美妙的节日。', thing: 'exp', amount: 8},
+      {text: ['节日正式开始，你本以为可以好好过个节，没想到愚人众突然出现，并对现场大肆破坏，'
+             '一个少女出现，与愚人众战斗，她身手矫健，凭借着雷元素力的雷厉与3个对手难分上下，居然是刻晴，'
+             '忽然一道红光闪现在刻晴背后，你认出了那是隐匿身形的讨债人，眼看刻晴即将被偷袭，'],
+           key: 'check', check:attr=>attr.agi>7, checkSucc: 'moonSaveKeQingSucc', checkFail: 'moonSaveKeQingFail'},
     ],
     moonFestivalFail: [
-      {text: '节日正式开始，你吃遍了小吃，看遍了烟花，度过了一个愉快的节日。', thing: 'exp', amount: 3},
+      {text: '不久后，节日正式开始，你吃遍了小吃，看遍了烟花，度过了一个愉快的节日。', thing: 'exp', amount: 3},
+      {text: '节日正式开始，你本以为可以好好过个节，没想到愚人众突然出现，并对现场大肆破坏，',
+           key: 'check', check:attr=>attr.str>7, checkSucc: 'moonFightFatuiSucc', checkFail: 'moonFightFatuiFail'},
+    ],
+    moonSaveKeQingSucc: [
+      {text: '支线制作中...', thing: 'exp', amount: 1}, //todo
+    ],
+    moonSaveKeQingFail: [
+      {text: '支线制作中...', thing: 'exp', amount: 1}, //todo
+    ],
+    moonFightFatuiSucc: [
+      {text: '支线制作中...', thing: 'exp', amount: 1}, //todo
+    ],
+    moonFightFatuiFail: [
+      {text: '支线制作中...', thing: 'exp', amount: 1}, //todo
     ],
     meetDaoBaoTuan: [
       {text: '痛揍了它们一顿，得到了许多摩拉。', thing: 'mora', amount: 20000},
@@ -96,7 +113,7 @@ export default {
     ],
     wangShuCook: [
       {text: ['你做的是金丝虾球，来自异乡的烹饪手法吸引了一边刻晴的注意，你邀请她共享美食，她几番犹豫之下答应了，',
-              '她惊叹于你的厨艺，对你产生了几分兴趣。'], item: ['KeQingThink'], thing: 'exp', amount: 1, drama: ['KeQing']},
+              '浅尝几口，她便惊叹于你的厨艺，对你产生了几分兴趣。'], item: ['KeQingThink'], thing: 'exp', amount: 1, drama: ['KeQing']},
       {text: ['你做的是杏仁豆腐，本想大快朵颐，突然想起了客栈老板无意间说的话，',
               '你盛了一碗米饭，与杏仁豆腐一并放到了客栈天台外的小桌子上，便回去做别的菜了，'
               '少顷，一道墨绿色身影突然出现，享用完美食之后又忽然消失。'], item: ['XiaoThink'], thing: 'exp', amount: 1, drama: ['Xiao']},
