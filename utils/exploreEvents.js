@@ -55,6 +55,7 @@ export default {
     //魔神级
     lv6: [
       {text: '你来到了一场盛大的花神诞祭，你愉快的过完了整个祭典，直到「嘀——」的一声，你发现整个世界回到了起点。', func:()=>{this.num=0;}},
+      //todo Aosaie -> item 引发奥赛尔出现 ,  ZhongLiThink 影响剧情走向
     ],
     //尘世执政级
     lv7: [],
@@ -225,7 +226,11 @@ export default {
     ],
     tartagliaStep3: [
       {text: '魔王武装后的达达利亚过于恐怖，你被暴揍了一顿。', thing: 'exp', amount: 5},
-      {text: '你自沉着应对，矫健的身姿游走于电光水隙之间，最终把他打成了地脉花，你获得了丰富的奖励。', thing: 'primogem', amount: 100},
+      {text: '你自沉着应对，矫健的身姿游走于电光水隙之间，最终把他打成了地脉花，你获得了丰富的奖励。', thing: 'primogem', amount: 100,
+          key: 'check', check:lodash.random(0,10)>8, checkSucc: 'aosaieAppeared'},
+    ],
+    aosaieAppeared: [
+      {text: '你领取奖励后离开了，没想到受伤的公子突然出现，在他周围环绕着无数的「百无禁忌箓」。', item: ['Aosaie']},
     ],
     catchCrystalButterfly: [
       {text: '可惜它飞太高了你够不着。'},
@@ -316,7 +321,7 @@ export default {
     const dramaList = ['KeQing', 'Xiao'];
     if(lodash.random(0,10) > 8){
       this.drama = lodash.sample(dramaList);
-      this.msgList.push(`你拿到了${this.drama}的剧本，触发概率将提高。`);
+      this.msgList.push(`幸运降临，你拿到了${this.drama}的剧本，相应事件的触发概率将提高。`);
     }
     
     //事件执行
