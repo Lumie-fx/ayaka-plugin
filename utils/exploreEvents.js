@@ -1,6 +1,14 @@
 import lodash from "lodash";
 import utils from "../utils/utils.js";
 
+const aiLinSkill = ['造生缠藤箭',
+                    '渊图玲珑骰','神里流·水囿','极恶技·尽灭闪','海人化羽','星命定轨',
+                    '大密法·天狐显真','奥义·梦想真说','天街迅游',
+                    '最恶鬼王·一斗轰临！！','诞生式·大地之潮','天星',
+                    '安神秘法','琉金云间草','轰轰火花','黎明',
+                    '神女遣灵真诀','凝浪之光剑','神里流·霜灭','仙法·救苦度厄','降众天华',
+                    '万叶之一刀','风神之诗','蒲公英之风','靖妖傩舞'];
+
 export default {
   event: {
     lv1: [
@@ -129,8 +137,7 @@ export default {
       {banned: new Date().getDay() !== 4, text: '他说今天是疯狂星期四，想v你50吃顿好的。', thing: 'mora', amount: 50},
     ],
     meetAiLin: [
-      {text: '支线制作中...', thing: 'exp', amount: 1}, //todo
-      //{text: '你只是随意用了一个技能，'}, //todo 学习各个技能..
+      {text: [`你任意使用了一个技能，她模仿你使出了「${lodash.sample(aiLinSkill)}」成功摧毁的木桩，她说：`, '“原来是这样解决的吗！我已经学会了！”'], thing: 'exp', amount: 1}, //todo
     ],
     meetDoveV1: [
       {text: '你使出风元素之力，把它们打成了禽肉。', thing: 'exp', amount: 1},
