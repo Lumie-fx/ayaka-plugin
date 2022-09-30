@@ -137,7 +137,7 @@ export default {
       {banned: new Date().getDay() !== 4, text: '他说今天是疯狂星期四，想v你50吃顿好的。', thing: 'mora', amount: 50},
     ],
     meetAiLin: [
-      {text: [`你任意使用了一个技能，她模仿你使出了「${lodash.sample(aiLinSkill)}」成功摧毁的木桩，她说：`, '“原来是这样解决的吗！我已经学会了！”'], thing: 'exp', amount: 1}, //todo
+      {text: [`你任意使用了一个技能，她模仿你使出了「${lodash.sample(aiLinSkill)}」成功摧毁了木桩，她说：`, '“原来是这样解决的吗！我又学到了新的技能！”'], thing: 'exp', amount: 1}, //todo
     ],
     meetDoveV1: [
       {text: '你使出风元素之力，把它们打成了禽肉。', thing: 'exp', amount: 1},
