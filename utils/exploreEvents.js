@@ -96,10 +96,10 @@ export default {
     ],
     wangShuCook: [
       {text: ['你做的是金丝虾球，来自异乡的烹饪手法吸引了一边刻晴的注意，你邀请她共享美食，她几番犹豫之下答应了，',
-              '她惊叹于你的厨艺，对你产生了几分兴趣。'], item: ['KeQingThink'], thing: 'exp', amount: 1},
+              '她惊叹于你的厨艺，对你产生了几分兴趣。'], item: ['KeQingThink'], thing: 'exp', amount: 1, drama: 'KeQing'},
       {text: ['你做的是杏仁豆腐，本想大快朵颐，突然想起了客栈老板无意间说的话，',
               '你盛了一碗米饭，与杏仁豆腐一并放到了客栈天台外的小桌子上，便回去做别的菜了，'
-              '少顷，一道墨绿色身影突然出现，享用完美食之后又忽然消失。'], item: ['XiaoThink'], thing: 'exp', amount: 1},
+              '少顷，一道墨绿色身影突然出现，享用完美食之后又忽然消失。'], item: ['XiaoThink'], thing: 'exp', amount: 1, drama: 'Xiao'},
       {text: '你做的是仙跳墙，但是你水平太菜搞砸了，赔了不少材料钱。', thing: 'mora', amount: -20000, priority: 200},
     ],
     waterIsGood: [
@@ -453,17 +453,25 @@ export default {
       }
     });
     
-    const priorityArr = purifyArr.map(res => res?.priority || 100);
+    //剧本
+    const _purifyArr = lodash.cloneDeep(purifyArr);
+    _purifyArr.map(res => {
+      if(res?.drama === this?.drama){
+        res.priority = (res?.priority || 100) * 5;
+      }
+    });
+    
+    const priorityArr = _purifyArr.map(res => res?.priority || 100);
     const full = priorityArr.reduce((sum, now) => sum + now, 0);
     const drop = Math.floor(Math.random() * full);
     let chooseIdx = 0;
-    purifyArr.reduce((sum, now, idx) => {
+    _purifyArr.reduce((sum, now, idx) => {
       if(sum - drop < 0){
         chooseIdx = idx;
       }
       return sum + (now?.priority || 100);
     }, 0);
-    return purifyArr[chooseIdx];
+    return _purifyArr[chooseIdx];
   },
   
   getAllItemList(){
