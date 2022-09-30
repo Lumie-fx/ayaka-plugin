@@ -20,6 +20,7 @@ export default {
       {text: '你在蒙德桥上看见了一群鸽子，', next: 'meetDoveV1'},
       {text: '你在蒙德城内上看见一个少女在为如何打碎木桩发愁，她说她叫艾琳，想让你教她，', next: 'meetAiLin'},
       {text: '你在蒙德城中得知安娜身患重病，在许愿池中用摩拉许下了愿望，你的幸运提升了。', thing: 'mora', amount: -10000, func:()=>{this.refineAttr.luck+=1;}},
+      {banned: new Date().getDay() !== 4, text: '今天是疯狂星期四，系统送你50吃顿好的吧。', thing: 'mora', amount: 50},
     ],
     lv2: [
       {text: '你走在路上，意外捡到了北国银行的贵宾卡。', item: ['BankOfNorthVIPCard']},
@@ -49,6 +50,7 @@ export default {
       {text: '你在路中央看到了亮闪闪的东西，过去将它捡了起来。', thing: 'primogem', amount: 100},
       {text: '你遇见了？？？', key: 'check', check: ['CanningKnowledge','LotsOfWater'], checkSucc: 'naXiDaSucc', checkFail: 'naXiDaFail'},
       {text: '你来到了鸣神大社，', key: 'check', check: ['FoxMask'], checkSucc: 'goMingShenSucc', checkFail: 'goMingShenFail'},
+      {text: '逐月节将至，璃月港在总务司的带领下纷纷开始准备美食与活动，', key: 'check', check: ['KeQingThink'], checkSucc: 'moonFestivalSucc', checkFail: 'moonFestivalFail'},
       //todo 逐月节 刻晴邀约
     ],
     //魔神级
@@ -61,6 +63,12 @@ export default {
     lv8: []
   },
   check: {
+    moonFestivalSucc: [
+      {text: '你受到了刻晴的邀请，由她带着', thing: 'exp', amount: 3},
+    ],
+    moonFestivalFail: [
+      {text: '节日正式开始，你吃遍了小吃，看遍了烟花，度过了一个愉快的节日。', thing: 'exp', amount: 3},
+    ],
     meetDaoBaoTuan: [
       {text: '痛揍了它们一顿，得到了许多摩拉。', thing: 'mora', amount: 20000},
       {text: '痛揍了它们一顿。', thing: 'exp', amount: 3},
@@ -87,9 +95,12 @@ export default {
       {text: '原来就是一块普通石头，你只能自认倒霉。'},
     ],
     wangShuCook: [
-      {text: '你做的是金丝虾球，吸引了刻晴的注意。', item: ['KeQingThink'], thing: 'exp', amount: 1},
-      {text: '你做的是杏仁豆腐，吸引了魈的注意。', item: ['XiaoThink'], thing: 'exp', amount: 1},
-      {text: '你做的是仙跳墙，但是你水平太菜搞砸了，赔了不少材料钱。', thing: 'mora', amount: -20000},
+      {text: ['你做的是金丝虾球，来自异乡的烹饪手法吸引了一边刻晴的注意，你邀请她共享美食，她几番犹豫之下答应了，',
+              '她惊叹于你的厨艺，对你产生了几分兴趣。'], item: ['KeQingThink'], thing: 'exp', amount: 1},
+      {text: ['你做的是杏仁豆腐，本想大快朵颐，突然想起了客栈老板无意间说的话，',
+              '你盛了一碗米饭，与杏仁豆腐一并放到了客栈天台外的小桌子上，便回去做别的菜了，'
+              '少顷，一道墨绿色身影突然出现，享用完美食之后又忽然消失。'], item: ['XiaoThink'], thing: 'exp', amount: 1},
+      {text: '你做的是仙跳墙，但是你水平太菜搞砸了，赔了不少材料钱。', thing: 'mora', amount: -20000, priority: 200},
     ],
     waterIsGood: [
       {text: '你喝到的是圣水，你觉得你现在充满了力量。', func:()=>{this.refineAttr.str+=1;}},
@@ -270,6 +281,7 @@ export default {
 
     this.msgList.push(`当前探索等级: Lv${this.exploreLv}。`);
 
+    //初始化属性
     for(let i = 0;i < this.exploreLv * 2; i++){
       const idx = Math.floor(Math.random() * 4);
       this.attr.base[idx] ++;
@@ -281,10 +293,13 @@ export default {
       luck: this.attr.base[3],
     }
     this.gain.ore = 16 + this.exploreLv * 2;
-    //初始化属性
-
+    //todo test
+    const dramaList = ['KeQing', 'Xiao', 'ZhongLi'];
+    this.drama = lodash.sample(dramaList);
+    
     //事件执行
     await this.next(id);
+    
     this.msgList.push('已结束。');
     this.msgList.push('============');
     this.msgList.push('当前为测试版本，内容扩充中，道具获取暂不计入真实收益。');
