@@ -30,7 +30,7 @@ export default {
       {text: '你看到3朵甜甜花围着一个宝箱，心生戒备，绕开花朵打开了宝箱，拿到了奖励。', thing: 'mora', amount: 15000},
       {text: '一个雷莹术士突然对你展开攻击，你猝不及防之下中招了。', thing: 'exp', amount: -2},
       {text: `你看见一个落单的${lodash.sample(['雷莹术士','岩使游击兵','冰铳重卫士','火铳游击兵','雷锤前锋军'])}，`, next: 'meetFatui'},
-      {text: '你来到望舒客栈，借着言笑大厨的厨具做了一道拿手好菜，', next: 'wangShuCook'},
+      {text: '你来到望舒客栈，借着言笑大厨的厨具做了一道拿手好菜，', next: 'wangShuCook', drama: ['KeQing', 'Xiao'], priority: 50},
     ],
     lv3: [
       {text: '你见到了一群盗宝团，', next: 'meetDaoBaoTuan'},
@@ -96,10 +96,10 @@ export default {
     ],
     wangShuCook: [
       {text: ['你做的是金丝虾球，来自异乡的烹饪手法吸引了一边刻晴的注意，你邀请她共享美食，她几番犹豫之下答应了，',
-              '她惊叹于你的厨艺，对你产生了几分兴趣。'], item: ['KeQingThink'], thing: 'exp', amount: 1, drama: 'KeQing'},
+              '她惊叹于你的厨艺，对你产生了几分兴趣。'], item: ['KeQingThink'], thing: 'exp', amount: 1, drama: ['KeQing']},
       {text: ['你做的是杏仁豆腐，本想大快朵颐，突然想起了客栈老板无意间说的话，',
               '你盛了一碗米饭，与杏仁豆腐一并放到了客栈天台外的小桌子上，便回去做别的菜了，'
-              '少顷，一道墨绿色身影突然出现，享用完美食之后又忽然消失。'], item: ['XiaoThink'], thing: 'exp', amount: 1, drama: 'Xiao'},
+              '少顷，一道墨绿色身影突然出现，享用完美食之后又忽然消失。'], item: ['XiaoThink'], thing: 'exp', amount: 1, drama: ['Xiao']},
       {text: '你做的是仙跳墙，但是你水平太菜搞砸了，赔了不少材料钱。', thing: 'mora', amount: -20000, priority: 200},
     ],
     waterIsGood: [
@@ -247,6 +247,7 @@ export default {
   },
 
   num: 0,               //步骤值
+  drama: '',
   msgList: [],
   itemList: [],
   exploreSavedItem: [], //探索保存的长期道具
@@ -269,6 +270,7 @@ export default {
   async start(id){
     //初始化数据
     this.num = 0;
+    this.drama = '';
     this.msgList = [];
     this.itemList = [];
     this.gain = {
@@ -294,8 +296,11 @@ export default {
     }
     this.gain.ore = 16 + this.exploreLv * 2;
     //todo test
-    const dramaList = ['KeQing', 'Xiao', 'ZhongLi'];
-    this.drama = lodash.sample(dramaList);
+    const dramaList = ['KeQing', 'Xiao'];
+    if(lodash.random(0,10) > 8){
+      this.drama = lodash.sample(dramaList);
+      this.msgList.push(`你拿到了${this.drama}的剧本，触发概率将提高。`);
+    }
     
     //事件执行
     await this.next(id);
@@ -456,7 +461,7 @@ export default {
     //剧本
     const _purifyArr = lodash.cloneDeep(purifyArr);
     _purifyArr.map(res => {
-      if(res?.drama === this?.drama){
+      if(res?.drama?.indexOf(this?.drama) > -1){
         res.priority = (res?.priority || 100) * 5;
       }
     });
