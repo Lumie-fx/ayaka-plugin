@@ -27,7 +27,7 @@ export default {
       {text: '一个火把丘丘人冲上来对你使出了火之神神乐，你应对不及，被连招致死。', key: 'finish'},
       {text: '你在蒙德桥上看见了一群鸽子，', next: 'meetDoveV1'},
       {text: '你在蒙德城内上看见一个少女在为如何打碎木桩发愁，她说她叫艾琳，想让你教她，', next: 'meetAiLin'},
-      {text: '你在蒙德城中得知安娜身患重病，在许愿池中用摩拉许下了愿望，你的幸运提升了。', thing: 'mora', amount: -10000, func:()=>{this.refineAttr.luck+=1;}},
+      {text: '你在蒙德城中得知安娜身患重病，在许愿池中用摩拉许下了愿望，你的幸运提升了。', thing: 'mora', amount: -10000, func:that=>{that.refineAttr.luck+=1;}},
       {banned: new Date().getDay() !== 4, text: '今天是疯狂星期四，系统送你50吃顿好的吧。', thing: 'mora', amount: 50},
     ],
     lv2: [
@@ -62,19 +62,23 @@ export default {
     ],
     //魔神级
     lv6: [
-      {text: '你来到了一场盛大的花神诞祭，你愉快的过完了整个祭典，直到「嘀——」的一声，你发现整个世界回到了起点。', func:()=>{this.num=0;}},
+      {text: '你来到了一场盛大的花神诞祭，你愉快的过完了整个祭典，直到「嘀——」的一声，你发现整个世界回到了起点。', func:that=>{that.num=0;}},
       //todo Aosaie -> item 引发奥赛尔出现 ,  ZhongLiThink 影响剧情走向
     ],
     //尘世执政级
-    lv7: [],
+    lv7: [
+      {text: '你接触到了更深层的世界...'},
+    ],
     //天理级/世界之外
-    lv8: []
+    lv8: [
+      {text: '你接触到了更深层的世界...'},
+    ]
   },
   check: {
     moonFestivalSucc: [
       {text: '节日开始之时，你受到了刻晴的邀请，她带着你登上群玉阁，品茗佳肴，览璃月节庆夜景，度过了一个美妙的节日。', thing: 'exp', amount: 8},
-      {text: ['节日正式开始，你本以为可以好好过个节，没想到愚人众突然出现，并对现场大肆破坏，'
-             '一个少女出现，与愚人众战斗，她身手矫健，凭借着雷元素力的雷厉与3个对手难分上下，居然是刻晴，'
+      {text: ['节日正式开始，你本以为可以好好过个节，没想到愚人众突然出现，并对现场大肆破坏，',
+             '一个少女出现，与愚人众战斗，她身手矫健，凭借着雷元素力的雷厉与3个对手难分上下，居然是刻晴，',
              '忽然一道红光闪现在刻晴背后，你认出了那是隐匿身形的讨债人，眼看刻晴即将被偷袭，'],
            key: 'check', check:attr=>attr.agi>7, checkSucc: 'moonSaveKeQingSucc', checkFail: 'moonSaveKeQingFail'},
     ],
@@ -124,12 +128,12 @@ export default {
       {text: ['你做的是金丝虾球，来自异乡的烹饪手法吸引了一边刻晴的注意，你邀请她共享美食，她几番犹豫之下答应了，',
               '浅尝几口，她便惊叹于你的厨艺，对你产生了几分兴趣。'], item: ['KeQingThink'], thing: 'exp', amount: 1, drama: ['KeQing']},
       {text: ['你做的是杏仁豆腐，本想大快朵颐，突然想起了客栈老板无意间说的话，',
-              '你盛了一碗米饭，与杏仁豆腐一并放到了客栈天台外的小桌子上，便回去做别的菜了，'
+              '你盛了一碗米饭，与杏仁豆腐一并放到了客栈天台外的小桌子上，便回去做别的菜了，',
               '少顷，一道墨绿色身影突然出现，享用完美食之后又忽然消失。'], item: ['XiaoThink'], thing: 'exp', amount: 1, drama: ['Xiao']},
       {text: '你做的是仙跳墙，但是你水平太菜搞砸了，赔了不少材料钱。', thing: 'mora', amount: -20000, priority: 200},
     ],
     waterIsGood: [
-      {text: '你喝到的是圣水，你觉得你现在充满了力量。', func:()=>{this.refineAttr.str+=1;}},
+      {text: '你喝到的是圣水，你觉得你现在充满了力量。', func:that=>{that.refineAttr.str+=1;}},
     ],
     meetKaiYa: [
       {text: '因为你是异乡人，他对你很感兴趣。', thing: 'exp', amount: 1},
@@ -281,9 +285,7 @@ export default {
   itemList: [],
   exploreSavedItem: [], //探索保存的长期道具
   gain: {},
-  attr: {
-    base: [5,5,5,5],
-  },
+  attr: [5,5,5,5],
   refineAttr: {},
   gainList: {
     mora: '摩拉',
@@ -305,6 +307,9 @@ export default {
     this.gain = {
       exploreExp: 0,
     };
+    this.attr = [];
+    this.refineAttr = {};
+
     const exploreSave = await utils.getRedis(`ayaka:${id}:explore`, {});
     this.exploreSavedItem = await utils.getRedis(`ayaka:${id}:exploreSavedItem`, []);
     this.exploreLv = exploreSave?.exploreLv || 0;
@@ -315,13 +320,13 @@ export default {
     //初始化属性
     for(let i = 0;i < this.exploreLv * 2; i++){
       const idx = Math.floor(Math.random() * 4);
-      this.attr.base[idx] ++;
+      this.attr[idx] ++;
     }
     this.refineAttr = {
-      str: this.attr.base[0],
-      int: this.attr.base[1],
-      agi: this.attr.base[2],
-      luck: this.attr.base[3],
+      str: this.attr[0],
+      int: this.attr[1],
+      agi: this.attr[2],
+      luck: this.attr[3],
     }
     this.gain.ore = 16 + this.exploreLv * 2;
     //todo test
@@ -421,7 +426,9 @@ export default {
         lodash.pullAll(this.exploreSavedItem, event.deleteItem);
       }
       if(event?.func){
-        event.func();
+        console.log(lodash.cloneDeep(this.refineAttr))
+        event.func(this);
+        console.log(lodash.cloneDeep(this.refineAttr))
       }
       if(event?.next){
         const newEventList = this.check[event.next];

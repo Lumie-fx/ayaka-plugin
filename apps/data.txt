@@ -32,6 +32,7 @@ ayaka:${id}:explore => [ //探险每个步骤临时道具
   KeQingThink //刻晴认识 --> todo 逐月节邀请
   XiaoThink   //魈认识  --> todo 层岩救命
   ZhongLiThink//钟离认识 --> todo
+  Aosaie      //奥赛尔出现判定
 ]
 
 ayaka:${id}:exploreSavedItem => { //探索保存的长期道具
