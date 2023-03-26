@@ -1,4 +1,3 @@
-import { segment } from "oicq";
 import lodash from "lodash";
 import fs from "fs";
 import fetch from 'node-fetch'

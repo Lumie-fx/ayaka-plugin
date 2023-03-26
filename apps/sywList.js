@@ -1,4 +1,3 @@
-import { segment } from "oicq";
 import lodash from "lodash";
 import fs from "fs";
 import { render } from "../adapter/render.js";
@@ -17,7 +16,6 @@ export class sywList extends plugin {
     super({
       name: '查看圣遗物',
       dsc: '查看模拟抽取圣遗物',
-      /** https://oicqjs.github.io/oicq/#events */
       event: 'message',
       priority: 100,
       rule: [{
