@@ -1,4 +1,3 @@
-import { segment } from "oicq";
 import lodash from "lodash";
 import fs from "fs";
 import fetch from 'node-fetch'
@@ -15,7 +14,6 @@ export class bilibiliLinkTransfer extends plugin {
     super({
       name: 'bilibili链接转图片',
       dsc: 'bilibili链接转图片方便查看详情',
-      /** https://oicqjs.github.io/oicq/#events */
       event: 'message',
       priority: 5000,
       rule: [{

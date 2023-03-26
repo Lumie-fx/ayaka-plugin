@@ -1,4 +1,3 @@
-import { segment } from "oicq";
 import lodash from "lodash";
 import fs from "fs";
 import { render } from "../adapter/render.js";
@@ -13,7 +12,6 @@ export class sywMenu extends plugin {
     super({
       name: '圣遗物菜单',
       dsc: '【查看】查看保存的圣遗物',
-      /** https://oicqjs.github.io/oicq/#events */
       event: 'message',
       priority: 100,
       rule: [{

@@ -1,4 +1,3 @@
-import { segment } from "oicq";
 import lodash from "lodash";
 import fs from "fs";
 import { render } from "../adapter/render.js";
@@ -10,7 +9,6 @@ export class ayakaExplore extends plugin {
     super({
       name: '-探索',
       dsc: '探索获取矿石等资源',
-      /** https://oicqjs.github.io/oicq/#events */
       event: 'message',
       priority: 100,
       rule: [{

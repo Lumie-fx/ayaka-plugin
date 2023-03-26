@@ -1,5 +1,9 @@
 import fs from 'node:fs'
 
+if (!global.segment) {
+  global.segment = (await import("oicq")).segment
+}
+
 const files = fs.readdirSync('./plugins/ayaka-plugin/apps').filter(file => file.endsWith('.js'))
 
 let ret = []

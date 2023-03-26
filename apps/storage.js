@@ -1,4 +1,3 @@
-import { segment } from "oicq";
 import lodash from "lodash";
 import fs from "fs";
 import fetch from 'node-fetch'
@@ -14,7 +13,6 @@ export class storage extends plugin {
     super({
       name: '仓储',
       dsc: '用户仓储资源展示',
-      /** https://oicqjs.github.io/oicq/#events */
       event: 'message',
       priority: 5000,
       rule: [{
